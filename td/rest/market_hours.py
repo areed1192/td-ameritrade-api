@@ -1,6 +1,6 @@
 from enum import Enum
 from typing import Union
-from datetime import date as date_type
+from datetime import date
 from datetime import datetime
 from td.session import TdAmeritradeSession
 
@@ -13,14 +13,14 @@ class MarketHours():
     Allows the user query the different market hours for
     the different financial markets.
     """
-
+    
     def __init__(self, session: TdAmeritradeSession) -> None:
         """Initializes the `MarketHours` services.
 
         ### Parameters
         ----
         session : TdAmeritradeSession
-            An authenticated `TDAmeritradeSession
+            An authenticated `TDAmeritradeSession   
             object.
         """
 
@@ -29,7 +29,7 @@ class MarketHours():
     def get_multiple_market_hours(
         self,
         markets: list,
-        date: Union[str, datetime, date_type]
+        date_time: Union[str, datetime] = None
     ) -> dict:
         """Returns the market hours for all the markets.
 
@@ -45,8 +45,8 @@ class MarketHours():
             `BOND`, or `FOREX`.
 
         date: Union[str, datetime, date]
-            The date you wish to recieve market hours for.
-            Valid ISO-8601 formats are: yyyy-MM-dd and
+            The date you wish to recieve market hours for. 
+            Valid ISO-8601 formats are: yyyy-MM-dd and 
             yyyy-MM-dd'T'HH:mm:ssz
 
         ### Usage
@@ -63,12 +63,15 @@ class MarketHours():
             if isinstance(market, Enum):
                 markets[index] = market.value
 
-        if isinstance(date, (date_type, datetime)):
-            date = date.isoformat()
+        # Grab the date_time.
+        if isinstance(date_time, datetime):
+            date_time = date_time.date().isoformat()
+        elif isinstance(date_time, date):
+            date_time = date_time.isoformat()
 
         params = {
             'markets': ','.join(markets),
-            'date': date
+            'date': date_time
         }
 
         content = self.session.make_request(
@@ -82,7 +85,7 @@ class MarketHours():
     def get_market_hours(
         self,
         market: Union[str, Enum],
-        date: Union[str, datetime, date_type]
+        date_time: Union[str, datetime] = None
     ) -> dict:
         """Returns the market hours for the specified market.
 
@@ -98,8 +101,8 @@ class MarketHours():
             `BOND`, or `FOREX`.
 
         date: Union[str, datetime, date]
-            The date you wish to recieve market hours for.
-            Valid ISO-8601 formats are: yyyy-MM-dd and
+            The date you wish to recieve market hours for. 
+            Valid ISO-8601 formats are: yyyy-MM-dd and 
             yyyy-MM-dd'T'HH:mm:ssz
 
         ### Usage
@@ -111,15 +114,17 @@ class MarketHours():
                 date='2021-12-31'
             )
         """
-
         if isinstance(market, Enum):
             market = market.value
 
-        if isinstance(date, (date_type, datetime)):
-            date = date.isoformat()
+        # Grab the date_time.
+        if isinstance(date_time, datetime):
+            date_time = date_time.date().isoformat()
+        elif isinstance(date_time, date):
+            date_time = date_time.isoformat()
 
         params = {
-            'date': date
+            'date': date_time
         }
 
         content = self.session.make_request(

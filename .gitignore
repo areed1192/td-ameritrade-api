@@ -133,3 +133,9 @@ vscode/
 config/
 .resources and notes/
 venv_test/
+
+# chrome driver related
+chromedriver*
+
+#logs
+logs*

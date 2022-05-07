@@ -2,6 +2,7 @@ from enum import Enum
 from typing import Union
 from typing import List
 from datetime import datetime
+from datetime import date
 
 
 class StreamingServices():
@@ -578,8 +579,8 @@ class StreamingServices():
         symbols: List[str],
         frequency: Union[str, Enum],
         period: Union[str, Enum] = None,
-        start_time: Union[str, datetime] = None,
-        end_time: Union[str, datetime] = None
+        start_time: Union[datetime, int] = None,
+        end_time: Union[datetime, int] = None
     ) -> None:
         """Stream historical futures prices for charting. For normal equity charts, please use the
         the `get_historical_prices` method.
@@ -616,9 +617,15 @@ class StreamingServices():
         # Handle datetimes.
         if isinstance(start_time, datetime):
             start_time = int(start_time.timestamp() * 1000)
+        elif isinstance(start_time, date):
+            start_time = int(datetime.strptime(
+                start_time.isoformat(), "%Y-%m-%d").timestamp() * 1000)  # type: ignore
 
         if isinstance(end_time, datetime):
             end_time = int(end_time.timestamp() * 1000)
+        elif isinstance(end_time, date):
+            end_time = int(datetime.strptime(
+                end_time.isoformat(), "%Y-%m-%d").timestamp() * 1000)  # type: ignore
 
         if isinstance(frequency, Enum):
             frequency = frequency.value
@@ -757,3 +764,48 @@ class StreamingServices():
         request['parameters']['fields'] = ','.join(fields)
 
         self.streaming_api_client.data_requests['requests'].append(request)
+
+    # def level_two_nasdaq(self, symbols: List[str], fields: Union[List[str], List[int]]) -> None:
+    #     """
+    #         EXPERIMENTAL: USE WITH CAUTION!
+
+    #         Represents the LEVEL_TWO_QUOTES_NASDAQ endpoint for the streaming API. Documentation on this
+    #         service does not exist, but it appears that we can pass through 1 of 3 fields.
+
+    #         NAME: symbols
+    #         DESC: A List of symbols you wish to stream time level two quotes for.
+    #         TYPE: List<String>
+
+    #         NAME: fields
+    #         DESC: The fields you want returned from the Endpoint, can either be the numeric representation
+    #               or the key value representation. For more info on fields, refer to the documentation.
+    #         TYPE: List<Integer> | List<Strings>
+
+    #     """
+    #     # valdiate argument.
+    #     fields = self._validate_argument(
+    #         argument=fields,
+    #         endpoint='level_two_nasdaq'
+    #     )
+
+    #     # Build the request
+    #     request = self._new_request_template()
+    #     request['service'] = 'NASDAQ_BOOK'
+    #     request['command'] = 'SUBS'
+    #     request['parameters']['keys'] = ','.join(symbols)
+    #     request['parameters']['fields'] = ','.join(fields)
+
+    #     self.streaming_api_client.data_requests['requests'].append(request)
+
+    # def level_two_total_view(self, symbols: List[str], fields: Union[List[str], List[int]]) -> None:
+
+    #     fields = [str(field) for field in fields]
+
+    #     # Build the request
+    #     request = self._new_request_template()
+    #     request['service'] = 'TOTAL_VIEW'
+    #     request['command'] = 'SUBS'
+    #     request['parameters']['keys'] = ','.join(symbols)
+    #     request['parameters']['fields'] = ','.join(fields)
+
+    #     self.streaming_api_client.data_requests['requests'].append(request)

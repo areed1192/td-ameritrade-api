@@ -1,28 +1,13 @@
 from pprint import pprint
 from datetime import datetime
-from configparser import ConfigParser
 from td.credentials import TdCredentials
 from td.client import TdAmeritradeClient
 from td.utils.enums import Markets
 
-# Initialize the Parser.
-config = ConfigParser()
+# Initialize our `Credentials` object.
+td_credentials = TdCredentials.authentication_default()
 
-# Read the file.
-config.read('config/config.ini')
-
-# Get the specified credentials.
-client_id = config.get('main', 'client_id')
-redirect_uri = config.get('main', 'redirect_uri')
-
-# Intialize our `Crednetials` object.
-td_credentials = TdCredentials(
-    client_id=client_id,
-    redirect_uri=redirect_uri,
-    credential_file='config/td_credentials.json'
-)
-
-# Initalize the `TdAmeritradeClient`
+# Initialize the `TdAmeritradeClient`
 td_client = TdAmeritradeClient(
     credentials=td_credentials
 )
@@ -34,7 +19,7 @@ market_hours_service = td_client.market_hours()
 pprint(
     market_hours_service.get_multiple_market_hours(
         markets=['EQUITY', Markets.Bond],
-        date=datetime.now()
+        date_time=datetime.now()
     )
 )
 
@@ -42,6 +27,6 @@ pprint(
 pprint(
     market_hours_service.get_market_hours(
         market='EQUITY',
-        date=datetime.now()
+        date_time=datetime.now()
     )
 )

@@ -1,17 +1,20 @@
 import json
-import urllib
 import pathlib
-import webbrowser
 
 from typing import Union
 from datetime import datetime
-from urllib.parse import parse_qs
-from urllib.parse import urlparse
 
+import multiprocessing as mp
+from time import sleep
+from urllib.parse import unquote
 import requests
 
+from splinter import Browser
+from td.config.get_config import config
+from td.logging.create_logger import get_logger
 
-class TdCredentials():
+
+class TdCredentials:
 
     """
     ### Overview
@@ -22,14 +25,24 @@ class TdCredentials():
     the are properly authenticated.
     """
 
+    # allows for multiple clients and  concurrency lock to refresh/access expiration times
+    __consumer_apps = {}
+
     def __init__(
-        self,
-        client_id: str,
-        redirect_uri: str,
-        credential_dict: dict = None,
-        credential_file: Union[str, pathlib.Path] = None
-    ) -> None:
+        self, 
+        client_id: str, 
+        redirect_uri: str, 
+        token_dict: dict = None,
+        token_file: Union[str, pathlib.Path] = None, 
+        client_name: str = "td-ameritrade-api", 
+        login_credentials_dict: dict = None) -> None:
         """Initializes the `TdCredential` object."""
+
+        TdCredentials.__consumer_apps[client_name] = {
+            "multiprocessing_lock": mp.Lock(),
+            "refresh_token_expiration_time": 0,
+            "access_token_expiration_time": 0
+        }
 
         self._access_token = ''
         self._refresh_token = ''
@@ -37,34 +50,39 @@ class TdCredentials():
         self._token_type = ''
         self._expires_in = 0
         self._refresh_token_expires_in = 0
-        self._is_expired = True
+        self._client_name = client_name
         self._client_id = client_id
         self._redirect_uri = redirect_uri
-
-        self._refresh_token_expiration_time = 0
-        self._access_token_expiration_time = 0
+        self.__login_credentials_dict = login_credentials_dict
 
         self.resource_url = 'https://api.tdameritrade.com/'
         self.version = 'v1/'
         self.token_endpoint = 'oauth2/token'
         self.authorization_url = 'https://auth.tdameritrade.com/auth?'
         self.authorization_code = ""
-        self._loaded_from_file = False
-        self._file_path = ""
+        self._file_path = pathlib.Path.joinpath(pathlib.Path(config.get('config', 'config_directory_path')),
+                                                client_name + "/td_credentials.json")
+        self._file_path_base = pathlib.Path.joinpath(pathlib.Path(config.get('config', 'config_directory_path')),
+                                                     client_name)
+        self._first_pass = True
 
-        if credential_file:
+        self.log = get_logger()
 
-            if isinstance(credential_file, pathlib.Path):
-                credential_file = credential_file.resolve()
+        if token_file:
+            if isinstance(token_file, pathlib.Path):
+                token_file = token_file.resolve()
 
-            self._loaded_from_file = True
-            self._file_path = credential_file
-            self.from_credential_file(file_path=credential_file)
+            self._file_path = token_file
+            self.from_token_file(file_path=token_file)
 
-        elif credential_dict:
-            self.from_credential_dict(token_dict=credential_dict)
+        elif token_dict:
+            self.from_token_dict_helper(token_dict=token_dict)
+        elif pathlib.Path.exists(pathlib.Path(self._file_path)):
+            self.from_token_file(file_path=self._file_path)
         else:
             self.from_workflow()
+
+        self.log.info("credentials init complete")
 
     @property
     def redirect_uri(self) -> str:
@@ -84,20 +102,36 @@ class TdCredentials():
         return self._redirect_uri
 
     @property
-    def client_id(self) -> str:
-        """Returns the Client ID.
+    def client_name(self) -> str:
+        """Returns the Client Name.
 
         ### Returns
         ----
         str
-            The users Client Id.
+            The app Client Name.
+
+        ### Usage
+        ----
+            >>> td_credential = TdCredentials()
+            >>> td_credential.client_name
+        """
+        return self._client_name
+
+    @property
+    def client_id(self) -> str:
+        """Returns the Consumer Key.
+
+        ### Returns
+        ----
+        str
+            The apps Consumer Key.
 
         ### Usage
         ----
             >>> td_credential = TdCredentials()
             >>> td_credential.client_id
         """
-
+        
         return self._client_id
 
     @property
@@ -135,7 +169,24 @@ class TdCredentials():
         return self._refresh_token
 
     @property
-    def refresh_token_expiration_time(self) -> datetime:
+    def access_token_expiration_time(self):
+        """Returns when the Access Token will expire.
+
+        ### Returns
+        ----
+        datetime
+            The date and time of the access token
+            expiration.
+
+        ### Usage
+        ----
+            >>> td_credential = TdCredentials()
+            >>> td_credential.refresh_token_expiration_time
+        """
+        return TdCredentials.__consumer_apps[self._client_name]["access_token_expiration_time"]
+
+    @property
+    def refresh_token_expiration_time(self):
         """Returns when the Refresh Token will expire.
 
         ### Returns
@@ -149,8 +200,29 @@ class TdCredentials():
             >>> td_credential = TdCredentials()
             >>> td_credential.refresh_token_expiration_time
         """
+        return TdCredentials.__consumer_apps[self._client_name]["refresh_token_expiration_time"]
 
-        return self._refresh_token_expiration_time
+    @property
+    def is_access_token_expired(self) -> bool:
+        """Specifies whether the current Access Token is expired
+        or not.
+
+        ### Returns
+        ----
+        bool
+            `True` if the Access Token is expired,
+            `False` otherwise.
+
+        ### Usage
+        ----
+            >>> td_credential = TdCredentials()
+            >>> td_credential.is_refresh_token_expired
+        """
+
+        if (self.access_token_expiration_time.timestamp() - 20) < datetime.now().timestamp():
+            return True
+        else:
+            return False
 
     @property
     def is_refresh_token_expired(self) -> bool:
@@ -169,12 +241,13 @@ class TdCredentials():
             >>> td_credential.is_refresh_token_expired
         """
 
-        exp_time = self.refresh_token_expiration_time.timestamp() - 20
-        now = datetime.now().timestamp()
-        return bool(exp_time < now)
+        if (self.refresh_token_expiration_time.timestamp() - 20) < datetime.now().timestamp():
+            return True
+        else:
+            return False
 
     def from_token_dict(self, token_dict: dict) -> None:
-        """Converts a token dicitonary to a `TdCredential`
+        """Converts a token dictionary to a `TdCredential`
         object.
 
         ### Parameters
@@ -197,7 +270,6 @@ class TdCredentials():
                 }
             )
         """
-
         self._access_token = token_dict.get('access_token', '')
         self._refresh_token = token_dict.get('refresh_token', '')
         self._scope = token_dict.get('scope', [])
@@ -208,22 +280,24 @@ class TdCredentials():
             'refresh_token_expires_in',
             0
         )
-        self._refresh_token_expiration_time = token_dict.get(
+        TdCredentials.__consumer_apps[self._client_name]["refresh_token_expiration_time"] = token_dict.get(
             'refresh_token_expiration_time', 0
         )
 
-        self._access_token_expiration_time = token_dict.get(
+        TdCredentials.__consumer_apps[self._client_name]["access_token_expiration_time"] = token_dict.get(
             'access_token_expiration_time', 0
         )
 
         # Calculate the Refresh Token expiration time.
-        if isinstance(self._refresh_token_expiration_time, str):
-            self._refresh_token_expiration_time = datetime.fromisoformat(
-                self._refresh_token_expiration_time
+        if isinstance(TdCredentials.__consumer_apps[self._client_name]["refresh_token_expiration_time"], str):
+            TdCredentials.__consumer_apps[self._client_name][
+                "refresh_token_expiration_time"] = datetime.fromisoformat(
+                TdCredentials.__consumer_apps[self._client_name]["refresh_token_expiration_time"]
             )
-        elif isinstance(self._refresh_token_expiration_time, float):
-            self._refresh_token_expiration_time = datetime.fromtimestamp(
-                self._refresh_token_expiration_time
+        elif isinstance(TdCredentials.__consumer_apps[self._client_name]["refresh_token_expiration_time"], float):
+            TdCredentials.__consumer_apps[self._client_name][
+                "refresh_token_expiration_time"] = datetime.fromtimestamp(
+                TdCredentials.__consumer_apps[self._client_name]["refresh_token_expiration_time"]
             )
         else:
             self._calculate_refresh_token_expiration(
@@ -231,13 +305,13 @@ class TdCredentials():
             )
 
         # Calculate the Access Token Expiration Time.
-        if isinstance(self._access_token_expiration_time, str):
-            self._access_token_expiration_time = datetime.fromisoformat(
-                self._access_token_expiration_time
+        if isinstance(TdCredentials.__consumer_apps[self._client_name]["access_token_expiration_time"], str):
+            TdCredentials.__consumer_apps[self._client_name]["access_token_expiration_time"] = datetime.fromisoformat(
+                TdCredentials.__consumer_apps[self._client_name]["access_token_expiration_time"]
             )
-        elif isinstance(self._access_token_expiration_time, float):
-            self._access_token_expiration_time = datetime.fromtimestamp(
-                self._access_token_expiration_time
+        elif isinstance(TdCredentials.__consumer_apps[self._client_name]["access_token_expiration_time"], float):
+            TdCredentials.__consumer_apps[self._client_name]["access_token_expiration_time"] = datetime.fromtimestamp(
+                TdCredentials.__consumer_apps[self._client_name]["access_token_expiration_time"]
             )
         else:
             self._calculate_access_token_expiration(
@@ -286,7 +360,7 @@ class TdCredentials():
         """
 
         expiration_time = datetime.now().timestamp() + expiration_secs
-        self._refresh_token_expiration_time = datetime.fromtimestamp(
+        TdCredentials.__consumer_apps[self._client_name]["refresh_token_expiration_time"] = datetime.fromtimestamp(
             expiration_time
         )
 
@@ -301,47 +375,9 @@ class TdCredentials():
         """
 
         expiration_time = datetime.now().timestamp() + expiration_secs
-        self._access_token_expiration_time = datetime.fromtimestamp(
+        TdCredentials.__consumer_apps[self._client_name]["access_token_expiration_time"] = datetime.fromtimestamp(
             expiration_time
         )
-
-    @property
-    def access_token_expiration_time(self) -> datetime:
-        """Returns when the Access Token will expire.
-
-        ### Returns
-        ----
-        datetime
-            The date and time of the access token
-            expiration.
-
-        ### Usage
-        ----
-            >>> td_credential = TdCredentials()
-            >>> td_credential.access_token_expiration_time
-        """
-        return self._access_token_expiration_time
-
-    @property
-    def is_access_token_expired(self) -> bool:
-        """Specifies whether the current Access Token is expired
-        or not.
-
-        ### Returns
-        ----
-        bool
-            `True` if the Access Token is expired,
-            `False` otherwise.
-
-        ### Usage
-        ----
-            >>> td_credential = TdCredentials()
-            >>> td_credential.is_access_token_expired
-        """
-
-        exp_time = self.access_token_expiration_time.timestamp() - 20
-        now = datetime.now().timestamp()
-        return bool(exp_time < now)
 
     def from_workflow(self) -> None:
         """Grabs an Access toke and refresh token using
@@ -349,10 +385,10 @@ class TdCredentials():
 
         ### Usage
         ----
-            >>> td_credentials = TdCredentials(
+            >>> td_credentials = TdCredentials()
                 client_id=client_id,
                 redirect_uri=redirect_uri,
-                credential_file='config/td_credentials.jsonc'
+                token_file='config/td_credentials.jsonc'
             )
             >>> td_credentials.from_workflow()
         """
@@ -361,20 +397,13 @@ class TdCredentials():
         token_dict = self.exchange_code_for_token(return_refresh_token=True)
         self.from_token_dict(token_dict=token_dict)
 
-    def from_credential_file(self, file_path: str) -> None:
-        """Loads the credentials for a JSON file that is formatted
-        in the correct fashion.
+    def from_token_file(self, file_path: Union[str, pathlib.Path]) -> None:
 
-        ### Parameters
-        file_path : str
-            The location of the credentials file.
-        """
-
-        with open(file=file_path, mode='r', encoding='utf-8') as token_file:
+        with open(file=file_path, mode='r') as token_file:
             token_dict = json.load(fp=token_file)
             self.from_token_dict(token_dict=token_dict)
 
-    def to_credential_file(self, file_path: Union[str, pathlib.Path]) -> None:
+    def to_token_file(self, file_path: Union[str, pathlib.Path]) -> None:
         """Takes the token dictionary and saves it to a JSON file.
 
         ### Parameters
@@ -389,13 +418,16 @@ class TdCredentials():
                 )
         """
 
+        if not pathlib.Path(self._file_path_base).exists():
+            pathlib.Path(self._file_path_base).mkdir()
+
         if isinstance(file_path, pathlib.Path):
             file_path = file_path.resolve()
 
-        with open(file=file_path, mode='w+', encoding='utf-8') as token_file:
+        with open(file=file_path, mode='w+') as token_file:
             json.dump(obj=self.to_token_dict(), fp=token_file, indent=2)
 
-    def from_credential_dict(self, token_dict: dict) -> None:
+    def from_token_dict_helper(self, token_dict: dict) -> None:
         """Loads the credentials from a token dictionary.
 
         ### Parameters
@@ -413,7 +445,7 @@ class TdCredentials():
         `access_token_expiration_time` because they can be calculated using the
         `access_token` key and `refresh_token`.
 
-            >>> td_credentials.from_credential_dict(
+            >>> td_credentials.from_token_dict_helper(
                     token_dict={
                         "access_token": "YOUR_ACCESS_TOKEN",
                         "refresh_token": "YOUR_REFRESH_TOKEN"
@@ -433,7 +465,7 @@ class TdCredentials():
         `access_token` key and `refresh_token`.
 
             >>> # This just is another way of sending it through.
-            >>> td_credentials.from_credential_dict(
+            >>> td_credentials.from_token_dict_helper(
                     token_dict={
                         "access_token": "YOUR_ACCESS_TOKEN",
                         "refresh_token": "YOUR_REFRESH_TOKEN"
@@ -451,26 +483,85 @@ class TdCredentials():
     def grab_authorization_code(self) -> None:
         """Generates the URL to grab the authorization code."""
 
+        # define the location of the Chrome Driver - CHANGE THIS!!!!!
+        executable_path = {
+            'executable_path': config.get('scraping', 'browser_directory_path')
+        }
+
+        # Create a new instance of the browser, make sure we can see it (Headless = False)
+        browser = Browser(config.get('scraping', 'browser_type'), **executable_path, headless=False)
+
         data = {
             "response_type": "code",
             "redirect_uri": self.redirect_uri,
             "client_id": self.client_id + "@AMER.OAUTHAP"
         }
+        method = 'GET'
+        url = 'https://auth.tdameritrade.com/auth?'
 
-        # url encode the data.
-        params = urllib.parse.urlencode(data)
+        # build the URL and store it in a new variable
+        p = requests.Request(method, url, params=data).prepare()
+        auth_url = p.url
 
-        # build the full URL for the authentication endpoint.
-        url = self.authorization_url + params
+        # go to the URL
+        browser.visit(auth_url)
 
-        webbrowser.open(url=url)
+        sleep(2)
 
-        code_url = input("Please Paste the Authorization Code Here: ")
+        # define items to fillout form
+        payload = {'username': self.__login_credentials_dict["username"],
+                   'password': self.__login_credentials_dict["account_password"]}
 
-        query = urlparse(url=code_url)
-        parse_code = parse_qs(qs=query.query)
+        # fill out each part of the form and click submit
+        browser.find_by_id("username0").first.fill(payload['username'])
+        browser.find_by_id("password1").first.fill(payload['password'])
+        browser.find_by_id("accept").first.click()
 
-        self.authorization_code = parse_code['code'][0]
+        sleep(2)
+
+        browser.find_by_text('Can\'t get the text message?').first.click()
+
+        # Get the Answer Box
+        browser.find_by_value("Answer a security question").first.click()
+
+        sleep(2)
+
+        # Answer the Security Questions.
+        if browser.is_text_present(self.__login_credentials_dict["secretquestion0"]):
+            browser.find_by_id("secretquestion0").first.click()
+            browser.find_by_id('secretquestion0').first.fill(
+                self.__login_credentials_dict["secretanswer0"])
+        elif browser.is_text_present(self.__login_credentials_dict["secretquestion1"]):
+            browser.find_by_id("secretquestion0").first.click()
+            browser.find_by_id('secretquestion0').first.fill(
+                self.__login_credentials_dict["secretanswer1"])
+        elif browser.is_text_present(self.__login_credentials_dict["secretquestion2"]):
+            browser.find_by_id("secretquestion0").first.click()
+            browser.find_by_id('secretquestion0').first.fill(
+                self.__login_credentials_dict["secretanswer2"])
+        elif browser.is_text_present(self.__login_credentials_dict["secretquestion3"]):
+            browser.find_by_id("secretquestion0").first.click()
+            browser.find_by_id('secretquestion0').first.fill(
+                self.__login_credentials_dict["secretanswer3"])
+
+        browser.find_by_id('accept').first.click()
+
+        sleep(2)
+
+        browser.find_by_text('No, do not trust this device').first.click()
+        # Submit results
+        browser.find_by_id('accept').first.click()
+
+        sleep(2)
+
+        browser.find_by_id('accept').first.click()
+
+        sleep(2)
+
+        new_url = browser.url
+        browser.quit()
+        self.authorization_code = unquote(
+            new_url.split("code=")[1])
 
     def exchange_code_for_token(self, return_refresh_token: bool) -> dict:
         """Access token handler for AuthCode Workflow.
@@ -516,8 +607,8 @@ class TdCredentials():
 
         if response.ok:
             return response.json()
-
-        raise requests.HTTPError()
+        else:
+            raise requests.HTTPError()
 
     def grab_access_token(self) -> dict:
         """Refreshes the current access token.
@@ -552,8 +643,8 @@ class TdCredentials():
 
         if response.ok:
             return response.json()
-
-        raise requests.HTTPError()
+        else:
+            raise requests.HTTPError()
 
     def validate_token(self) -> None:
         """Validates the access token and refresh token.
@@ -568,13 +659,59 @@ class TdCredentials():
         """
 
         if self.is_refresh_token_expired:
-            print("Refresh Token Expired, initiating oAuth workflow...")
-            self.from_workflow()
+            with TdCredentials.__consumer_apps[self._client_name]["multiprocessing_lock"]:
+                if self.is_refresh_token_expired:
+                    print("Refresh Token Expired, initiating oAuth workflow.")
+                    self.from_workflow()
+                    self.to_token_file(file_path=self._file_path)
 
         if self.is_access_token_expired:
-            print("Access Token Expired, refreshing access token...")
-            token_dict = self.grab_access_token()
-            self.from_token_dict(token_dict=token_dict)
+            with TdCredentials.__consumer_apps[self._client_name]["multiprocessing_lock"]:
+                if self.is_access_token_expired:
+                    print("Access Token Expired, refreshing access token.")
+                    token_dict = self.grab_access_token()
+                    self.from_token_dict(token_dict=token_dict)
+                    self.to_token_file(file_path=self._file_path)
 
-            if self._loaded_from_file:
-                self.to_credential_file(file_path=self._file_path)
+        if self._first_pass:
+            self._first_pass = False
+            self.to_token_file(file_path=self._file_path)
+
+    @staticmethod
+    def authentication_default():
+        # Get the specified credentials.
+        client_name = config.get('credentials', 'client_name')
+        client_id = config.get('credentials', 'client_id')
+        redirect_uri = config.get('credentials', 'redirect_uri')
+        username = config.get('credentials', 'username')
+        account_password = config.get('credentials', 'account_password')
+
+        secretquestion0 = config.get('credentials', 'secretquestion0')
+        secretanswer0 = config.get('credentials', 'secretanswer0')
+        secretquestion1 = config.get('credentials', 'secretquestion1')
+        secretanswer1 = config.get('credentials', 'secretanswer1')
+        secretquestion2 = config.get('credentials', 'secretquestion2')
+        secretanswer2 = config.get('credentials', 'secretanswer2')
+        secretquestion3 = config.get('credentials', 'secretquestion3')
+        secretanswer3 = config.get('credentials', 'secretanswer3')
+
+        login_credentials = {
+            "username": username,
+            "account_password": account_password,
+            "secretquestion0": secretquestion0,
+            "secretanswer0": secretanswer0,
+            "secretquestion1": secretquestion1,
+            "secretanswer1": secretanswer1,
+            "secretquestion2": secretquestion2,
+            "secretanswer2": secretanswer2,
+            "secretquestion3": secretquestion3,
+            "secretanswer3": secretanswer3,
+        }
+
+        # Initialize our `Credentials` object.
+        return TdCredentials(
+            client_name=client_name,
+            client_id=client_id,
+            redirect_uri=redirect_uri,
+            login_credentials_dict=login_credentials
+        )

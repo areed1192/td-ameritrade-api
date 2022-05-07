@@ -14,8 +14,8 @@ from td.rest.saved_orders import SavedOrders
 from td.streaming.client import StreamingApiClient
 
 
-class TdAmeritradeClient():
 
+class TdAmeritradeClient:
     """
     ### Overview
     ----

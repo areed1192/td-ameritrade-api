@@ -93,7 +93,7 @@ class OptionsChain():
         content = self.session.make_request(
             method='get',
             endpoint='marketdata/chains',
-            params=params
+            params=params  # type: ignore
         )
 
         return content

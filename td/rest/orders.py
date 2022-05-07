@@ -4,7 +4,7 @@ from datetime import date
 from datetime import datetime
 
 from td.session import TdAmeritradeSession
-from td.utils.orders import Order
+from td.utils.orders import OrderOther
 
 
 class Orders():
@@ -232,7 +232,7 @@ class Orders():
     def place_order(
         self,
         account_id: str,
-        order_object: Order = None,
+        order_object: OrderOther = None,
         order_dict: dict = None
     ) -> dict:
         """Place an order for a specific account. Order throttle
@@ -269,8 +269,7 @@ class Orders():
         """
 
         if order_object:
-            order = order_object.save_order_to_json()
-
+            order = order_object.grab_order()
         if order_dict:
             order = order_dict
 
@@ -280,7 +279,7 @@ class Orders():
         content = self.session.make_request(
             method='post',
             endpoint=endpoint,
-            json_payload=order
+            json_payload=order  # type: ignore
         )
 
         return content
@@ -289,7 +288,7 @@ class Orders():
         self,
         account_id: str,
         order_id: str,
-        order_object: Order = None,
+        order_object: OrderOther = None,
         order_dict: dict = None
     ) -> dict:
         """Replace an existing order for an account.
@@ -335,7 +334,7 @@ class Orders():
         """
 
         if order_object:
-            order = order_object.save_order_to_json()
+            order = order_object.grab_order()
 
         if order_dict:
             order = order_dict
@@ -346,7 +345,7 @@ class Orders():
         content = self.session.make_request(
             method='put',
             endpoint=endpoint,
-            json_payload=order
+            json_payload=order  # type: ignore
         )
 
         return content
