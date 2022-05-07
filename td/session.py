@@ -43,8 +43,7 @@ class TdAmeritradeSession():
         logging.basicConfig(
             filename="logs/log_file_custom.log",
             level=logging.INFO,
-            encoding="utf-8",
-            format=log_format
+            format=log_format,
         )
 
     def build_headers(self) -> dict:
