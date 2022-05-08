@@ -5,11 +5,11 @@ from td.config.get_config import config
 
 
 def get_logger(log_name: str = ''):
-    if len(log_name):
+    if len(log_name) > 0:
         logger_name = log_name
     else:
-        # Get the specified credentials.
-        logger_name = config.get('credentials', 'client_name')
+        # Use app name as the default logger name.
+        logger_name = config.get('credentials', 'app_name')
 
     log = logging.getLogger(logger_name)
     log.setLevel(logging.INFO)
@@ -18,13 +18,13 @@ def get_logger(log_name: str = ''):
     if not pathlib.Path(logging_root_path).exists():
         pathlib.Path(logging_root_path).mkdir()
 
-    logging_app_path = pathlib.Path(logging_root_path + "/" + logger_name)
-    if not pathlib.Path(logging_app_path).exists():
-        pathlib.Path(logging_app_path).mkdir()
+    logging_module_path = pathlib.Path(logging_root_path + "/" + logger_name)
+    if not pathlib.Path(logging_module_path).exists():
+        pathlib.Path(logging_module_path).mkdir()
 
     logger_path = pathlib.Path.joinpath(
-        logging_app_path, logger_name + "_log_")
-
+        logging_module_path, logger_name)
+    
     logHandler = TimedRotatingFileHandler(
         logger_path, when="M", interval=5, encoding="utf-8")
 

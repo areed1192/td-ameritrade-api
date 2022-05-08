@@ -1,6 +1,6 @@
 import json
-from td.logging.create_logger import get_logger
 import requests
+from td.logging.create_logger import get_logger
 
 
 class TdAmeritradeSession:
@@ -30,7 +30,7 @@ class TdAmeritradeSession:
         self.resource_url = 'https://api.tdameritrade.com/'
         self.version = 'v1/'
 
-        self.log = get_logger()
+        self.log = get_logger(__name__)
 
     def build_headers(self) -> dict:
         """Used to build the headers needed to make the request.
@@ -91,8 +91,8 @@ class TdAmeritradeSession:
 
         ### Parameters
         ----
-        method : str 
-            The Request method, can be one of the following: 
+        method : str
+            The Request method, can be one of the following:
             ['get','post','put','delete','patch']
 
         endpoint : str
@@ -109,8 +109,8 @@ class TdAmeritradeSession:
 
         ### Returns
         ----
-        Dict: 
-            A Dictionary object containing the 
+        Dict:
+            A Dictionary object containing the
             JSON values.
         """
 
