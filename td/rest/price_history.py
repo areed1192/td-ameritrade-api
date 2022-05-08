@@ -1,6 +1,7 @@
 from typing import Union
 from enum import Enum
 from datetime import datetime
+from datetime import date
 from td.session import TdAmeritradeSession
 
 
@@ -41,11 +42,11 @@ class PriceHistory():
         self,
         symbol: str,
         frequency_type: Union[str, Enum],
-        frequency: str,
+        frequency: int = None,
         period_type: Union[str, Enum] = 'day',
         period: int = None,
-        start_date: Union[datetime] = None,
-        end_date: Union[datetime] = None,
+        start_date: Union[datetime, int] = None,
+        end_date: Union[datetime, int] = None,
         extended_hours_needed: bool = True
     ) -> dict:
         """Gets historical candle data for a financial instrument.
@@ -63,7 +64,7 @@ class PriceHistory():
             The type of frequency with  which a new candle
             is formed.
 
-        frequency: str
+        frequency: int
             The number of the frequency type
             to be included in each candle.
 
@@ -74,10 +75,10 @@ class PriceHistory():
         period: int (optional, Default=None)
             The number of periods to show.
 
-        start_date: Union[str, datetime] (optional, Default=None)
+        start_date: Union[int, datetime] (optional, Default=None)
             Start date as milliseconds since epoch.
 
-        end_date: Union[str, datetime] (optional, Default=None)
+        end_date: Union[int, datetime] (optional, Default=None)
             Start date as milliseconds since epoch.
 
         extended_hours: bool (optional, Default=True)
@@ -104,9 +105,15 @@ class PriceHistory():
         # Handle datetimes.
         if isinstance(start_date, datetime):
             start_date = int(start_date.timestamp() * 1000)
+        elif isinstance(start_date, date):
+            start_date = int(datetime.strptime(
+                start_date.isoformat(), "%Y-%m-%d").timestamp() * 1000)  # type: ignore
 
         if isinstance(end_date, datetime):
             end_date = int(end_date.timestamp() * 1000)
+        elif isinstance(end_date, date):
+            end_date = int(datetime.strptime(
+                end_date.isoformat(), "%Y-%m-%d").timestamp() * 1000)  # type: ignore
 
         # Handle Enums.
         if isinstance(frequency_type, Enum):
@@ -143,22 +150,22 @@ class PriceHistory():
                 raise KeyError(
                     "The frequency you provided is not a valid frequency."
                 )
+            else:
+                # Step 2: Validate the period type BASED ON the frequency type.
+                if period_type not in valid_chart_values[frequency_type]:
+                    raise KeyError(
+                        f"The period type you provided is not a valid for frequency: {frequency_type}"
+                    )
 
-            # Step 2: Validate the period type BASED ON the frequency type.
-            if period_type not in valid_chart_values[frequency_type]:
-                raise KeyError(
-                    f"The period type you provided is not a valid for frequency: {frequency_type}"
-                )
+                condition_1 = period not in valid_chart_values[frequency_type][period_type]
+                condition_2 = (start_date is None or end_date is None)
 
-            condition_1 = period not in valid_chart_values[frequency_type][period_type]
-            condition_2 = (start_date is None or end_date is None)
-
-            # Step 3: Finally validate the period, if a start date or end date was not provided.
-            # You shouldn't have a period to validate if the start date or end date was provided.
-            if condition_1 and condition_2:
-                raise KeyError(
-                    f"The period you provided is not a valid for period type: {period_type}"
-                )
+                # Step 3: Finally validate the period, if a start date or end date was not provided.
+                # You shouldn't have a period to validate if the start date or end date was provided.
+                if condition_1 and condition_2:
+                    raise KeyError(
+                        f"The period you provided is not a valid for period type: {period_type}"
+                    )
 
         params = {
             'period': period,

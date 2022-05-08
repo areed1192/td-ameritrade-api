@@ -2,6 +2,7 @@ from enum import Enum
 from typing import Union
 from datetime import datetime
 from td.session import TdAmeritradeSession
+from datetime import date
 
 
 class Accounts():
@@ -148,9 +149,13 @@ class Accounts():
 
         if isinstance(start_date, datetime):
             start_date = start_date.date().isoformat()
+        elif isinstance(start_date, date):
+            start_date = start_date.isoformat()
 
         if isinstance(end_date, datetime):
             end_date = end_date.date().isoformat()
+        elif isinstance(end_date, date):
+            end_date = end_date.isoformat()
 
         params = {
             'type': transaction_type,

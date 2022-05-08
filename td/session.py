@@ -1,12 +1,9 @@
 import json
-import logging
-import pathlib
-
 import requests
+from td.logging.create_logger import get_logger
 
 
-class TdAmeritradeSession():
-
+class TdAmeritradeSession:
     """Serves as the Session for TD Ameritrade API."""
 
     def __init__(self, td_client: object) -> None:
@@ -29,22 +26,11 @@ class TdAmeritradeSession():
 
         from td.client import TdAmeritradeClient
 
-        # We can also add custom formatting to our log messages.
-        log_format = '%(asctime)-15s|%(filename)s|%(message)s'
-
         self.client: TdAmeritradeClient = td_client
         self.resource_url = 'https://api.tdameritrade.com/'
         self.version = 'v1/'
 
-        if not pathlib.Path('logs').exists():
-            pathlib.Path('logs').mkdir()
-            pathlib.Path('logs/log_file_custom.log').touch()
-
-        logging.basicConfig(
-            filename="logs/log_file_custom.log",
-            level=logging.INFO,
-            format=log_format,
-        )
+        self.log = get_logger(__name__)
 
     def build_headers(self) -> dict:
         """Used to build the headers needed to make the request.
@@ -136,7 +122,9 @@ class TdAmeritradeSession():
         # Define the headers.
         headers = self.build_headers()
 
-        logging.info("Request URL: %s", url)
+        self.log.info(
+            "Request URL: %s", url
+        )
 
         # Define a new session.
         request_session = requests.Session()
@@ -163,7 +151,7 @@ class TdAmeritradeSession():
         # If it's okay and no details.
         if response.ok and len(response.content) > 0:
             return response.json()
-        elif len(response.content) > 0 and response.ok:
+        elif len(response.content) == 0 and response.ok:
             return {
                 'message': 'response successful',
                 'status_code': response.status_code
@@ -187,7 +175,7 @@ class TdAmeritradeSession():
             }
 
             # Log the error.
-            logging.error(
+            self.log.error(
                 msg=json.dumps(obj=error_dict, indent=4)
             )
 
