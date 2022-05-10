@@ -5,6 +5,7 @@ from unittest import TestCase
 from td.utils.enums import Markets
 from td.credentials import TdCredentials
 from td.client import TdAmeritradeClient
+from td.config import TdConfiguration
 from td.rest.market_hours import MarketHours
 
 
@@ -18,9 +19,12 @@ class TestMarketHourService(TestCase):
         # Initialize our `Credentials` object.
         self.td_credentials = TdCredentials.authentication_default()
 
+        self.config = TdConfiguration("config/config.ini")
+
         # Initialize the `TdAmeritradeClient`
         self.td_client = TdAmeritradeClient(
-            credentials=self.td_credentials
+            credentials=self.td_credentials,
+            config=self.config
         )
 
         self.service = self.td_client.market_hours()

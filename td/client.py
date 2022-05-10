@@ -1,3 +1,4 @@
+from td.config import TdConfiguration
 from td.session import TdAmeritradeSession
 from td.credentials import TdCredentials
 from td.rest.quotes import Quotes
@@ -23,7 +24,7 @@ class TdAmeritradeClient:
     that your session is authenticated.
     """
 
-    def __init__(self, credentials: TdCredentials) -> None:
+    def __init__(self, credentials: TdCredentials, config: TdConfiguration) -> None:
         """Initializes the `TdClient` object.
 
         ### Parameters
@@ -33,7 +34,7 @@ class TdAmeritradeClient:
         """
 
         self.td_credentials = credentials
-        self.td_session = TdAmeritradeSession(td_client=self)
+        self.td_session = TdAmeritradeSession(td_client=self, config=config)
 
     def __repr__(self):
         pass

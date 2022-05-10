@@ -1,18 +1,22 @@
 from pprint import pprint
-from td.config.get_config import config
 from td.credentials import TdCredentials
 from td.client import TdAmeritradeClient
 from td.utils.enums import OrderStatus
+from td.config import TdConfiguration
+
+# A config object
+config = TdConfiguration("config/config.ini")
 
 # Initialize our `Credentials` object.
 td_credentials = TdCredentials.authentication_default()
 
 # Initialize the `TdAmeritradeClient`
 td_client = TdAmeritradeClient(
-    credentials=td_credentials
+    credentials=td_credentials,
+    config=config
 )
 
-account_number = config.get('accounts', 'default')
+account_number = config.default
 
 # Initialize the `Orders` service.
 orders_service = td_client.orders()

@@ -1,17 +1,21 @@
 from pprint import pprint
 from td.credentials import TdCredentials
 from td.client import TdAmeritradeClient
+from td.config import TdConfiguration
 from td.utils.enums import PeriodType
 from td.utils.enums import FrequencyType
 from datetime import datetime
 from datetime import timedelta
+
+config = TdConfiguration("config/config.ini")
 
 # Initialize our `Credentials` object.
 td_credentials = TdCredentials.authentication_default()
 
 # Initialize the `TdAmeritradeClient`
 td_client = TdAmeritradeClient(
-    credentials=td_credentials
+    credentials=td_credentials,
+    config=config
 )
 
 # Initialize the `PriceHistory` service.

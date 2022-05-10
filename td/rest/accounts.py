@@ -1,8 +1,8 @@
 from enum import Enum
 from typing import Union
 from datetime import datetime
-from td.session import TdAmeritradeSession
 from datetime import date
+from td.session import TdAmeritradeSession
 
 
 class Accounts():
