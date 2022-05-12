@@ -44,7 +44,7 @@ setup(
 
     # here are the packages I want "build."
     packages=find_namespace_packages(
-        include=['td.*'],
+        include=['td'],
         exclude=['config*']
     ),
 

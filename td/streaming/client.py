@@ -64,7 +64,6 @@ class StreamingApiClient():
             "acl": self.user_principal_data['streamerInfo']['acl']
         }
 
-
         self.connection: ws_client.WebSocketClientProtocol = None
         self.data_requests = {
             "requests": []
@@ -186,13 +185,14 @@ class StreamingApiClient():
             print('Message: Connection established. Streaming will begin shortly.')
             print("-"*80)
             return True
-        elif self.connection.close:
+
+        if self.connection.close:
             print("="*80)
             print('Message: Connection was never opened and was closed.')
             print("-"*80)
             return False
-        else:
-            raise ConnectionError
+
+        raise ConnectionError
 
     async def _send_message(self, message: str) -> None:
         """Sends a message to webSocket server
