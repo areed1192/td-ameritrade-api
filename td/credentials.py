@@ -60,6 +60,7 @@ class TdCredentials():
             self._loaded_from_file = True
             self._file_path = credential_file
             self.from_credential_file(file_path=credential_file)
+            self.to_credential_file(file_path=credential_file)
 
         elif credential_dict:
             self.from_credential_dict(token_dict=credential_dict)
@@ -360,6 +361,7 @@ class TdCredentials():
         self.grab_authorization_code()
         token_dict = self.exchange_code_for_token(return_refresh_token=True)
         self.from_token_dict(token_dict=token_dict)
+
 
     def from_credential_file(self, file_path: str) -> None:
         """Loads the credentials for a JSON file that is formatted
