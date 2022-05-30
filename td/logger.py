@@ -31,11 +31,11 @@ class TdLogger():
         else:
             self._log_name = self._config.app_name
 
-        self._log_module_path = Path.joinpath(self._log_root_path, self._log_name)
-        self._log_path = Path.joinpath(self._log_module_path + self._log_name)
+        self._log_module_path = Path.joinpath(Path(self._log_root_path), self._log_name)
+        self._log_path = Path.joinpath(self._log_module_path, self._log_name)
 
-        if not Path.exists(self._log_root_path):
-            Path.mkdir(self._log_root_path)
+        if not Path.exists(Path(self._log_root_path)):
+            Path.mkdir(Path(self._log_root_path))
 
         if not Path.exists(self._log_module_path):
             Path.mkdir(self._log_module_path)
@@ -47,7 +47,7 @@ class TdLogger():
         self._log = logging.getLogger(self._log_name)
         self._log.setLevel(logging.INFO)
 
-        self._log_handler.setLevel(logging.info)
+        self._log_handler.setLevel(logging.INFO)
 
         self._log_handler.suffix = '%Y-%m-%d_%H-%M-%S'
 
@@ -67,7 +67,7 @@ class TdLogger():
         ----
         ### Usage
             >>> log = TdLogger(config)
-            >>> log.info("There was an error!")
+            >>> log.info("There was a noteworthy event!")
         """
 
         self._log.info(msg, *args)

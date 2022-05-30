@@ -55,9 +55,17 @@ class TdCredentials:
         self._token_type = ''
         self._expires_in = 0
         self._refresh_token_expires_in = 0
-        self._app_name = app_name
-        self._client_id = client_id
-        self._redirect_uri = redirect_uri
+
+        if user_config:
+            self._user_config = user_config
+            self._app_name = self._user_config.get('app_info', 'app_name')
+            self._client_id = self._user_config.get('app_info', 'client_id')
+            self._redirect_uri = self._user_config.get('app_info', 'redirect_uri')
+        else:
+            self._app_name = app_name
+            self._client_id = client_id
+            self._redirect_uri = redirect_uri
+
         self.__login_credentials_dict = login_credentials_dict
 
         self.resource_url = 'https://api.tdameritrade.com/'
@@ -65,10 +73,9 @@ class TdCredentials:
         self.token_endpoint = 'oauth2/token'
         self.authorization_url = 'https://auth.tdameritrade.com/auth?'
         self.authorization_code = ""
-        self._user_config = user_config
         self._file_path = pathlib.Path.joinpath(
                                         pathlib.Path(self._user_config.config_directory_path),
-                                        self.app_name + "/td_credentials.json"
+                                        self._app_name + "/td_credentials.json"
                                         )
         self._file_path_base = pathlib.Path.joinpath(
                                         pathlib.Path(self._user_config.config_directory_path),
