@@ -5,7 +5,7 @@ import pathlib
 import requests
 
 
-class TdAmeritradeSession():
+class TdAmeritradeSession:
 
     """Serves as the Session for TD Ameritrade API."""
 
@@ -163,32 +163,21 @@ class TdAmeritradeSession():
         # If it's okay and no details.
         if response.ok and len(response.content) > 0:
             return response.json()
-        elif len(response.content) > 0 and response.ok:
-            return {
-                'message': 'response successful',
-                'status_code': response.status_code
-            }
-        elif not response.ok:
+        response_data = '' if len(response.content) == 0 else response.json()
+        response.request.headers['Authorization'] = 'Bearer XXXXXXX'
 
-            if len(response.content) == 0:
-                response_data = ''
-            else:
-                response_data = response.json()
+        # Define the error dict.
+        error_dict = {
+            'error_code': response.status_code,
+            'response_url': response.url,
+            'response_body': response_data,
+            'response_request': dict(response.request.headers),
+            'response_method': response.request.method,
+        }
 
-            response.request.headers['Authorization'] = 'Bearer XXXXXXX'
+        # Log the error.
+        logging.error(
+            msg=json.dumps(obj=error_dict, indent=4)
+        )
 
-            # Define the error dict.
-            error_dict = {
-                'error_code': response.status_code,
-                'response_url': response.url,
-                'response_body': response_data,
-                'response_request': dict(response.request.headers),
-                'response_method': response.request.method,
-            }
-
-            # Log the error.
-            logging.error(
-                msg=json.dumps(obj=error_dict, indent=4)
-            )
-
-            raise requests.HTTPError()
+        raise requests.HTTPError()

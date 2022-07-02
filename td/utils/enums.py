@@ -7,8 +7,8 @@ class Direction(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import Directions
-        >>> Directions.Up.value
+        >>> from td.utils.enums import Direction
+        >>> Direction.Up.value
     """
 
     Up = 'up'
@@ -21,7 +21,7 @@ class Change(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import Change
+        >>> from td.utils.enums import Change
         >>> Change.Percent.value
     """
 
@@ -36,7 +36,7 @@ class TransactionTypes(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import TransactionTypes
+        >>> from td.utils.enums import TransactionTypes
         >>> TransactionTypes.Trade.value
     """
 
@@ -58,8 +58,8 @@ class Markets(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import Markets
-        >>> Markets.Bond.Value
+        >>> from td.utils.enums import Markets
+        >>> Markets.Bond.value
     """
 
     Bond = 'BOND'
@@ -75,8 +75,8 @@ class Projections(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import Projections
-        >>> Projections.Bond.Value
+        >>> from td.utils.enums import Projections
+        >>> Projections.SymbolSearch.value
     """
 
     SymbolSearch = 'symbol-search'
@@ -92,8 +92,8 @@ class DefaultOrderLegInstruction(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import DefaultOrderLegInstruction
-        >>> DefaultOrderLegInstruction.Sell.Value
+        >>> from td.utils.enums import DefaultOrderLegInstruction
+        >>> DefaultOrderLegInstruction.Sell.value
     """
 
     Buy = 'BUY'
@@ -109,8 +109,8 @@ class DefaultOrderType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import DefaultOrderType
-        >>> DefaultOrderType.Market.Value
+        >>> from td.utils.enums import DefaultOrderType
+        >>> DefaultOrderType.Market.value
     """
 
     Market = 'MARKET'
@@ -128,8 +128,8 @@ class DefaultOrderPriceLinkType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import DefaultOrderPriceLinkType
-        >>> DefaultOrderPriceLinkType.Value.Value
+        >>> from td.utils.enums import DefaultOrderPriceLinkType
+        >>> DefaultOrderPriceLinkType.Value.value
     """
 
     Value = 'VALUE'
@@ -143,8 +143,8 @@ class DefaultOrderDuration(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import DefaultOrderDuration
-        >>> DefaultOrderDuration.Day.Value
+        >>> from td.utils.enums import DefaultOrderDuration
+        >>> DefaultOrderDuration.Day.value
     """
 
     Day = 'DAY'
@@ -159,8 +159,8 @@ class DefaultOrderMarketSession(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import DefaultOrderMarketSession
-        >>> DefaultOrderMarketSession.Day.Value
+        >>> from td.utils.enums import DefaultOrderMarketSession
+        >>> DefaultOrderMarketSession.Am.value
     """
 
     Am = 'AM'
@@ -176,8 +176,8 @@ class TaxLotMethod(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import MutualFundTaxLotMethod
-        >>> MutualFundTaxLotMethod.Day.Value
+        >>> from td.utils.enums import TaxLotMethod
+        >>> TaxLotMethod.Fifo.value
     """
 
     Fifo = 'FIFO'
@@ -195,8 +195,8 @@ class DefaultAdvancedToolLaunch(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import DefaultAdvancedToolLaunch
-        >>> DefaultAdvancedToolLaunch.Tos.Value
+        >>> from td.utils.enums import DefaultAdvancedToolLaunch
+        >>> DefaultAdvancedToolLaunch.Tos.value
     """
 
     Ta = 'Ta'
@@ -213,8 +213,8 @@ class AuthTokenTimeout(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import AuthTokenTimeout
-        >>> AuthTokenTimeout.FiftyFiveMinutes.Value
+        >>> from td.utils.enums import AuthTokenTimeout
+        >>> AuthTokenTimeout.FiftyFiveMinutes.value
     """
 
     FiftyFiveMinutes = 'FIFTY_FIVE_MINUTES'
@@ -229,8 +229,8 @@ class FrequencyType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import PriceFrequency
-        >>> PriceFrequency.Daily.Value
+        >>> from td.utils.enums import FrequencyType
+        >>> FrequencyType.Daily.value
     """
 
     Minute = 'minute'
@@ -245,8 +245,8 @@ class PeriodType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import PriceFrequency
-        >>> PeriodType.Daily.Value
+        >>> from td.utils.enums import PeriodType
+        >>> PeriodType.Day.value
     """
 
     Day = 'day'
@@ -261,8 +261,8 @@ class StrategyType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import StrategyType
-        >>> StrategyType.Analytical.Value
+        >>> from td.utils.enums import StrategyType
+        >>> StrategyType.Analytical.value
     """
 
     Analytical = 'ANALYTICAL'
@@ -279,14 +279,14 @@ class StrategyType(Enum):
     Vertical = 'VERTICAL'
 
 
-class OptionaRange(Enum):
+class OptionRange(Enum):
     """Represents the different option range types
     when querying the `OptionChain` service.
 
     ### Usage
     ----
-        >>> from td.enums import OptionaRange
-        >>> OptionaRange.InTheMoney.Value
+        >>> from td.utils.enums import OptionRange
+        >>> OptionRange.InTheMoney.value
     """
 
     All = 'ALL'
@@ -304,15 +304,15 @@ class ExpirationMonth(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ExpirationMonth
-        >>> ExpirationMonth.Janurary.Value
+        >>> from td.utils.enums import ExpirationMonth
+        >>> ExpirationMonth.January.value
     """
 
     All = 'ALL'
-    Janurary = 'JAN'
-    Feburary = 'FEB'
+    January = 'JAN'
+    February = 'FEB'
     March = 'MAR'
-    April = 'April'
+    April = 'APR'
     May = 'MAY'
     June = 'JUN'
     July = 'JUL'
@@ -329,8 +329,8 @@ class ContractType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ContractType
-        >>> ContractType.Call.Value
+        >>> from td.utils.enums import ContractType
+        >>> ContractType.Call.value
     """
 
     All = 'ALL'
@@ -344,8 +344,8 @@ class OptionType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import OptionType
-        >>> OptionType.Call.Value
+        >>> from td.utils.enums import OptionType
+        >>> OptionType.All.value
     """
 
     All = 'ALL'
@@ -359,8 +359,8 @@ class OrderStatus(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import OrderStatus
-        >>> OrderStatus.Working.Value
+        >>> from td.utils.enums import OrderStatus
+        >>> OrderStatus.Working.value
     """
 
     AwaitingParentOrder = 'AWAITING_PARENT_ORDER'
@@ -369,7 +369,7 @@ class OrderStatus(Enum):
     Accepted = 'ACCEPTED'
     AwaitingUrOut = 'AWAITING_UR_OUT'
     PendingActivation = 'PENDING_ACTIVATION'
-    Queded = 'QUEUED'
+    Queued = 'QUEUED'
     Working = 'WORKING'
     Rejected = 'REJECTED'
     PendingCancel = 'PENDING_CANCEL'
@@ -386,8 +386,8 @@ class OrderStrategyType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import OrderStrategyType
-        >>> OrderStrategyType.Single.Value
+        >>> from td.utils.enums import OrderStrategyType
+        >>> OrderStrategyType.Single.value
     """
 
     Single = 'SINGLE'
@@ -401,8 +401,8 @@ class QuantityType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import QuantityType
-        >>> QuantityType.Dollars.Value
+        >>> from td.utils.enums import QuantityType
+        >>> QuantityType.Dollars.value
     """
 
     AllShares = 'ALL_SHARES'
@@ -416,8 +416,8 @@ class AssetType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import AssetType
-        >>> AssetType.Equity.Value
+        >>> from td.utils.enums import AssetType
+        >>> AssetType.Equity.value
     """
 
     Equity = 'EQUITY'
@@ -435,8 +435,8 @@ class ComplexOrderStrategyType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ComplexOrderStrategyType
-        >>> ComplexOrderStrategyType.IronCondor.Value
+        >>> from td.utils.enums import ComplexOrderStrategyType
+        >>> ComplexOrderStrategyType.IronCondor.value
     """
 
     NoneProvided = 'NONE'
@@ -467,8 +467,8 @@ class OrderInstructions(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import OrderInstructions
-        >>> OrderInstructions.SellShort.Value
+        >>> from td.utils.enums import OrderInstructions
+        >>> OrderInstructions.SellShort.value
     """
 
     Buy = 'BUY'
@@ -488,8 +488,8 @@ class RequestedDestination(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import RequestedDestination
-        >>> RequestedDestination.Cboe.Value
+        >>> from td.utils.enums import RequestedDestination
+        >>> RequestedDestination.Cboe.value
     """
 
     Inet = 'INET'
@@ -512,8 +512,8 @@ class StopPriceLinkBasis(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import StopPriceLinkBasis
-        >>> StopPriceLinkBasis.Trigger.Value
+        >>> from td.utils.enums import StopPriceLinkBasis
+        >>> StopPriceLinkBasis.Trigger.value
     """
 
     Manual = 'MANUAL'
@@ -533,8 +533,8 @@ class StopPriceLinkType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import StopPriceLinkType
-        >>> StopPriceLinkType.Trigger.Value
+        >>> from td.utils.enums import StopPriceLinkType
+        >>> StopPriceLinkType.Tick.value
     """
 
     Value = 'VALUE'
@@ -548,8 +548,8 @@ class StopType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import StopType
-        >>> StopType.Standard.Value
+        >>> from td.utils.enums import StopType
+        >>> StopType.Standard.value
     """
 
     Standard = 'STANDARD'
@@ -565,8 +565,8 @@ class PriceLinkBasis(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import PriceLinkBasis
-        >>> PriceLinkBasis.Manual.Value
+        >>> from td.utils.enums import PriceLinkBasis
+        >>> PriceLinkBasis.Manual.value
     """
 
     Manual = 'MANUAL'
@@ -586,8 +586,8 @@ class PriceLinkType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import PriceLinkType
-        >>> PriceLinkType.Trigger.Value
+        >>> from td.utils.enums import PriceLinkType
+        >>> PriceLinkType.Value.value
     """
 
     Value = 'VALUE'
@@ -601,8 +601,8 @@ class OrderType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import OrderType
-        >>> OrderType.Market.Value
+        >>> from td.utils.enums import OrderType
+        >>> OrderType.Market.value
     """
 
     Market = 'MARKET'
@@ -624,8 +624,8 @@ class PositionEffect(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import PositionEffect
-        >>> PositionEffect.Opening.Value
+        >>> from td.utils.enums import PositionEffect
+        >>> PositionEffect.Opening.value
     """
 
     Opening = 'OPENING'
@@ -639,8 +639,8 @@ class OrderTaxLotMethod(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import OrderTaxLotMethod
-        >>> OrderTaxLotMethod.Fifo.Value
+        >>> from td.utils.enums import OrderTaxLotMethod
+        >>> OrderTaxLotMethod.Fifo.value
     """
 
     Fifo = 'FIFO'
@@ -657,13 +657,17 @@ class SpecialInstructions(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import SpecialInstructions
-        >>> SpecialInstructions.AllOrNone.Value
+        >>> from td.utils.enums import SpecialInstructions
+        >>> SpecialInstructions.AllOrNone.value
     """
 
     AllOrNone = 'ALL_OR_NONE'
     DoNotReduce = 'DO_NOT_REDUCE'
     AllOrNoneDoNotReduce = 'ALL_OR_NONE_DO_NOT_REDUCE'
+
+
+
+
 
 
 class LevelOneQuotes(Enum):
@@ -672,11 +676,11 @@ class LevelOneQuotes(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import LevelOneQuotes
-        >>> LevelOneQuotes.All.Value
+        >>> from td.utils.enums import LevelOneQuotes
+        >>> LevelOneQuotes.All.value
     """
 
-    All = [str(item) for item in range(0, 53)]
+    All = list(range(53))
     Symbol = 0
     BidPrice = 1
     AskPrice = 2
@@ -738,11 +742,11 @@ class LevelOneOptions(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import LevelOneOptions
-        >>> LevelOneOptions.All.Value
+        >>> from td.utils.enums import LevelOneOptions
+        >>> LevelOneOptions.All.value
     """
 
-    All = [str(item) for item in range(0, 42)]
+    All = [range(0, 42)]
     Symbol = 0
     Description = 1
     BidPrice = 2
@@ -788,16 +792,16 @@ class LevelOneOptions(Enum):
 
 
 class LevelOneFutures(Enum):
-    """Represents the different fields for the Level One
-    Futures Feed.
+    """
+    Represents the different fields for the Level One Futures Feed.
 
     ### Usage
     ----
-        >>> from td.enums import LevelOneFutures
-        >>> LevelOneFutures.All.Value
+        >>> from td.utils.enums import LevelOneFutures
+        >>> LevelOneFutures.All.value
     """
 
-    All = [str(item) for item in range(0, 36)]
+    All = [range(36)]
     Symbol = 0
     BidPrice = 1
     AskPrice = 2
@@ -842,11 +846,11 @@ class LevelOneForex(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import LevelOneForex
-        >>> LevelOneForex.All.Value
+        >>> from td.utils.enums import LevelOneForex
+        >>> LevelOneForex.All.value
     """
 
-    All = [str(item) for item in range(0, 30)]
+    All = [range(30)]
     Symbol = 0
     BidPrice = 1
     AskPrice = 2
@@ -885,11 +889,11 @@ class NewsHeadlines(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import NewsHeadlines
-        >>> NewsHeadlines.All.Value
+        >>> from td.utils.enums import NewsHeadlines
+        >>> NewsHeadlines.All.value
     """
 
-    All = [str(item) for item in range(0, 11)]
+    All = [range(11)]
     Symbol = 0
     ErrorCode = 1
     StoryDatetime = 2
@@ -904,16 +908,16 @@ class NewsHeadlines(Enum):
 
 
 class LevelOneFuturesOptions(Enum):
-    """Represents the different fields for the Level
-    One Futures Options feed.
+    """
+    Represents the different fields for the Level One Futures Options feed.
 
     ### Usage
     ----
-        >>> from td.enums import LevelOneFuturesOptions
-        >>> LevelOneFuturesOptions.All.Value
+        >>> from td.utils.enums import LevelOneFuturesOptions
+        >>> LevelOneFuturesOptions.All.value
     """
 
-    All = [str(item) for item in range(0, 36)]
+    All = [range(36)]
     Symbol = 0
     BidPrice = 1
     AskPrice = 2
@@ -935,7 +939,7 @@ class LevelOneFuturesOptions(Enum):
     OpenPrice = 18
     NetChange = 19
     FuturePercentChange = 20
-    ExhangeName = 21
+    ExchangeName = 21
     SecurityStatus = 22
     OpenInterest = 23
     Mark = 24
@@ -944,7 +948,7 @@ class LevelOneFuturesOptions(Enum):
     Product = 27
     FuturePriceFormat = 28
     FutureTradingHours = 29
-    FutureIsTradable = 30
+    FutureIsTradeable = 30
     FutureMultiplier = 31
     FutureIsActive = 32
     FutureSettlementPrice = 33
@@ -958,8 +962,8 @@ class ChartServices(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ChartServices
-        >>> ChartServices.ChartEquity.Value
+        >>> from td.utils.enums import ChartServices
+        >>> ChartServices.ChartEquity.value
     """
 
     ChartEquity = "CHART_EQUITY"
@@ -973,11 +977,11 @@ class ChartEquity(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ChartEquity
-        >>> ChartEquity.All.Value
+        >>> from td.utils.enums import ChartEquity
+        >>> ChartEquity.All.value
     """
 
-    All = [str(item) for item in range(0, 9)]
+    All = [range(9)]
     Symbol = 0
     OpenPrice = 1
     HighPrice = 2
@@ -995,11 +999,11 @@ class ChartFutures(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ChartFutures
-        >>> ChartFutures.All.Value
+        >>> from td.utils.enums import ChartFutures
+        >>> ChartFutures.All.value
     """
 
-    All = [str(item) for item in range(0, 7)]
+    All = [range(7)]
     Symbol = 0
     ChartTime = 1
     OpenPrice = 2
@@ -1015,8 +1019,8 @@ class TimesaleServices(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import TimesaleServices
-        >>> TimesaleServices.TimesaleEquity.Value
+        >>> from td.utils.enums import TimesaleServices
+        >>> TimesaleServices.TimesaleEquity.value
     """
 
     TimesaleEquity = 'TIMESALE_EQUITY'
@@ -1031,11 +1035,11 @@ class Timesale(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import Timesale
-        >>> Timesale.All.Value
+        >>> from td.utils.enums import Timesale
+        >>> Timesale.All.value
     """
 
-    All = [str(item) for item in range(0, 5)]
+    All = [range(5)]
     Symbol = 0
     TradeTime = 1
     LastPrice = 2
@@ -1049,8 +1053,8 @@ class ActivesServices(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ActivesServices
-        >>> ActivesServices.ActivesNasdaq.Value
+        >>> from td.utils.enums import ActivesServices
+        >>> ActivesServices.ActivesNasdaq.value
     """
 
     ActivesNasdaq = 'ACTIVES_NASDAQ'
@@ -1065,8 +1069,8 @@ class ActivesVenues(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ActivesVenues
-        >>> ActivesVenues.Nasdaq.Value
+        >>> from td.utils.enums import ActivesVenues
+        >>> ActivesVenues.NasdaqExchange.value
     """
 
     NasdaqExchange = 'NASDAQ'
@@ -1086,8 +1090,8 @@ class ActivesDurations(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ActivesDurations
-        >>> ActivesDurations.All.Value
+        >>> from td.utils.enums import ActivesDurations
+        >>> ActivesDurations.All.value
     """
 
     All = 'ALL'
@@ -1095,7 +1099,7 @@ class ActivesDurations(Enum):
     ThreeHundredSeconds = '300'
     SixHundredSeconds = '600'
     EighteenHundredSeconds = '1800'
-    ThritySixHundredSeconds = '3600'
+    ThirtySixHundredSeconds = '3600'
 
 
 class ChartFuturesFrequencies(Enum):
@@ -1104,8 +1108,8 @@ class ChartFuturesFrequencies(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ChartFuturesFrequencies
-        >>> ChartFuturesFrequencies.OneMinute.Value
+        >>> from td.utils.enums import ChartFuturesFrequencies
+        >>> ChartFuturesFrequencies.OneMinute.value
     """
 
     OneMinute = 'm1'
@@ -1124,8 +1128,8 @@ class ChartFuturesPeriods(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ChartFuturesPeriods
-        >>> ChartFuturesPeriods.OneDay.Value
+        >>> from td.utils.enums import ChartFuturesPeriods
+        >>> ChartFuturesPeriods.OneDay.value
     """
 
     OneDay = 'd1'
@@ -1141,11 +1145,11 @@ class LevelTwoQuotes(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import LevelTwoQuotes
-        >>> LevelTwoQuotes.All.Value
+        >>> from td.utils.enums import LevelTwoQuotes
+        >>> LevelTwoQuotes.All.value
     """
 
-    All = [str(item) for item in range(0, 3)]
+    All = [range(3)]
     Key = 0
     Time = 1
     Data = 2
@@ -1156,11 +1160,11 @@ class LevelTwoOptions(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import LevelTwoOptions
-        >>> LevelTwoOptions.All.Value
+        >>> from td.utils.enums import LevelTwoOptions
+        >>> LevelTwoOptions.All.value
     """
 
-    All = [str(item) for item in range(0, 3)]
+    All = [range(3)]
     Key = 0
     Time = 1
     Data = 2

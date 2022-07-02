@@ -13,7 +13,7 @@ from td.session import TdAmeritradeSession
 from td.streaming.services import StreamingServices
 
 
-class StreamingApiClient():
+class StreamingApiClient:
 
     """
     ## Overview
@@ -275,7 +275,7 @@ class StreamingApiClient():
                 await self.connection.send('ping')
                 await asyncio.sleep(5)
             except ws_exceptions.ConnectionClosed:
-                self.close_stream()
+                await self.close_stream()
                 break
 
     def services(self) -> StreamingServices:
@@ -340,7 +340,7 @@ class StreamingApiClient():
             await asyncio.sleep(3)
 
     async def build_pipeline(self) -> ws_client.WebSocketClientProtocol:
-        """Builds a data pipeine for processing data.
+        """Builds a data pipeline for processing data.
 
         ### Overview
         ----
@@ -364,7 +364,7 @@ class StreamingApiClient():
         return self.connection
 
     async def start_pipeline(self) -> dict:
-        """Recieves the data as it streams in.
+        """Receives the data as it streams in.
 
         ### Returns
         ----
@@ -386,7 +386,7 @@ class StreamingApiClient():
         ### Returns
         ----
         dict:
-            A message from the websocket specifiying whether
+            A message from the websocket specifying whether
             the unsubscribe command was successful.
         """
 

@@ -60,6 +60,6 @@ setup(
         'Programming Language :: Python :: 3'
     ],
 
-    # you will need python 3.8 or greater to use this libary.
-    python_requires='>=3.8'
+    # you will need python 3.8 or greater to use this library.
+    python_requires='>=3.9'
 )

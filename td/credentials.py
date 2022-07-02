@@ -17,9 +17,9 @@ class TdCredentials():
     ### Overview
     ----
     TD Ameritrade uses an oAuth protocol
-    to authenticate it's users. The `TdCredential`
+    to authenticate its users. The `TdCredential`
     object helps the user manage the credentials to ensure
-    the are properly authenticated.
+    they are properly authenticated.
     """
 
     def __init__(
@@ -136,7 +136,7 @@ class TdCredentials():
         return self._refresh_token
 
     @property
-    def refresh_token_expiration_time(self) -> datetime:
+    def refresh_token_expiration_time(self) -> int: # datetime:
         """Returns when the Refresh Token will expire.
 
         ### Returns
@@ -170,9 +170,9 @@ class TdCredentials():
             >>> td_credential.is_refresh_token_expired
         """
 
-        exp_time = self.refresh_token_expiration_time.timestamp() - 20
+        exp_time = self.refresh_token_expiration_time - 20 # .timestamp() - 20
         now = datetime.now().timestamp()
-        return bool(exp_time < now)
+        return exp_time < now
 
     def from_token_dict(self, token_dict: dict) -> None:
         """Converts a token dicitonary to a `TdCredential`
@@ -263,7 +263,7 @@ class TdCredentials():
             >>> td_credential.to_dict()
         """
 
-        token_dict = {
+        return {
             'access_token': self._access_token,
             'refresh_token': self._refresh_token,
             'scope': self._scope,
@@ -273,8 +273,6 @@ class TdCredentials():
             'refresh_token_expiration_time': self.refresh_token_expiration_time.isoformat(),
             'access_token_expiration_time': self.access_token_expiration_time.isoformat(),
         }
-
-        return token_dict
 
     def _calculate_refresh_token_expiration(self, expiration_secs: int) -> None:
         """Calculates the number of seconds until the refresh token
@@ -342,7 +340,7 @@ class TdCredentials():
 
         exp_time = self.access_token_expiration_time.timestamp() - 20
         now = datetime.now().timestamp()
-        return bool(exp_time < now)
+        return exp_time < now
 
     def from_workflow(self) -> None:
         """Grabs an Access toke and refresh token using
@@ -361,7 +359,6 @@ class TdCredentials():
         self.grab_authorization_code()
         token_dict = self.exchange_code_for_token(return_refresh_token=True)
         self.from_token_dict(token_dict=token_dict)
-
 
     def from_credential_file(self, file_path: str) -> None:
         """Loads the credentials for a JSON file that is formatted
@@ -453,18 +450,12 @@ class TdCredentials():
     def grab_authorization_code(self) -> None:
         """Generates the URL to grab the authorization code."""
 
-        data = {
+        # build the full URL for the authentication endpoint.
+        url = self.authorization_url + urllib.parse.urlencode({
             "response_type": "code",
             "redirect_uri": self.redirect_uri,
-            "client_id": self.client_id + "@AMER.OAUTHAP"
-        }
-
-        # url encode the data.
-        params = urllib.parse.urlencode(data)
-
-        # build the full URL for the authentication endpoint.
-        url = self.authorization_url + params
-
+            "client_id": f"{self.client_id}@AMER.OAUTHAP"
+        })
         webbrowser.open(url=url)
 
         code_url = input("Please Paste the Authorization Code Here: ")
@@ -499,7 +490,7 @@ class TdCredentials():
         # Define the parameters of our access token post.
         data = {
             'grant_type': 'authorization_code',
-            'client_id': self.client_id + '@AMER.OAUTHAP',
+            'client_id': f'{self.client_id }@AMER.OAUTHAP',
             'code': self.authorization_code,
             'redirect_uri': self.redirect_uri
         }

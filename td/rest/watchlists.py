@@ -1,7 +1,7 @@
 from td.session import TdAmeritradeSession
 
 
-class Watchlists():
+class Watchlists:
 
     """
     ## Overview
@@ -36,12 +36,10 @@ class Watchlists():
             >>> watchlists_service.get_all_accounts_watchlists()
         """
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint='accounts/watchlists'
         )
-
-        return content
 
     def get_accounts_watchlist(self, account_id: str) -> dict:
         """Gets all the watchlists of an account.
@@ -63,12 +61,10 @@ class Watchlists():
             )
         """
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint=f'accounts/{account_id}/watchlists'
         )
-
-        return content
 
     def get_watchlist(self, account_id: str, watchlist_id: str) -> dict:
         """Gets a specific watchlist for a specific account.
@@ -94,12 +90,10 @@ class Watchlists():
             )
         """
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint=f'accounts/{account_id}/watchlists/{watchlist_id}'
         )
-
-        return content
 
     def create_watchlist(self, account_id: str, name: str, watchlist_items: dict) -> dict:
         """Creates a new watchlist.
@@ -145,13 +139,11 @@ class Watchlists():
             "watchlistItems": watchlist_items
         }
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='post',
             endpoint=f'accounts/{account_id}/watchlists',
             json_payload=payload
         )
-
-        return content
 
     def update_watchlist(
         self,
@@ -215,13 +207,11 @@ class Watchlists():
             "watchlistItems": watchlist_items
         }
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='patch',
             endpoint=f'accounts/{account_id}/watchlists/{watchlist_id}',
             json_payload=payload
         )
-
-        return content
 
     def replace_watchlist(
         self,
@@ -285,13 +275,11 @@ class Watchlists():
             "watchlistItems": watchlist_items
         }
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='put',
             endpoint=f'accounts/{account_id}/watchlists/{watchlist_id}',
             json_payload=payload
         )
-
-        return content
 
     def delete_watchlist(self, account_id: str, watchlist_id: str) -> dict:
         """Deletes a watchlist for a specific account.
@@ -317,9 +305,7 @@ class Watchlists():
             )
         """
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='delete',
             endpoint=f'accounts/{account_id}/watchlists/{watchlist_id}'
         )
-
-        return content

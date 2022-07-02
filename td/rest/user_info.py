@@ -4,7 +4,7 @@ from td.session import TdAmeritradeSession
 from td.utils.user_preferences import UserPreferences
 
 
-class UserInfo():
+class UserInfo:
 
     """
     ## Overview
@@ -51,12 +51,10 @@ class UserInfo():
             )
         """
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint=f'accounts/{account_id}/preferences',
         )
-
-        return content
 
     def get_streamer_subscription_keys(self, account_ids: List[str]) -> dict:
         """SubscriptionKey for provided accounts or default accounts.
@@ -82,16 +80,14 @@ class UserInfo():
             'accountIds': ','.join(account_ids)
         }
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint='userprincipals/streamersubscriptionkeys',
             params=params
         )
 
-        return content
-
     def get_user_principals(self) -> dict:
-        """Get's User principals details.
+        """Gets User principals details.
 
         ### Documentation
         ----
@@ -107,13 +103,11 @@ class UserInfo():
             'fields': 'streamerSubscriptionKeys,streamerConnectionInfo,preferences,surrogateIds'
         }
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint='userprincipals',
             params=params
         )
-
-        return content
 
     def update_user_preferences(
         self,
@@ -145,10 +139,8 @@ class UserInfo():
             )
         """
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='put',
             endpoint=f'accounts/{account_id}/preferences',
             json_payload=preferences
         )
-
-        return content

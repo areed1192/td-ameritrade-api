@@ -6,13 +6,13 @@ from datetime import datetime
 from datetime import date
 from td.utils.enums import ContractType
 from td.utils.enums import StrategyType
-from td.utils.enums import OptionaRange
+from td.utils.enums import OptionRange
 from td.utils.enums import OptionType
 from td.utils.enums import ExpirationMonth
 
 
 @dataclass
-class OptionChainQuery():
+class OptionChainQuery:
 
     """
     ### Overview
@@ -100,7 +100,7 @@ class OptionChainQuery():
     strategy: Union[str, Enum] = StrategyType.Single
     interval: int = None
     strike: float = None
-    option_range: Union[str, Enum] = OptionaRange.All
+    option_range: Union[str, Enum] = OptionRange.All
     from_date: Union[str, datetime, date] = None
     to_date: Union[str, datetime, date] = None
     volatility: int = None
@@ -146,7 +146,7 @@ class OptionChainQuery():
             if isinstance(value, Enum):
                 value = value.value
 
-            if isinstance(value, datetime) or isinstance(value, date):
+            if isinstance(value, (datetime, date)):
                 value = value.isoformat()
 
             # Generate the API Key.
@@ -172,9 +172,7 @@ class OptionChainQuery():
     def _validate_strike_price(self) -> None:
         """Validates the Strike Price of the option."""
 
-        strike_price = getattr(self, 'strike')
-
-        if strike_price:
+        if strike_price := getattr(self, 'strike'):
             strike_price = round(strike_price, 2)
             setattr(self, 'strike', strike_price)
 
@@ -185,9 +183,7 @@ class OptionChainQuery():
 
         if isinstance(strategy, Enum):
             strategy = strategy.value
-        elif strategy is not None:
-            pass
-        else:
+        elif strategy is None:
             return
 
         if strategy == 'SINGLE':

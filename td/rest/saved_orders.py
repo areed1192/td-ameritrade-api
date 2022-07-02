@@ -1,8 +1,9 @@
+from td.rest.orders import _ensure_order
 from td.session import TdAmeritradeSession
 from td.utils.orders import Order
 
 
-class SavedOrders():
+class SavedOrders:
 
     """
     ## Overview
@@ -50,12 +51,10 @@ class SavedOrders():
         # Define the endpoint.
         endpoint = f'accounts/{account_id}/savedorders'
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint=endpoint
         )
-
-        return content
 
     def get_saved_order(
         self,
@@ -89,7 +88,7 @@ class SavedOrders():
         # Define the endpoint.
         endpoint = f'accounts/{account_id}/savedorders/{saved_order_id}'
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint=endpoint
         )
@@ -134,23 +133,15 @@ class SavedOrders():
                 order_dict={}
             )
         """
-
-        if saved_order_object:
-            order = saved_order_object.save_order_to_json()
-
-        if saved_order_dict:
-            order = saved_order_dict
-
+        order = _ensure_order(saved_order_object, saved_order_dict)
         # Define the endpoint.
         endpoint = f'accounts/{account_id}/savedorders'
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='post',
             endpoint=endpoint,
             json_payload=order
         )
-
-        return content
 
     def replace_saved_order(
         self,
@@ -201,22 +192,15 @@ class SavedOrders():
             )
         """
 
-        if saved_order_object:
-            order = saved_order_object.save_order_to_json()
-
-        if saved_order_dict:
-            order = saved_order_dict
-
+        order = _ensure_order(saved_order_object, saved_order_dict)
         # Define the endpoint.
         endpoint = f'accounts/{account_id}/savedorders/{saved_order_id}'
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='put',
             endpoint=endpoint,
             json_payload=order
         )
-
-        return content
 
     def cancel_saved_order(
         self,
@@ -251,9 +235,7 @@ class SavedOrders():
         # Define the endpoint.
         endpoint = f'accounts/{account_id}/savedorders/{saved_order_id}'
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='delete',
             endpoint=endpoint
         )
-
-        return content

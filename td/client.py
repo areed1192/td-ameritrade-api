@@ -29,7 +29,7 @@ class TdAmeritradeClient():
         ### Parameters
         credentials : TdCredentials
             Your TD Credentials stored in your credentials object
-            so that you can authenitcate with TD.
+            so that you can authenticate with TD.
         """
 
         self.td_credentials = credentials
