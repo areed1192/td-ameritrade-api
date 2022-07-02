@@ -736,6 +736,8 @@ class LevelOneQuotes(Enum):
     RegularMarketTradeTimeInLong = 52
 
 
+
+
 class LevelOneOptions(Enum):
     """Represents the different fields for the Level One
     Options Feed.
@@ -746,7 +748,7 @@ class LevelOneOptions(Enum):
         >>> LevelOneOptions.All.value
     """
 
-    All = [range(0, 42)]
+    All = [range(42)]
     Symbol = 0
     Description = 1
     BidPrice = 2
@@ -789,6 +791,7 @@ class LevelOneOptions(Enum):
     UnderlyingPrice = 39
     UvExpirationType = 40
     Mark = 41
+
 
 
 class LevelOneFutures(Enum):

@@ -93,8 +93,6 @@ class SavedOrders:
             endpoint=endpoint
         )
 
-        return content
-
     def place_saved_order(
         self,
         account_id: str,
