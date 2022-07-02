@@ -1,3 +1,6 @@
+from configparser import ConfigParser
+from typing import Optional
+
 from td.session import TdAmeritradeSession
 from td.credentials import TdCredentials
 from td.rest.quotes import Quotes
@@ -23,7 +26,9 @@ class TdAmeritradeClient():
     that your session is authenticated.
     """
 
-    def __init__(self, credentials: TdCredentials) -> None:
+    def __init__(self, credentials: Optional[TdCredentials] = None,
+                 config_file: str = 'config/config.ini',
+                 credential_file: str = 'config/td_credentials.json') -> None:
         """Initializes the `TdClient` object.
 
         ### Parameters
@@ -31,12 +36,30 @@ class TdAmeritradeClient():
             Your TD Credentials stored in your credentials object
             so that you can authenticate with TD.
         """
+        config = ConfigParser()
 
+        # Read the file.
+        config.read(config_file)
+        self.config = config
+        # Get the specified credentials.
+        client_id = config.get('main', 'client_id')
+        redirect_uri = config.get('main', 'redirect_uri')
+        account_number = config.get('main', 'account_number')
+
+        if not credentials:
+            credentials = TdCredentials(
+                client_id=client_id,
+                redirect_uri=redirect_uri,
+                credential_file=credential_file
+            )
         self.td_credentials = credentials
         self.td_session = TdAmeritradeSession(td_client=self)
 
     def __repr__(self):
         pass
+
+    def get_account_number(self):
+        return self.config.get('main', 'account_number')
 
     def quotes(self) -> Quotes:
         """Used to access the `Quotes` Services and metadata.

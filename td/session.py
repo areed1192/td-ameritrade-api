@@ -5,6 +5,18 @@ import pathlib
 import requests
 
 
+def build_error_dict(response):
+    response.request.headers['Authorization'] = 'Bearer XXXXXXX'
+    response_data = '' if len(response.content) == 0 else response.json()
+    return {
+        'error_code': response.status_code,
+        'response_url': response.url,
+        'response_body': response_data,
+        'response_request': dict(response.request.headers),
+        'response_method': response.request.method,
+    }
+
+
 class TdAmeritradeSession:
 
     """Serves as the Session for TD Ameritrade API."""
@@ -125,54 +137,32 @@ class TdAmeritradeSession:
 
         self.client.td_credentials.validate_token()
 
-        # Build the URL.
         url = self.build_url(endpoint=endpoint)
-
-        # Define the headers.
         headers = self.build_headers()
 
         logging.info("Request URL: %s", url)
 
-        # Define a new session.
-        request_session = requests.Session()
-        request_session.verify = True
+        session = requests.Session()
 
-        # Define a new request.
-        request_request = requests.Request(
+        req = requests.Request(
             method=method.upper(),
             headers=headers,
             url=url,
             params=params,
             data=data,
             json=json_payload
-        ).prepare()
-
-        # Send the request.
-        response: requests.Response = request_session.send(
-            request=request_request
         )
 
-        # Close the session.
-        request_session.close()
+        response: requests.Response = session.send(
+            request=req.prepare()
+        )
+        session.close()
 
-        # If it's okay and no details.
-        if response.ok and len(response.content) > 0:
+        if response.ok and len(response.content):
             return response.json()
-        response_data = '' if len(response.content) == 0 else response.json()
-        response.request.headers['Authorization'] = 'Bearer XXXXXXX'
 
-        # Define the error dict.
-        error_dict = {
-            'error_code': response.status_code,
-            'response_url': response.url,
-            'response_body': response_data,
-            'response_request': dict(response.request.headers),
-            'response_method': response.request.method,
-        }
-
-        # Log the error.
         logging.error(
-            msg=json.dumps(obj=error_dict, indent=4)
+            msg=json.dumps(obj=build_error_dict(response), indent=4)
         )
 
         raise requests.HTTPError()
