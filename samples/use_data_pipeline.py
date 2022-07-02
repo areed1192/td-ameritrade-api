@@ -93,12 +93,11 @@ async def data_pipeline():
 
             # Here I can grab data as it comes in and do something with it.
             if 'key' in data_content[0]:
-                print('Here is my key: {}'.format(data_content[0]['key']))
+                print(f"Here is my key: {data_content[0]['key']}")
 
             print('-'*80)
             data_response_count += 1
 
-        # If we get a heartbeat notice, let's increment our counter.
         elif data and 'notify' in data:
             print(data['notify'][0])
             heartbeat_response_count += 1

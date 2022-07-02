@@ -60,13 +60,10 @@ class TdAmeritradeSession:
             A dictionary containing all the components.
         """
 
-        # Fake the headers.
-        headers = {
+        return {
             "Authorization": f"Bearer {self.client.td_credentials.access_token}",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         }
-
-        return headers
 
     def build_url(self, endpoint: str) -> str:
         """Build the URL used the make string.
@@ -82,9 +79,7 @@ class TdAmeritradeSession:
             The full URL with the endpoint needed.
         """
 
-        url = self.resource_url + self.version + endpoint
-
-        return url
+        return self.resource_url + self.version + endpoint
 
     def make_request(
         self,
