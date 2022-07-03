@@ -11,7 +11,7 @@ from urllib.parse import urlparse
 import requests
 
 
-class TdCredentials():
+class TdCredentials:
 
     """
     ### Overview
@@ -52,7 +52,7 @@ class TdCredentials():
         self._loaded_from_file = False
         self._file_path = ""
 
-        if credential_file:
+        if credential_file and pathlib.Path(credential_file).exists():
 
             if isinstance(credential_file, pathlib.Path):
                 credential_file = credential_file.resolve()
@@ -170,7 +170,7 @@ class TdCredentials():
             >>> td_credential.is_refresh_token_expired
         """
 
-        exp_time = self.refresh_token_expiration_time - 20 # .timestamp() - 20
+        exp_time = self.refresh_token_expiration_time.timestamp() - 20
         now = datetime.now().timestamp()
         return exp_time < now
 
