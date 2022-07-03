@@ -1,3 +1,4 @@
+import pathlib
 from configparser import ConfigParser
 from typing import Optional
 
@@ -17,8 +18,7 @@ from td.rest.saved_orders import SavedOrders
 from td.streaming.client import StreamingApiClient
 
 
-class TdAmeritradeClient():
-
+class TdAmeritradeClient:
     """
     ### Overview
     ----
@@ -27,8 +27,9 @@ class TdAmeritradeClient():
     """
 
     def __init__(self, credentials: Optional[TdCredentials] = None,
-                 config_file: str = 'config/config.ini',
-                 credential_file: str = 'config/td_credentials.json') -> None:
+                 config_path: str = 'config',
+                 config_file: str = 'config.ini',
+                 credential_file: str = 'td_credentials.json') -> None:
         """Initializes the `TdClient` object.
 
         ### Parameters
@@ -38,15 +39,24 @@ class TdAmeritradeClient():
         """
         config = ConfigParser()
 
-        # Read the file.
-        config.read(config_file)
+        if not pathlib.Path(config_path).exists():
+            pathlib.Path(config_path).mkdir()
+            config.set('main', 'client_id', '')
+            config.set('main', 'redirect_uri', '')
+            with open(f"{config_path}/{config_file}", mode='w') as fp:
+                config.write(fp)
+
+        config.read(f"{config_path}/{config_file}")
         self.config = config
         # Get the specified credentials.
         client_id = config.get('main', 'client_id')
         redirect_uri = config.get('main', 'redirect_uri')
-        account_number = config.get('main', 'account_number')
-
         if not credentials:
+            if not client_id:
+                raise ValueError(f"client_id is required, set the value in {config_path}/{config_file}")
+            if not redirect_uri:
+                raise ValueError(f"redirect_uri is required, set the value in {config_path}/{config_file}")
+
             credentials = TdCredentials(
                 client_id=client_id,
                 redirect_uri=redirect_uri,
