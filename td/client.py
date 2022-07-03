@@ -41,6 +41,7 @@ class TdAmeritradeClient:
 
         if not pathlib.Path(config_path).exists():
             pathlib.Path(config_path).mkdir()
+            config.add_section("main")
             config.set('main', 'client_id', '')
             config.set('main', 'redirect_uri', '')
             with open(f"{config_path}/{config_file}", mode='w') as fp:
