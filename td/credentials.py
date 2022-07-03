@@ -447,24 +447,27 @@ class TdCredentials:
         self.from_token_dict(token_dict=token_dict)
         self.validate_token()
 
-    def grab_authorization_code(self) -> None:
-        """Generates the URL to grab the authorization code."""
-
-        # build the full URL for the authentication endpoint.
-        url = self.authorization_url + urllib.parse.urlencode({
+    def build_authorization_url(self):
+        return self.authorization_url + urllib.parse.urlencode({
             "response_type": "code",
             "redirect_uri": self.redirect_uri,
             "client_id": f"{self.client_id}@AMER.OAUTHAP"
         })
+
+    def grab_authorization_code(self) -> None:
+        """Generates the URL to grab the authorization code."""
+
+        # build the full URL for the authentication endpoint.
+        url = self.build_authorization_url()
         webbrowser.open(url=url)
-
         code_url = input("Please Paste the Authorization Code Here: ")
+        self.parse_authorization(code_url)
 
-        query = urlparse(url=code_url)
+    def parse_authorization(self, url):
+        query = urlparse(url=url)
         parse_code = parse_qs(qs=query.query)
-
         self.authorization_code = parse_code['code'][0]
-
+        
     def exchange_code_for_token(self, return_refresh_token: bool) -> dict:
         """Access token handler for AuthCode Workflow.
 
