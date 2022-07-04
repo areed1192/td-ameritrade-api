@@ -12,7 +12,7 @@ setup(
     # Want to make sure people know who made it.
     author='Alex Reed',
 
-    # also an email they can use to reach out.
+    # Also, an email they can use to reach out.
     author_email='coding.sigma@gmail.com',
 
     # Set the version.
@@ -20,7 +20,7 @@ setup(
 
     # here is a simple description of the library, this will appear when
     # someone searches for the library on https://pypi.org/search
-    description='A python client lirbary for the TD Ameritrade API.',
+    description='A python client library for the TD Ameritrade API.',
 
     # I have a long description but that will just be my README file, note the
     # variable up above where I read the file.

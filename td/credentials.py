@@ -27,7 +27,8 @@ class TdCredentials:
         client_id: str,
         redirect_uri: str,
         credential_dict: dict = None,
-        credential_file: Union[str, pathlib.Path] = None
+        credential_file: Union[str, pathlib.Path] = None,
+        use_workflow: bool = True
     ) -> None:
         """Initializes the `TdCredential` object."""
 
@@ -64,7 +65,7 @@ class TdCredentials:
 
         elif credential_dict:
             self.from_credential_dict(token_dict=credential_dict)
-        else:
+        elif use_workflow:
             self.from_workflow()
 
     @property
@@ -467,7 +468,7 @@ class TdCredentials:
         query = urlparse(url=url)
         parse_code = parse_qs(qs=query.query)
         self.authorization_code = parse_code['code'][0]
-        
+
     def exchange_code_for_token(self, return_refresh_token: bool) -> dict:
         """Access token handler for AuthCode Workflow.
 
