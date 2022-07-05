@@ -214,7 +214,7 @@ class StreamingApiClient:
         await self.connection.send(message)
 
     async def _receive_message(self, return_value: bool = False) -> dict:
-        """Recieves and processes the messages as needed.
+        """Receives and processes the messages as needed.
 
         ### Parameters
         ----
@@ -258,7 +258,7 @@ class StreamingApiClient:
                 break
             except Exception as e:
                 pass
-            
+
     async def _parse_json_message(self, message: str) -> dict:
         """Parses incoming messages from the stream
 
@@ -316,7 +316,7 @@ class StreamingApiClient:
 
         ### Overview
         ----
-        Initalizes the stream by building a login request, starting
+        Initializes the stream by building a login request, starting
         an event loop, creating a connection, passing through the
         requests, and keeping the loop running.
         """
@@ -328,6 +328,7 @@ class StreamingApiClient:
         data_requests = json.dumps(self.data_requests)
         asyncio.ensure_future(self._send_message(data_requests))
         asyncio.ensure_future(self._receive_message(return_value=False))
+        # Probably need to include heartbeat here.
         self.loop.run_forever()
 
     async def close_stream(self) -> None:
