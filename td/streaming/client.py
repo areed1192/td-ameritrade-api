@@ -28,7 +28,7 @@ class StreamingApiClient:
     streams data back to the user.
     """
 
-    def __init__(self, session: TdAmeritradeSession, message_processor: Optional[Callable] = None,
+    def __init__(self, session: TdAmeritradeSession, on_message_received: Optional[Callable] = None,
                  debug: bool = False) -> None:
         """Initalizes the Streaming Client.
 
@@ -45,7 +45,7 @@ class StreamingApiClient:
         self.user_principal_data = UserInfo(
             session=session
         ).get_user_principals()
-        self.message_processor = message_processor
+        self.on_message_received = on_message_received
         socket_url = self.user_principal_data['streamerInfo']['streamerSocketUrl']
         self.websocket_url = f"wss://{socket_url}/ws"
 
@@ -235,8 +235,8 @@ class StreamingApiClient:
 
                 message = await self.connection.recv()
                 message_decoded = await self._parse_json_message(message=message)
-                if self.message_processor:
-                    self.message_processor(message_decoded)
+                if self.on_message_received:
+                    self.on_message_received(message_decoded)
 
                 if return_value:
                     if self.debug:
