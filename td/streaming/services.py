@@ -599,5 +599,5 @@ class StreamingServices:
         request['service'] = service
         request['command'] = command
         request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(fields)
+        request['parameters']['fields'] = ','.join([str(f) for f in fields])
         return request
