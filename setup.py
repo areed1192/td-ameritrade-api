@@ -1,5 +1,4 @@
-from setuptools import setup
-from setuptools import find_namespace_packages
+from setuptools import setup, find_packages
 
 # load the README file.
 with open(file="README.md", mode="r") as fh:
@@ -43,8 +42,7 @@ setup(
     keywords='finance, td ameritrade, api',
 
     # here are the packages I want "build."
-    packages=find_namespace_packages(
-        include=['td'],
+    packages=find_packages(
         exclude=['config*']
     ),
 
