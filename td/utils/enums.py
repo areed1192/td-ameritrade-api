@@ -666,10 +666,6 @@ class SpecialInstructions(Enum):
     AllOrNoneDoNotReduce = 'ALL_OR_NONE_DO_NOT_REDUCE'
 
 
-
-
-
-
 class LevelOneQuotes(Enum):
     """Represents the different fields for the Level One
     Quotes Feed.
@@ -680,7 +676,7 @@ class LevelOneQuotes(Enum):
         >>> LevelOneQuotes.All.value
     """
 
-    All = list(range(53))
+    All = [str(i) for i in range(53)]
     Symbol = 0
     BidPrice = 1
     AskPrice = 2
@@ -736,8 +732,6 @@ class LevelOneQuotes(Enum):
     RegularMarketTradeTimeInLong = 52
 
 
-
-
 class LevelOneOptions(Enum):
     """Represents the different fields for the Level One
     Options Feed.
@@ -748,7 +742,7 @@ class LevelOneOptions(Enum):
         >>> LevelOneOptions.All.value
     """
 
-    All = [range(42)]
+    All = [str(i) for i in range(42)]
     Symbol = 0
     Description = 1
     BidPrice = 2
@@ -793,7 +787,6 @@ class LevelOneOptions(Enum):
     Mark = 41
 
 
-
 class LevelOneFutures(Enum):
     """
     Represents the different fields for the Level One Futures Feed.
@@ -804,7 +797,7 @@ class LevelOneFutures(Enum):
         >>> LevelOneFutures.All.value
     """
 
-    All = [range(36)]
+    All = [str(i) for i in range(36)]
     Symbol = 0
     BidPrice = 1
     AskPrice = 2
@@ -853,7 +846,7 @@ class LevelOneForex(Enum):
         >>> LevelOneForex.All.value
     """
 
-    All = [range(30)]
+    All = [str(i) for i in range(30)]
     Symbol = 0
     BidPrice = 1
     AskPrice = 2
@@ -896,7 +889,7 @@ class NewsHeadlines(Enum):
         >>> NewsHeadlines.All.value
     """
 
-    All = [range(11)]
+    All = [str(i) for i in range(11)]
     Symbol = 0
     ErrorCode = 1
     StoryDatetime = 2
@@ -920,7 +913,7 @@ class LevelOneFuturesOptions(Enum):
         >>> LevelOneFuturesOptions.All.value
     """
 
-    All = [range(36)]
+    All = [str(i) for i in range(36)]
     Symbol = 0
     BidPrice = 1
     AskPrice = 2
@@ -984,7 +977,7 @@ class ChartEquity(Enum):
         >>> ChartEquity.All.value
     """
 
-    All = [range(9)]
+    All = [str(i) for i in range(9)]
     Symbol = 0
     OpenPrice = 1
     HighPrice = 2
@@ -1006,7 +999,7 @@ class ChartFutures(Enum):
         >>> ChartFutures.All.value
     """
 
-    All = [range(7)]
+    All = [str(i) for i in range(7)]
     Symbol = 0
     ChartTime = 1
     OpenPrice = 2
@@ -1042,7 +1035,7 @@ class Timesale(Enum):
         >>> Timesale.All.value
     """
 
-    All = [range(5)]
+    All = [str(i) for i in range(5)]
     Symbol = 0
     TradeTime = 1
     LastPrice = 2
@@ -1152,7 +1145,7 @@ class LevelTwoQuotes(Enum):
         >>> LevelTwoQuotes.All.value
     """
 
-    All = [range(3)]
+    All = [str(i) for i in range(3)]
     Key = 0
     Time = 1
     Data = 2
@@ -1167,7 +1160,7 @@ class LevelTwoOptions(Enum):
         >>> LevelTwoOptions.All.value
     """
 
-    All = [range(3)]
+    All = [str(i) for i in range(3)]
     Key = 0
     Time = 1
     Data = 2
