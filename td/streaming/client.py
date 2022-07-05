@@ -5,12 +5,17 @@ import asyncio
 import textwrap
 
 from datetime import datetime
+from typing import Callable, Optional
+
 from websockets import client as ws_client
 from websockets import exceptions as ws_exceptions
 
 from td.rest.user_info import UserInfo
 from td.session import TdAmeritradeSession
 from td.streaming.services import StreamingServices
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class StreamingApiClient:
@@ -23,7 +28,8 @@ class StreamingApiClient:
     streams data back to the user.
     """
 
-    def __init__(self, session: TdAmeritradeSession) -> None:
+    def __init__(self, session: TdAmeritradeSession, message_processor: Optional[Callable] = None,
+                 debug: bool = False) -> None:
         """Initalizes the Streaming Client.
 
         ### Overview
@@ -35,10 +41,11 @@ class StreamingApiClient:
         ----
             >>> td_streaming_client = td_client.streaming_api()
         """
+        self.debug = debug
         self.user_principal_data = UserInfo(
             session=session
         ).get_user_principals()
-
+        self.message_processor = message_processor
         socket_url = self.user_principal_data['streamerInfo']['streamerSocketUrl']
         self.websocket_url = f"wss://{socket_url}/ws"
 
@@ -228,21 +235,30 @@ class StreamingApiClient:
 
                 message = await self.connection.recv()
                 message_decoded = await self._parse_json_message(message=message)
-                print(message_decoded)
+                if self.message_processor:
+                    self.message_processor(message_decoded)
 
                 if return_value:
+                    if self.debug:
+                        logger.debug(f"Message: {message_decoded}")
                     return message_decoded
 
-                print(textwrap.dedent('='*80))
-                print(textwrap.dedent("Message Received:"))
-                print(textwrap.dedent('-'*80))
-                pprint.pprint(message_decoded)
-                print(textwrap.dedent('-'*80))
+                if self.debug:
+                    logger.debug(textwrap.dedent('='*80))
+                    logger.debug(textwrap.dedent("Message Received:"))
+                    logger.debug(textwrap.dedent('-'*80))
+                    logger.debug(pprint.pformat(message_decoded))
+                    logger.debug(textwrap.dedent('-'*80))
 
             except ws_exceptions.ConnectionClosed:
                 await self.close_stream()
                 break
-
+            except KeyboardInterrupt:
+                await self.close_stream()
+                break
+            except Exception as e:
+                pass
+            
     async def _parse_json_message(self, message: str) -> dict:
         """Parses incoming messages from the stream
 
