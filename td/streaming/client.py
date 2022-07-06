@@ -5,7 +5,7 @@ import asyncio
 import textwrap
 
 from datetime import datetime
-from typing import Callable, Optional
+from typing import Optional, Awaitable, Callable
 
 from websockets import client as ws_client
 from websockets import exceptions as ws_exceptions
@@ -28,8 +28,12 @@ class StreamingApiClient:
     streams data back to the user.
     """
 
-    def __init__(self, session: TdAmeritradeSession, on_message_received: Optional[Callable] = None,
-                 debug: bool = False) -> None:
+    def __init__(
+        self,
+        session: TdAmeritradeSession,
+        on_message_received: Optional[Callable[[dict], Awaitable[None]]] = None,
+        debug: bool = False
+    ) -> None:
         """Initalizes the Streaming Client.
 
         ### Overview
@@ -71,7 +75,7 @@ class StreamingApiClient:
             "acl": self.user_principal_data['streamerInfo']['acl']
         }
 
-        self.connection: ws_client.WebSocketClientProtocol = None
+        self.connection: Optional[ws_client.WebSocketClientProtocol] = None
         self.data_requests = {
             "requests": []
         }
@@ -230,13 +234,12 @@ class StreamingApiClient:
 
         # Keep going until cancelled.
         while True:
-
             try:
-
                 message = await self.connection.recv()
                 message_decoded = await self._parse_json_message(message=message)
+
                 if self.on_message_received:
-                    self.on_message_received(message_decoded)
+                    await self.on_message_received(message_decoded)
 
                 if return_value:
                     if self.debug:
@@ -249,7 +252,6 @@ class StreamingApiClient:
                     logger.debug(textwrap.dedent('-'*80))
                     logger.debug(pprint.pformat(message_decoded))
                     logger.debug(textwrap.dedent('-'*80))
-
             except ws_exceptions.ConnectionClosed:
                 await self.close_stream()
                 break
@@ -284,15 +286,11 @@ class StreamingApiClient:
         return message_decoded
 
     async def heartbeat(self) -> None:
-        """Sending heartbeat to server every 5 seconds."""
-
-        while True:
-            try:
-                await self.connection.send('ping')
-                await asyncio.sleep(5)
-            except ws_exceptions.ConnectionClosed:
-                await self.close_stream()
-                break
+        """Keep connection alive."""
+        try:
+            await self.connection.keepalive_ping()
+        except ws_exceptions.ConnectionClosed:
+            await self.close_stream()
 
     def services(self) -> StreamingServices:
         """Returns the streaming services that can be added
@@ -328,7 +326,7 @@ class StreamingApiClient:
         data_requests = json.dumps(self.data_requests)
         asyncio.ensure_future(self._send_message(data_requests))
         asyncio.ensure_future(self._receive_message(return_value=False))
-        # Probably need to include heartbeat here.
+        asyncio.ensure_future(self.heartbeat())
         self.loop.run_forever()
 
     async def close_stream(self) -> None:
@@ -347,12 +345,12 @@ class StreamingApiClient:
         {lin_brk}
         """).format(lin_brk="="*80)
 
-        # Shutdown all asynchronus generators.
+        # Shutdown all asynchronous generators.
         await self.loop.shutdown_asyncgens()
 
         # Stop the loop.
         if self.loop.is_running():
-            self.loop.call_soon_threadsafe(self.loop.stop())
+            self.loop.call_soon_threadsafe(self.loop.stop)
             print(message)
             await asyncio.sleep(3)
 

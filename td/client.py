@@ -1,6 +1,6 @@
 import pathlib
 from configparser import ConfigParser
-from typing import Optional
+from typing import Optional, Awaitable, Callable
 
 from td.session import TdAmeritradeSession
 from td.credentials import TdCredentials
@@ -248,7 +248,11 @@ class TdAmeritradeClient:
 
         return SavedOrders(session=self.td_session)
 
-    def streaming_api_client(self) -> StreamingApiClient:
+    def streaming_api_client(
+        self,
+        on_message_received: Optional[Callable[[dict], Awaitable[None]]] = None,
+        debug: bool = False
+    ) -> StreamingApiClient:
         """Used to access the `StreamingApiClient` Services and metadata.
 
         ### Returns
@@ -262,4 +266,4 @@ class TdAmeritradeClient:
             >>> streaming_api_service = td_client.streaming_api_client()
         """
 
-        return StreamingApiClient(session=self.td_session)
+        return StreamingApiClient(session=self.td_session, on_message_received=on_message_received, debug=debug)
