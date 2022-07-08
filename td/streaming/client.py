@@ -238,14 +238,14 @@ class StreamingApiClient:
                 message = await self.connection.recv()
                 message_decoded = await self._parse_json_message(message=message)
 
-                if self.on_message_received:
-                    await self.on_message_received(message_decoded)
-
                 if return_value:
                     if self.debug:
                         logger.debug(f"Message: {message_decoded}")
                     return message_decoded
 
+                if self.on_message_received:
+                    await self.on_message_received(message_decoded)
+                    
                 if self.debug:
                     logger.debug(textwrap.dedent('='*80))
                     logger.debug(textwrap.dedent("Message Received:"))
