@@ -245,7 +245,7 @@ class StreamingApiClient:
 
                 if self.on_message_received:
                     await self.on_message_received(message_decoded)
-                    
+
                 if self.debug:
                     logger.debug(textwrap.dedent('='*80))
                     logger.debug(textwrap.dedent("Message Received:"))
