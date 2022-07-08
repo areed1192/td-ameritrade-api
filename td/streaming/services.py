@@ -57,9 +57,10 @@ class StreamingServices:
         """
 
         # Grab the current count of the services.
-        service_count = len(
-            self.streaming_api_client.data_requests['requests']
-        ) + 1
+        with self.streaming_api_client.lock:
+            service_count = len(
+                self.streaming_api_client.data_requests['requests']
+            ) + 1
 
         return {
             "service": None,
@@ -102,7 +103,9 @@ class StreamingServices:
         request['service'] = 'ADMIN'
         request['command'] = 'QOS'
         request['parameters']['qoslevel'] = qos_level
-        self.streaming_api_client.data_requests['requests'].append(request)
+
+        with self.streaming_api_client.lock:
+            self.streaming_api_client.data_requests['requests'].append(request)
 
     def level_one_quotes(
         self,
@@ -132,7 +135,8 @@ class StreamingServices:
         """
         fields = _ensure_fields(fields)
         request = self._build_request(symbols, fields, 'QUOTE')
-        self.streaming_api_client.data_requests['requests'].append(request)
+        with self.streaming_api_client.lock:
+            self.streaming_api_client.data_requests['requests'].append(request)
 
     def level_one_options(
         self,
@@ -162,7 +166,8 @@ class StreamingServices:
         """
         fields = _ensure_fields(fields)
         request = self._build_request(symbols, fields, 'OPTION')
-        self.streaming_api_client.data_requests['requests'].append(request)
+        with self.streaming_api_client.lock:
+            self.streaming_api_client.data_requests['requests'].append(request)
 
     def level_one_futures(
         self,
@@ -192,7 +197,8 @@ class StreamingServices:
         """
         fields = _ensure_fields(fields)
         request = self._build_request(symbols, fields, 'LEVELONE_FUTURES')
-        self.streaming_api_client.data_requests['requests'].append(request)
+        with self.streaming_api_client.lock:
+            self.streaming_api_client.data_requests['requests'].append(request)
 
     def level_one_futures_options(
         self,
@@ -224,7 +230,8 @@ class StreamingServices:
         fields = _ensure_fields(fields)
 
         request = self._build_request(symbols, fields, 'LEVELONE_FUTURES_OPTIONS')
-        self.streaming_api_client.data_requests['requests'].append(request)
+        with self.streaming_api_client.lock:
+            self.streaming_api_client.data_requests['requests'].append(request)
 
     def level_one_forex(
         self,
@@ -257,7 +264,8 @@ class StreamingServices:
 
         request = self._build_request(symbols, fields, 'LEVELONE_FOREX')
 
-        self.streaming_api_client.data_requests['requests'].append(request)
+        with self.streaming_api_client.lock:
+            self.streaming_api_client.data_requests['requests'].append(request)
 
     def account_activity(self) -> None:
         """
@@ -281,7 +289,8 @@ class StreamingServices:
         request['parameters']['keys'] = keys
         request['parameters']['fields'] = '0,1,2,3'
 
-        self.streaming_api_client.data_requests['requests'].append(request)
+        with self.streaming_api_client.lock:
+            self.streaming_api_client.data_requests['requests'].append(request)
 
     def news_headline(
         self,
@@ -314,7 +323,8 @@ class StreamingServices:
         # Build the request
         request = self._build_request(symbols, fields, 'NEWS_HEADLINE')
 
-        self.streaming_api_client.data_requests['requests'].append(request)
+        with self.streaming_api_client.lock:
+            self.streaming_api_client.data_requests['requests'].append(request)
 
     def chart(
         self,
@@ -357,7 +367,8 @@ class StreamingServices:
 
         # Build the request
         request = self._build_request(symbols, fields, service)
-        self.streaming_api_client.data_requests['requests'].append(request)
+        with self.streaming_api_client.lock:
+            self.streaming_api_client.data_requests['requests'].append(request)
 
     def timesale(
         self,
@@ -396,7 +407,8 @@ class StreamingServices:
         # Build the request
         request = self._build_request(symbols, fields, service)
 
-        self.streaming_api_client.data_requests['requests'].append(request)
+        with self.streaming_api_client.lock:
+            self.streaming_api_client.data_requests['requests'].append(request)
 
     def actives(
         self,
@@ -445,7 +457,8 @@ class StreamingServices:
         request = self._build_request([], [], service)
         request['parameters']['keys'] = f"{venue}-{duration}"
         request['parameters']['fields'] = '1'
-        self.streaming_api_client.data_requests['requests'].append(request)
+        with self.streaming_api_client.lock:
+            self.streaming_api_client.data_requests['requests'].append(request)
 
     def chart_history_futures(
         self,
@@ -531,7 +544,8 @@ class StreamingServices:
         del request['parameters']['fields']
 
         request['requestid'] = str(request['requestid'])
-        self.streaming_api_client.data_requests['requests'].append(request)
+        with self.streaming_api_client.lock:
+            self.streaming_api_client.data_requests['requests'].append(request)
 
     def level_two_quotes(
         self,
@@ -561,7 +575,8 @@ class StreamingServices:
         """
         fields = _ensure_fields(fields)
         request = self._build_request(symbols, fields, 'LISTED_BOOK')
-        self.streaming_api_client.data_requests['requests'].append(request)
+        with self.streaming_api_client.lock:
+            self.streaming_api_client.data_requests['requests'].append(request)
 
     def level_two_options(
         self,
@@ -591,7 +606,8 @@ class StreamingServices:
         """
         fields = _ensure_fields(fields)
         request = self._build_request(symbols, fields, 'OPTIONS_BOOK')
-        self.streaming_api_client.data_requests['requests'].append(request)
+        with self.streaming_api_client.lock:
+            self.streaming_api_client.data_requests['requests'].append(request)
 
     def _build_request(self, symbols, fields, service, command="SUBS"):
         # Build the request

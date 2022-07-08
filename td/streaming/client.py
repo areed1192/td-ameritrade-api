@@ -45,6 +45,7 @@ class StreamingApiClient:
         ----
             >>> td_streaming_client = td_client.streaming_api()
         """
+        self.lock = asyncio.Lock()
         self.debug = debug
         self.user_principal_data = UserInfo(
             session=session
@@ -121,6 +122,26 @@ class StreamingApiClient:
         }
 
         return json.dumps(login_request)
+
+    async def _send_data_requests(self):
+        """Sends the data requests added, forever."""
+        # Send the data requests, and start getting messages.
+        while True:
+            await asyncio.sleep(0.1)
+            with self.lock:
+                if not self.data_requests['requests']:
+                    continue
+                data_requests = json.dumps(self.data_requests)
+                self.data_requests = {
+                    "requests": []
+                }
+            try:
+                await self._send_message(data_requests)
+            except ws_exceptions.ConnectionClosed:
+                print("="*80)
+                print('Message: Connection was closed, shutting down send loop.')
+                print("-"*80)
+                break
 
     async def _connect(self) -> ws_client.WebSocketClientProtocol:
         """Connects the Client to the TD Websocket.
@@ -322,9 +343,7 @@ class StreamingApiClient:
         # Connect to the Websocket.
         self.loop.run_until_complete(self._connect())
 
-        # Send the data requests, and start getting messages.
-        data_requests = json.dumps(self.data_requests)
-        asyncio.ensure_future(self._send_message(data_requests))
+        asyncio.ensure_future(self._send_data_requests())
         asyncio.ensure_future(self._receive_message(return_value=False))
         asyncio.ensure_future(self.heartbeat())
         self.loop.run_forever()
@@ -404,12 +423,12 @@ class StreamingApiClient:
             A message from the websocket specifying whether
             the unsubscribe command was successful.
         """
+        with self.lock:
+            self.unsubscribe_count += 1
 
-        self.unsubscribe_count += 1
-
-        service_count = len(
-            self.data_requests['requests']
-        ) + self.unsubscribe_count
+            service_count = len(
+                self.data_requests['requests']
+            ) + self.unsubscribe_count
 
         request = {
             "requests": [
