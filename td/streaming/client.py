@@ -128,7 +128,7 @@ class StreamingApiClient:
         # Send the data requests, and start getting messages.
         while True:
             await asyncio.sleep(0.1)
-            with self.lock:
+            async with self.lock:
                 if not self.data_requests['requests']:
                     continue
                 data_requests = json.dumps(self.data_requests)
@@ -423,7 +423,7 @@ class StreamingApiClient:
             A message from the websocket specifying whether
             the unsubscribe command was successful.
         """
-        with self.lock:
+        async with self.lock:
             self.unsubscribe_count += 1
 
             service_count = len(

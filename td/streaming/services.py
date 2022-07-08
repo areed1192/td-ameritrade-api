@@ -4,7 +4,7 @@ from typing import List
 from datetime import datetime
 
 
-def _ensure_fields(fields):
+async def _ensure_fields(fields):
     if isinstance(fields, list):
         new_fields = []
         for field in fields:
@@ -41,7 +41,7 @@ class StreamingServices:
 
         self.streaming_api_client: StreamingApiClient = streaming_api_client
 
-    def _new_request_template(self) -> dict:
+    async def _new_request_template(self) -> dict:
         """Serves as a template to build new service requests.
 
         ### Overview
@@ -57,7 +57,7 @@ class StreamingServices:
         """
 
         # Grab the current count of the services.
-        with self.streaming_api_client.lock:
+        async with self.streaming_api_client.lock:
             service_count = len(
                 self.streaming_api_client.data_requests['requests']
             ) + 1
@@ -74,7 +74,11 @@ class StreamingServices:
             }
         }
 
-    def quality_of_service(self, qos_level: Union[str, Enum]) -> None:
+    async def append_data_request(self, request: dict) -> None:
+        async with self.streaming_api_client.lock:
+            self.streaming_api_client.data_requests['requests'].append(request)
+
+    async def quality_of_service(self, qos_level: Union[str, Enum]) -> None:
         """Quality of Service Subscription.
 
         ### Overview
@@ -99,15 +103,14 @@ class StreamingServices:
         """
 
         # Build the request
-        request = self._new_request_template()
+        request = await self._new_request_template()
         request['service'] = 'ADMIN'
         request['command'] = 'QOS'
         request['parameters']['qoslevel'] = qos_level
 
-        with self.streaming_api_client.lock:
-            self.streaming_api_client.data_requests['requests'].append(request)
+        await self.append_data_request(request)
 
-    def level_one_quotes(
+    async def level_one_quotes(
         self,
         symbols: List[str],
         fields: Union[List[Enum], List[str], List[int]]
@@ -133,12 +136,11 @@ class StreamingServices:
                 fields=LevelOneQuotes.All
             )
         """
-        fields = _ensure_fields(fields)
-        request = self._build_request(symbols, fields, 'QUOTE')
-        with self.streaming_api_client.lock:
-            self.streaming_api_client.data_requests['requests'].append(request)
+        fields = await _ensure_fields(fields)
+        request = await self._build_request(symbols, fields, 'QUOTE')
+        await self.append_data_request(request)
 
-    def level_one_options(
+    async def level_one_options(
         self,
         symbols: List[str],
         fields: Union[List[Enum], List[str], List[int]]
@@ -164,12 +166,11 @@ class StreamingServices:
                 fields=LevelOneOptions.All
             )
         """
-        fields = _ensure_fields(fields)
-        request = self._build_request(symbols, fields, 'OPTION')
-        with self.streaming_api_client.lock:
-            self.streaming_api_client.data_requests['requests'].append(request)
+        fields = await _ensure_fields(fields)
+        request = await self._build_request(symbols, fields, 'OPTION')
+        await self.append_data_request(request)
 
-    def level_one_futures(
+    async def level_one_futures(
         self,
         symbols: List[str],
         fields: Union[List[Enum], List[str], List[int]]
@@ -195,12 +196,11 @@ class StreamingServices:
                 fields=LevelOneFutures.All
             )
         """
-        fields = _ensure_fields(fields)
-        request = self._build_request(symbols, fields, 'LEVELONE_FUTURES')
-        with self.streaming_api_client.lock:
-            self.streaming_api_client.data_requests['requests'].append(request)
+        fields = await _ensure_fields(fields)
+        request = await self._build_request(symbols, fields, 'LEVELONE_FUTURES')
+        await self.append_data_request(request)
 
-    def level_one_futures_options(
+    async def level_one_futures_options(
         self,
         symbols: List[str],
         fields: Union[List[Enum],
@@ -227,13 +227,11 @@ class StreamingServices:
                 fields=LevelOneFutures.All
             )
         """
-        fields = _ensure_fields(fields)
+        fields = await _ensure_fields(fields)
+        request = await self._build_request(symbols, fields, 'LEVELONE_FUTURES_OPTIONS')
+        await self.append_data_request(request)
 
-        request = self._build_request(symbols, fields, 'LEVELONE_FUTURES_OPTIONS')
-        with self.streaming_api_client.lock:
-            self.streaming_api_client.data_requests['requests'].append(request)
-
-    def level_one_forex(
+    async def level_one_forex(
         self,
         symbols: List[str],
         fields: Union[List[str], List[int]]
@@ -260,14 +258,12 @@ class StreamingServices:
             )
         """
 
-        fields = _ensure_fields(fields)
+        fields = await _ensure_fields(fields)
 
-        request = self._build_request(symbols, fields, 'LEVELONE_FOREX')
+        request = await self._build_request(symbols, fields, 'LEVELONE_FOREX')
+        await self.append_data_request(request)
 
-        with self.streaming_api_client.lock:
-            self.streaming_api_client.data_requests['requests'].append(request)
-
-    def account_activity(self) -> None:
+    async def account_activity(self) -> None:
         """
         ### Overview
         ----
@@ -283,16 +279,14 @@ class StreamingServices:
         keys = sub_keys['keys'][0]['key']
 
         # Build the request
-        request = self._new_request_template()
+        request = await self._new_request_template()
         request['service'] = 'ACCT_ACTIVITY'
         request['command'] = 'SUBS'
         request['parameters']['keys'] = keys
         request['parameters']['fields'] = '0,1,2,3'
+        await self.append_data_request(request)
 
-        with self.streaming_api_client.lock:
-            self.streaming_api_client.data_requests['requests'].append(request)
-
-    def news_headline(
+    async def news_headline(
         self,
         symbols: List[str],
         fields: Union[List[str], List[int]]
@@ -318,15 +312,11 @@ class StreamingServices:
                 fields=NewsHeadlines.All
             )
         """
-        fields = _ensure_fields(fields)
+        fields = await _ensure_fields(fields)
+        request = await self._build_request(symbols, fields, 'NEWS_HEADLINE')
+        await self.append_data_request(request)
 
-        # Build the request
-        request = self._build_request(symbols, fields, 'NEWS_HEADLINE')
-
-        with self.streaming_api_client.lock:
-            self.streaming_api_client.data_requests['requests'].append(request)
-
-    def chart(
+    async def chart(
         self,
         service: Union[str, Enum],
         symbols: List[str],
@@ -363,14 +353,11 @@ class StreamingServices:
                 fields=ChartEquity.All
             )
         """
-        fields = _ensure_fields(fields)
+        fields = await _ensure_fields(fields)
+        request = await self._build_request(symbols, fields, service)
+        await self.append_data_request(request)
 
-        # Build the request
-        request = self._build_request(symbols, fields, service)
-        with self.streaming_api_client.lock:
-            self.streaming_api_client.data_requests['requests'].append(request)
-
-    def timesale(
+    async def timesale(
         self,
         service: str,
         symbols: List[str],
@@ -402,15 +389,11 @@ class StreamingServices:
                 fields=Timesale.All
             )
         """
-        fields = _ensure_fields(fields)
+        fields = await _ensure_fields(fields)
+        request = await self._build_request(symbols, fields, service)
+        await self.append_data_request(request)
 
-        # Build the request
-        request = self._build_request(symbols, fields, service)
-
-        with self.streaming_api_client.lock:
-            self.streaming_api_client.data_requests['requests'].append(request)
-
-    def actives(
+    async def actives(
         self,
         service: Union[str, Enum],
         venue: Union[str, Enum],
@@ -454,13 +437,12 @@ class StreamingServices:
             duration = duration.value
 
         # Build the request
-        request = self._build_request([], [], service)
+        request = await self._build_request([], [], service)
         request['parameters']['keys'] = f"{venue}-{duration}"
         request['parameters']['fields'] = '1'
-        with self.streaming_api_client.lock:
-            self.streaming_api_client.data_requests['requests'].append(request)
+        await self.append_data_request(request)
 
-    def chart_history_futures(
+    async def chart_history_futures(
         self,
         symbols: List[str],
         frequency: Union[str, Enum],
@@ -530,7 +512,7 @@ class StreamingServices:
             )
 
         # Build the request
-        request = self._build_request(symbols, [], "CHART_HISTORY_FUTURES", "GET")
+        request = await self._build_request(symbols, [], "CHART_HISTORY_FUTURES", "GET")
         request['parameters']['frequency'] = frequency
 
         # handle the case where we get a start time or end time. DO FURTHER VALIDATION.
@@ -544,10 +526,9 @@ class StreamingServices:
         del request['parameters']['fields']
 
         request['requestid'] = str(request['requestid'])
-        with self.streaming_api_client.lock:
-            self.streaming_api_client.data_requests['requests'].append(request)
+        await self.append_data_request(request)
 
-    def level_two_quotes(
+    async def level_two_quotes(
         self,
         symbols: List[str],
         fields: Union[Enum, List[str], List[int]]
@@ -573,12 +554,11 @@ class StreamingServices:
                 fields=LevelTwoQuotes.All
             )
         """
-        fields = _ensure_fields(fields)
-        request = self._build_request(symbols, fields, 'LISTED_BOOK')
-        with self.streaming_api_client.lock:
-            self.streaming_api_client.data_requests['requests'].append(request)
+        fields = await _ensure_fields(fields)
+        request = await self._build_request(symbols, fields, 'LISTED_BOOK')
+        await self.append_data_request(request)
 
-    def level_two_options(
+    async def level_two_options(
         self,
         symbols: List[str],
         fields: Union[Enum, List[str], List[int]]
@@ -604,14 +584,13 @@ class StreamingServices:
                 fields=LevelTwoOptions.All
             )
         """
-        fields = _ensure_fields(fields)
-        request = self._build_request(symbols, fields, 'OPTIONS_BOOK')
-        with self.streaming_api_client.lock:
-            self.streaming_api_client.data_requests['requests'].append(request)
+        fields = await _ensure_fields(fields)
+        request = await self._build_request(symbols, fields, 'OPTIONS_BOOK')
+        await self.append_data_request(request)
 
-    def _build_request(self, symbols, fields, service, command="SUBS"):
+    async def _build_request(self, symbols, fields, service, command="SUBS"):
         # Build the request
-        request = self._new_request_template()
+        request = await self._new_request_template()
         request['service'] = service
         request['command'] = command
         request['parameters']['keys'] = ','.join(symbols)
