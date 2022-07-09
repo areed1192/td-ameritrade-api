@@ -7,7 +7,17 @@ from td.session import TdAmeritradeSession
 from td.utils.orders import Order
 
 
-class Orders():
+def _ensure_order(obj, dic):
+    if obj:
+        order = obj.save_order_to_json()
+    elif dic:
+        order = dic
+    else:
+        raise ValueError("No valid order.")
+    return order
+
+
+class Orders:
 
     """
     ## Overview
@@ -102,13 +112,11 @@ class Orders():
         # Define the endpoint.
         endpoint = f'accounts/{account_id}/orders'
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint=endpoint,
             params=params
         )
-
-        return content
 
     def get_order(
         self,
@@ -142,12 +150,10 @@ class Orders():
         # Define the endpoint.
         endpoint = f'accounts/{account_id}/orders/{order_id}'
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint=endpoint
         )
-
-        return content
 
     def get_orders_by_query(
         self,
@@ -221,13 +227,11 @@ class Orders():
         # Define the endpoint.
         endpoint = 'orders'
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint=endpoint,
             params=params
         )
-
-        return content
 
     def place_order(
         self,
@@ -267,23 +271,14 @@ class Orders():
                 order_dict={}
             )
         """
-
-        if order_object:
-            order = order_object.save_order_to_json()
-
-        if order_dict:
-            order = order_dict
-
         # Define the endpoint.
         endpoint = f'accounts/{account_id}/orders'
-
-        content = self.session.make_request(
+        order = _ensure_order(order_object, order_dict)
+        return self.session.make_request(
             method='post',
             endpoint=endpoint,
             json_payload=order
         )
-
-        return content
 
     def replace_order(
         self,
@@ -333,23 +328,16 @@ class Orders():
                 order_dict={}
             )
         """
-
-        if order_object:
-            order = order_object.save_order_to_json()
-
-        if order_dict:
-            order = order_dict
+        order = _ensure_order(order_object, order_dict)
 
         # Define the endpoint.
         endpoint = f'accounts/{account_id}/orders/{order_id}'
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='put',
             endpoint=endpoint,
             json_payload=order
         )
-
-        return content
 
     def cancel_order(
         self,
@@ -384,9 +372,7 @@ class Orders():
         # Define the endpoint.
         endpoint = f'accounts/{account_id}/orders/{order_id}'
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='delete',
             endpoint=endpoint
         )
-
-        return content

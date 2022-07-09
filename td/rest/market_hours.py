@@ -5,7 +5,7 @@ from datetime import datetime
 from td.session import TdAmeritradeSession
 
 
-class MarketHours():
+class MarketHours:
 
     """
     ## Overview
@@ -51,7 +51,7 @@ class MarketHours():
 
         ### Usage
         ----
-            >>> from td.enums import Markets
+            >>> from td.utils.enums import Markets
             >>> market_hours_service = td_client.market_hours()
             >>> market_hours_service.get_multiple_market_hours(
                 markets=['EQUITY', Markets.Bond],
@@ -71,13 +71,11 @@ class MarketHours():
             'date': date
         }
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint='marketdata/hours',
             params=params
         )
-
-        return content
 
     def get_market_hours(
         self,
@@ -104,10 +102,10 @@ class MarketHours():
 
         ### Usage
         ----
-            >>> from td.enums import Markets
+            >>> from td.utils.enums import Markets
             >>> market_hours_service = td_client.market_hours()
             >>> market_hours_service.get_market_hours(
-                markets='EQUITY',
+                markets=Markets.Equity.value,
                 date='2021-12-31'
             )
         """
@@ -122,10 +120,8 @@ class MarketHours():
             'date': date
         }
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint=f'marketdata/{market}/hours',
             params=params
         )
-
-        return content

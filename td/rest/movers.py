@@ -3,7 +3,8 @@ from enum import Enum
 from typing import Union
 from td.session import TdAmeritradeSession
 
-class Movers():
+
+class Movers:
 
     """
     ## Overview
@@ -77,10 +78,8 @@ class Movers():
             'change': change
         }
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint=f'marketdata/{index}/movers',
             params=params
         )
-
-        return content

@@ -2,7 +2,7 @@ import unittest
 from unittest import TestCase
 from configparser import ConfigParser
 
-from td.utils.enums import OptionaRange
+from td.utils.enums import OptionRange
 from td.utils.enums import OptionType
 from td.utils.enums import ContractType
 from td.utils.enums import ExpirationMonth
@@ -64,7 +64,7 @@ class TestOptionsChainService(TestCase):
             contract_type=ContractType.Call,
             expiration_month=ExpirationMonth.June,
             option_type=OptionType.StandardContracts,
-            option_range=OptionaRange.InTheMoney,
+            option_range=OptionRange.InTheMoney,
             include_quotes=True
         )
 
@@ -79,7 +79,7 @@ class TestOptionsChainService(TestCase):
             contract_type=ContractType.Call,
             expiration_month=ExpirationMonth.June,
             option_type=OptionType.StandardContracts,
-            option_range=OptionaRange.InTheMoney,
+            option_range=OptionRange.InTheMoney,
             include_quotes=True
         )
 

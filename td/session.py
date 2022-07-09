@@ -5,7 +5,19 @@ import pathlib
 import requests
 
 
-class TdAmeritradeSession():
+def build_error_dict(response):
+    response.request.headers['Authorization'] = 'Bearer XXXXXXX'
+    response_data = '' if len(response.content) == 0 else response.json()
+    return {
+        'error_code': response.status_code,
+        'response_url': response.url,
+        'response_body': response_data,
+        'response_request': dict(response.request.headers),
+        'response_method': response.request.method,
+    }
+
+
+class TdAmeritradeSession:
 
     """Serves as the Session for TD Ameritrade API."""
 
@@ -60,13 +72,10 @@ class TdAmeritradeSession():
             A dictionary containing all the components.
         """
 
-        # Fake the headers.
-        headers = {
+        return {
             "Authorization": f"Bearer {self.client.td_credentials.access_token}",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         }
-
-        return headers
 
     def build_url(self, endpoint: str) -> str:
         """Build the URL used the make string.
@@ -82,9 +91,7 @@ class TdAmeritradeSession():
             The full URL with the endpoint needed.
         """
 
-        url = self.resource_url + self.version + endpoint
-
-        return url
+        return self.resource_url + self.version + endpoint
 
     def make_request(
         self,
@@ -130,65 +137,32 @@ class TdAmeritradeSession():
 
         self.client.td_credentials.validate_token()
 
-        # Build the URL.
         url = self.build_url(endpoint=endpoint)
-
-        # Define the headers.
         headers = self.build_headers()
 
         logging.info("Request URL: %s", url)
 
-        # Define a new session.
-        request_session = requests.Session()
-        request_session.verify = True
+        session = requests.Session()
 
-        # Define a new request.
-        request_request = requests.Request(
+        req = requests.Request(
             method=method.upper(),
             headers=headers,
             url=url,
             params=params,
             data=data,
             json=json_payload
-        ).prepare()
-
-        # Send the request.
-        response: requests.Response = request_session.send(
-            request=request_request
         )
 
-        # Close the session.
-        request_session.close()
+        response: requests.Response = session.send(
+            request=req.prepare()
+        )
+        session.close()
 
-        # If it's okay and no details.
-        if response.ok and len(response.content) > 0:
+        if response.ok and len(response.content):
             return response.json()
-        elif len(response.content) > 0 and response.ok:
-            return {
-                'message': 'response successful',
-                'status_code': response.status_code
-            }
-        elif not response.ok:
 
-            if len(response.content) == 0:
-                response_data = ''
-            else:
-                response_data = response.json()
+        logging.error(
+            msg=json.dumps(obj=build_error_dict(response), indent=4)
+        )
 
-            response.request.headers['Authorization'] = 'Bearer XXXXXXX'
-
-            # Define the error dict.
-            error_dict = {
-                'error_code': response.status_code,
-                'response_url': response.url,
-                'response_body': response_data,
-                'response_request': dict(response.request.headers),
-                'response_method': response.request.method,
-            }
-
-            # Log the error.
-            logging.error(
-                msg=json.dumps(obj=error_dict, indent=4)
-            )
-
-            raise requests.HTTPError()
+        raise requests.HTTPError()

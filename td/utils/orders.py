@@ -7,6 +7,19 @@ from typing import List
 from enum import Enum
 
 
+def _ensure_value(value):
+    # Handle values that could be Enums.
+    if isinstance(value, Enum):
+        value = value.value
+
+    if isinstance(value, dict):
+        value = _to_dict(data_class_obj=value)
+
+    if isinstance(value, list):
+        value = [_to_dict(data_class_obj=item) for item in value]
+    return value
+
+
 def _to_dict(data_class_obj: Union[dataclass, dict]) -> dict:
 
     class_dict = {}
@@ -18,16 +31,7 @@ def _to_dict(data_class_obj: Union[dataclass, dict]) -> dict:
 
             key = field.name
             value = getattr(data_class_obj, field.name)
-
-            # Handle values that could be Enums.
-            if isinstance(value, Enum):
-                value = value.value
-
-            if isinstance(value, dict):
-                value = _to_dict(data_class_obj=value)
-
-            if isinstance(value, list):
-                value = [_to_dict(data_class_obj=item) for item in value]
+            value = _ensure_value(value)
 
             # Generate the API Key.
             key_parts = key.split("_")
@@ -41,16 +45,7 @@ def _to_dict(data_class_obj: Union[dataclass, dict]) -> dict:
     elif isinstance(data_class_obj, dict):
 
         for key, value in data_class_obj.items():
-
-            # Handle values that could be Enums.
-            if isinstance(value, Enum):
-                value = value.value
-
-            if isinstance(value, dict):
-                value = _to_dict(data_class_obj=value)
-
-            if isinstance(value, list):
-                value = [_to_dict(data_class_obj=item) for item in value]
+            value = _ensure_value(value)
 
             # Generate the API Key.
             key_parts = key.split("_")
@@ -65,7 +60,7 @@ def _to_dict(data_class_obj: Union[dataclass, dict]) -> dict:
 
 
 @dataclass
-class OrderLegInstrument():
+class OrderLegInstrument:
 
     """
     ## Overview
@@ -101,7 +96,7 @@ class OrderLegInstrument():
 
 
 @dataclass
-class OrderLeg():
+class OrderLeg:
 
     """
     ## Overview
@@ -145,7 +140,7 @@ class OrderLeg():
 
 
 @dataclass
-class Order():
+class Order:
 
     """
     ## Overview

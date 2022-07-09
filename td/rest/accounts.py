@@ -4,7 +4,7 @@ from datetime import datetime
 from td.session import TdAmeritradeSession
 
 
-class Accounts():
+class Accounts:
 
     """
     ## Overview
@@ -73,27 +73,17 @@ class Accounts():
 
         fields = []
 
-        if account_id is None:
-            endpoint = 'accounts'
-        else:
-            endpoint = f'accounts/{account_id}'
-
-        if include_orders is True:
+        endpoint = 'accounts' if account_id is None else f'accounts/{account_id}'
+        if include_orders:
             fields.append('orders')
 
-        if include_positions is True:
+        if include_positions:
             fields.append('positions')
         params = {
             'fields': ','.join(fields),
         }
 
-        content = self.session.make_request(
-            method='get',
-            endpoint=endpoint,
-            params=params
-        )
-
-        return content
+        return self.session.make_request(method='get', endpoint=endpoint, params=params)
 
     def get_transactions(
         self,
@@ -159,13 +149,7 @@ class Accounts():
             'symbol': symbol
         }
 
-        content = self.session.make_request(
-            method='get',
-            endpoint=f'accounts/{account_id}/transactions',
-            params=params
-        )
-
-        return content
+        return self.session.make_request(method='get', endpoint=f'accounts/{account_id}/transactions', params=params)
 
     def get_transaction(self, account_id: str, transaction_id: str) -> dict:
         """Queries a transaction for a specific account.
@@ -200,9 +184,4 @@ class Accounts():
             )
         """
 
-        content = self.session.make_request(
-            method='get',
-            endpoint=f'accounts/{account_id}/transactions/{transaction_id}'
-        )
-
-        return content
+        return self.session.make_request(method='get', endpoint=f'accounts/{account_id}/transactions/{transaction_id}')

@@ -1,33 +1,12 @@
 import asyncio
 from pprint import pprint
-from configparser import ConfigParser
-from td.credentials import TdCredentials
 from td.client import TdAmeritradeClient
 from td.utils.enums import LevelOneQuotes
 from td.utils.enums import LevelTwoQuotes
 
-# Initialize the Parser.
-config = ConfigParser()
 
-# Read the file.
-config.read('config/config.ini')
-
-# Get the specified credentials.
-client_id = config.get('main', 'client_id')
-redirect_uri = config.get('main', 'redirect_uri')
-account_number = config.get('main', 'account_number')
-
-# Intialize our `Crednetials` object.
-td_credentials = TdCredentials(
-    client_id=client_id,
-    redirect_uri=redirect_uri,
-    credential_file='config/td_credentials.json'
-)
-
-# Initalize the `TdAmeritradeClient`
-td_client = TdAmeritradeClient(
-    credentials=td_credentials
-)
+# Initialize the `TdAmeritradeClient`
+td_client = TdAmeritradeClient()
 
 # Initialize the `StreamingApiClient` service.
 streaming_api_service = td_client.streaming_api_client()
@@ -38,13 +17,13 @@ streaming_services = streaming_api_service.services()
 # Grab level one quotes.
 streaming_services.level_one_quotes(
     symbols=['MSFT'],
-    fields=LevelOneQuotes.All
+    fields=LevelOneQuotes.All.value
 )
 
 # Stream Level Two Quotes.
 streaming_services.level_two_quotes(
     symbols=['MSFT', 'PINS'],
-    fields=LevelTwoQuotes.All
+    fields=LevelTwoQuotes.All.value
 )
 
 
@@ -77,7 +56,10 @@ async def data_pipeline():
     # Build the Pipeline.
     await streaming_api_service.build_pipeline()
 
-    # Keep going as long as we can recieve data.
+    # Keep going as long as we can receive data.
+
+    eqs = '=' * 80
+    hyp = '-' * 80
     while True:
 
         # Start the Pipeline.
@@ -85,20 +67,17 @@ async def data_pipeline():
 
         # Grab the Data, if there was any. Remember not every message will have `data.`
         if data and 'data' in data:
-
-            print('='*80)
-
+            print(eqs)
             data_content = data['data'][0]['content']
             pprint(data_content, indent=4)
 
             # Here I can grab data as it comes in and do something with it.
             if 'key' in data_content[0]:
-                print('Here is my key: {}'.format(data_content[0]['key']))
+                print(f"Here is my key: {data_content[0]['key']}")
 
-            print('-'*80)
+            print(hyp)
             data_response_count += 1
 
-        # If we get a heartbeat notice, let's increment our counter.
         elif data and 'notify' in data:
             print(data['notify'][0])
             heartbeat_response_count += 1
@@ -107,9 +86,9 @@ async def data_pipeline():
         if data_response_count == 1:
             unsub = await streaming_api_service.unsubscribe(service='LEVELONE_QUOTES')
             data_response_count += 1
-            print('='*80)
+            print(eqs)
             print(unsub)
-            print('-'*80)
+            print(hyp)
 
         # Once we have 5 heartbeats, let's close the stream. Make sure to break the while loop.
         # or else you will encounter an exception.

@@ -2,7 +2,7 @@ from typing import List
 from td.session import TdAmeritradeSession
 
 
-class Quotes():
+class Quotes:
 
     """
     ## Overview
@@ -53,13 +53,11 @@ class Quotes():
             'symbol': instrument
         }
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint='marketdata/quotes',
             params=params
         )
-
-        return content
 
     def get_quotes(self, instruments=List[str]) -> dict:
         """Grabs real-time quotes for multiple instruments.
@@ -91,10 +89,8 @@ class Quotes():
             'symbol': ','.join(instruments)
         }
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint='marketdata/quotes',
             params=params
         )
-
-        return content

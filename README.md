@@ -82,28 +82,8 @@ from configparser import ConfigParser
 from td.credentials import TdCredentials
 from td.client import TdAmeritradeClient
 
-
-# Initialize the Parser.
-config = ConfigParser()
-
-# Read the file.
-config.read('config/config.ini')
-
-# Get the specified credentials.
-client_id = config.get('main', 'client_id')
-redirect_uri = config.get('main', 'redirect_uri')
-
-# Intialize our `Credentials` object.
-td_credentials = TdCredentials(
-    client_id=client_id,
-    redirect_uri=redirect_uri,
-    credential_file='config/td_credentials.json'
-)
-
 # Initalize the `TdAmeritradeClient`
-td_client = TdAmeritradeClient(
-    credentials=td_credentials
-)
+td_client = TdAmeritradeClient()
 
 # Initialize the Quotes service.
 quote_service = td_client.quotes()
@@ -183,5 +163,5 @@ will refresh your access token when it expires.
 ![Paste URL](https://raw.githubusercontent.com/areed1192/td-ameritrade-python-api/master/samples/instructions/photos/paste_url.jpg "Paste URL")
 
 After, that the script should run. Additionally, if you go to the location you specified in the `credentials_path`
-arugment you will now see `td_state.json` file. This file contains all the info used during a session. Please
+argument you will now see `td_state.json` file. This file contains all the info used during a session. Please
 DO NOT DELETE THIS FILE OR ELSE YOU WILL NEED TO GO THROUGH THE STEPS ABOVE.

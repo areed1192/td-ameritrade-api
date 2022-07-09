@@ -1,5 +1,4 @@
-from setuptools import setup
-from setuptools import find_namespace_packages
+from setuptools import setup, find_packages
 
 # load the README file.
 with open(file="README.md", mode="r") as fh:
@@ -12,7 +11,7 @@ setup(
     # Want to make sure people know who made it.
     author='Alex Reed',
 
-    # also an email they can use to reach out.
+    # Also, an email they can use to reach out.
     author_email='coding.sigma@gmail.com',
 
     # Set the version.
@@ -20,7 +19,7 @@ setup(
 
     # here is a simple description of the library, this will appear when
     # someone searches for the library on https://pypi.org/search
-    description='A python client lirbary for the TD Ameritrade API.',
+    description='A python client library for the TD Ameritrade API.',
 
     # I have a long description but that will just be my README file, note the
     # variable up above where I read the file.
@@ -43,8 +42,7 @@ setup(
     keywords='finance, td ameritrade, api',
 
     # here are the packages I want "build."
-    packages=find_namespace_packages(
-        include=['td'],
+    packages=find_packages(
         exclude=['config*']
     ),
 
@@ -60,6 +58,6 @@ setup(
         'Programming Language :: Python :: 3'
     ],
 
-    # you will need python 3.8 or greater to use this libary.
-    python_requires='>=3.8'
+    # you will need python 3.8 or greater to use this library.
+    python_requires='>=3.9'
 )

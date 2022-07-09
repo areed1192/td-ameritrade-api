@@ -5,7 +5,7 @@ from enum import Enum
 
 
 @dataclass
-class UserPreferences():
+class UserPreferences:
 
     """
     ### Overview

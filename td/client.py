@@ -1,3 +1,7 @@
+import pathlib
+from configparser import ConfigParser
+from typing import Optional, Awaitable, Callable
+
 from td.session import TdAmeritradeSession
 from td.credentials import TdCredentials
 from td.rest.quotes import Quotes
@@ -14,8 +18,7 @@ from td.rest.saved_orders import SavedOrders
 from td.streaming.client import StreamingApiClient
 
 
-class TdAmeritradeClient():
-
+class TdAmeritradeClient:
     """
     ### Overview
     ----
@@ -23,20 +26,51 @@ class TdAmeritradeClient():
     that your session is authenticated.
     """
 
-    def __init__(self, credentials: TdCredentials) -> None:
+    def __init__(self, credentials: Optional[TdCredentials] = None,
+                 config_path: str = 'config',
+                 config_file: str = 'config.ini',
+                 credential_file: str = 'td_credentials.json') -> None:
         """Initializes the `TdClient` object.
 
         ### Parameters
         credentials : TdCredentials
             Your TD Credentials stored in your credentials object
-            so that you can authenitcate with TD.
+            so that you can authenticate with TD.
         """
+        config = ConfigParser()
 
+        if not pathlib.Path(config_path).exists():
+            pathlib.Path(config_path).mkdir()
+            config.add_section("main")
+            config.set('main', 'client_id', '')
+            config.set('main', 'redirect_uri', '')
+            with open(f"{config_path}/{config_file}", mode='w') as fp:
+                config.write(fp)
+
+        config.read(f"{config_path}/{config_file}")
+        self.config = config
+        # Get the specified credentials.
+        client_id = config.get('main', 'client_id')
+        redirect_uri = config.get('main', 'redirect_uri')
+        if not credentials:
+            if not client_id:
+                raise ValueError(f"client_id is required, set the value in {config_path}/{config_file}")
+            if not redirect_uri:
+                raise ValueError(f"redirect_uri is required, set the value in {config_path}/{config_file}")
+
+            credentials = TdCredentials(
+                client_id=client_id,
+                redirect_uri=redirect_uri,
+                credential_file=credential_file
+            )
         self.td_credentials = credentials
         self.td_session = TdAmeritradeSession(td_client=self)
 
     def __repr__(self):
         pass
+
+    def get_account_number(self):
+        return self.config.get('main', 'account_number')
 
     def quotes(self) -> Quotes:
         """Used to access the `Quotes` Services and metadata.
@@ -214,7 +248,11 @@ class TdAmeritradeClient():
 
         return SavedOrders(session=self.td_session)
 
-    def streaming_api_client(self) -> StreamingApiClient:
+    def streaming_api_client(
+        self,
+        on_message_received: Optional[Callable[[dict], Awaitable[None]]] = None,
+        debug: bool = False
+    ) -> StreamingApiClient:
         """Used to access the `StreamingApiClient` Services and metadata.
 
         ### Returns
@@ -228,4 +266,4 @@ class TdAmeritradeClient():
             >>> streaming_api_service = td_client.streaming_api_client()
         """
 
-        return StreamingApiClient(session=self.td_session)
+        return StreamingApiClient(session=self.td_session, on_message_received=on_message_received, debug=debug)

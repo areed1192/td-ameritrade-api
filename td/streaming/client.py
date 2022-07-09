@@ -5,15 +5,20 @@ import asyncio
 import textwrap
 
 from datetime import datetime
+from typing import Optional, Awaitable, Callable
+
 from websockets import client as ws_client
 from websockets import exceptions as ws_exceptions
 
 from td.rest.user_info import UserInfo
 from td.session import TdAmeritradeSession
 from td.streaming.services import StreamingServices
+import logging
+
+logger = logging.getLogger(__name__)
 
 
-class StreamingApiClient():
+class StreamingApiClient:
 
     """
     ## Overview
@@ -23,7 +28,12 @@ class StreamingApiClient():
     streams data back to the user.
     """
 
-    def __init__(self, session: TdAmeritradeSession) -> None:
+    def __init__(
+        self,
+        session: TdAmeritradeSession,
+        on_message_received: Optional[Callable[[dict], Awaitable[None]]] = None,
+        debug: bool = False
+    ) -> None:
         """Initalizes the Streaming Client.
 
         ### Overview
@@ -35,10 +45,12 @@ class StreamingApiClient():
         ----
             >>> td_streaming_client = td_client.streaming_api()
         """
+        self.lock = asyncio.Lock()
+        self.debug = debug
         self.user_principal_data = UserInfo(
             session=session
         ).get_user_principals()
-
+        self.on_message_received = on_message_received
         socket_url = self.user_principal_data['streamerInfo']['streamerSocketUrl']
         self.websocket_url = f"wss://{socket_url}/ws"
 
@@ -64,7 +76,7 @@ class StreamingApiClient():
             "acl": self.user_principal_data['streamerInfo']['acl']
         }
 
-        self.connection: ws_client.WebSocketClientProtocol = None
+        self.connection: Optional[ws_client.WebSocketClientProtocol] = None
         self.data_requests = {
             "requests": []
         }
@@ -110,6 +122,26 @@ class StreamingApiClient():
         }
 
         return json.dumps(login_request)
+
+    async def _send_data_requests(self):
+        """Sends the data requests added, forever."""
+        # Send the data requests, and start getting messages.
+        while True:
+            await asyncio.sleep(0.1)
+            async with self.lock:
+                if not self.data_requests['requests']:
+                    continue
+                data_requests = json.dumps(self.data_requests)
+                self.data_requests = {
+                    "requests": []
+                }
+            try:
+                await self._send_message(data_requests)
+            except ws_exceptions.ConnectionClosed:
+                print("="*80)
+                print('Message: Connection was closed, shutting down send loop.')
+                print("-"*80)
+                break
 
     async def _connect(self) -> ws_client.WebSocketClientProtocol:
         """Connects the Client to the TD Websocket.
@@ -207,7 +239,7 @@ class StreamingApiClient():
         await self.connection.send(message)
 
     async def _receive_message(self, return_value: bool = False) -> dict:
-        """Recieves and processes the messages as needed.
+        """Receives and processes the messages as needed.
 
         ### Parameters
         ----
@@ -223,25 +255,32 @@ class StreamingApiClient():
 
         # Keep going until cancelled.
         while True:
-
             try:
-
                 message = await self.connection.recv()
                 message_decoded = await self._parse_json_message(message=message)
-                print(message_decoded)
 
                 if return_value:
+                    if self.debug:
+                        logger.debug(f"Message: {message_decoded}")
                     return message_decoded
 
-                print(textwrap.dedent('='*80))
-                print(textwrap.dedent("Message Received:"))
-                print(textwrap.dedent('-'*80))
-                pprint.pprint(message_decoded)
-                print(textwrap.dedent('-'*80))
+                if self.on_message_received:
+                    await self.on_message_received(message_decoded)
 
+                if self.debug:
+                    logger.debug(textwrap.dedent('='*80))
+                    logger.debug(textwrap.dedent("Message Received:"))
+                    logger.debug(textwrap.dedent('-'*80))
+                    logger.debug(pprint.pformat(message_decoded))
+                    logger.debug(textwrap.dedent('-'*80))
             except ws_exceptions.ConnectionClosed:
                 await self.close_stream()
                 break
+            except KeyboardInterrupt:
+                await self.close_stream()
+                break
+            except Exception as e:
+                pass
 
     async def _parse_json_message(self, message: str) -> dict:
         """Parses incoming messages from the stream
@@ -268,15 +307,11 @@ class StreamingApiClient():
         return message_decoded
 
     async def heartbeat(self) -> None:
-        """Sending heartbeat to server every 5 seconds."""
-
-        while True:
-            try:
-                await self.connection.send('ping')
-                await asyncio.sleep(5)
-            except ws_exceptions.ConnectionClosed:
-                self.close_stream()
-                break
+        """Keep connection alive."""
+        try:
+            await self.connection.keepalive_ping()
+        except ws_exceptions.ConnectionClosed:
+            await self.close_stream()
 
     def services(self) -> StreamingServices:
         """Returns the streaming services that can be added
@@ -300,7 +335,7 @@ class StreamingApiClient():
 
         ### Overview
         ----
-        Initalizes the stream by building a login request, starting
+        Initializes the stream by building a login request, starting
         an event loop, creating a connection, passing through the
         requests, and keeping the loop running.
         """
@@ -308,10 +343,9 @@ class StreamingApiClient():
         # Connect to the Websocket.
         self.loop.run_until_complete(self._connect())
 
-        # Send the data requests, and start getting messages.
-        data_requests = json.dumps(self.data_requests)
-        asyncio.ensure_future(self._send_message(data_requests))
+        asyncio.ensure_future(self._send_data_requests())
         asyncio.ensure_future(self._receive_message(return_value=False))
+        asyncio.ensure_future(self.heartbeat())
         self.loop.run_forever()
 
     async def close_stream(self) -> None:
@@ -330,17 +364,17 @@ class StreamingApiClient():
         {lin_brk}
         """).format(lin_brk="="*80)
 
-        # Shutdown all asynchronus generators.
+        # Shutdown all asynchronous generators.
         await self.loop.shutdown_asyncgens()
 
         # Stop the loop.
         if self.loop.is_running():
-            self.loop.call_soon_threadsafe(self.loop.stop())
+            self.loop.call_soon_threadsafe(self.loop.stop)
             print(message)
             await asyncio.sleep(3)
 
     async def build_pipeline(self) -> ws_client.WebSocketClientProtocol:
-        """Builds a data pipeine for processing data.
+        """Builds a data pipeline for processing data.
 
         ### Overview
         ----
@@ -364,7 +398,7 @@ class StreamingApiClient():
         return self.connection
 
     async def start_pipeline(self) -> dict:
-        """Recieves the data as it streams in.
+        """Receives the data as it streams in.
 
         ### Returns
         ----
@@ -386,15 +420,15 @@ class StreamingApiClient():
         ### Returns
         ----
         dict:
-            A message from the websocket specifiying whether
+            A message from the websocket specifying whether
             the unsubscribe command was successful.
         """
+        async with self.lock:
+            self.unsubscribe_count += 1
 
-        self.unsubscribe_count += 1
-
-        service_count = len(
-            self.data_requests['requests']
-        ) + self.unsubscribe_count
+            service_count = len(
+                self.data_requests['requests']
+            ) + self.unsubscribe_count
 
         request = {
             "requests": [

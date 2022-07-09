@@ -3,7 +3,7 @@ from typing import Union
 from td.session import TdAmeritradeSession
 
 
-class Instruments():
+class Instruments:
 
     """
     ## Overview
@@ -46,11 +46,11 @@ class Instruments():
 
         ### Usage
         ----
-            >>> from td.enums import Instruments
+            >>> from td.utils.enums import Projections
             >>> instruments_service = td_client.instruments()
             >>> instruments_service.search_instruments(
                 symbol='MSFT',
-                projection='symbol-search'
+                projection=Projections.SymbolSearch.value
             )
         """
 
@@ -62,13 +62,7 @@ class Instruments():
             'projection': projection
         }
 
-        content = self.session.make_request(
-            method='get',
-            endpoint='instruments',
-            params=params
-        )
-
-        return content
+        return self.session.make_request(method='get', endpoint='instruments', params=params)
 
     def get_instrument(self, cusip: str) -> dict:
         """Get an instrument by CUSIP.
@@ -84,16 +78,14 @@ class Instruments():
 
         ### Usage
         ----
-            >>> from td.enums import Instruments
+            >>> from td.utils.enums import Projections
             >>> instruments_service = td_client.instruments()
             >>> instruments_service.get_instrument(
                 cusip='617446448'
             )
         """
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint=f'instruments/{cusip}'
         )
-
-        return content

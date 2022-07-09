@@ -4,7 +4,7 @@ from datetime import datetime
 from td.session import TdAmeritradeSession
 
 
-class PriceHistory():
+class PriceHistory:
 
     """
     ## Overview:
@@ -98,7 +98,7 @@ class PriceHistory():
         """
 
         # Fail early, can't have a period with start and end date specified.
-        if (start_date and end_date and period):
+        if start_date and end_date and period:
             raise ValueError('Cannot have Period with Start Date and End Date')
 
         # Handle datetimes.
@@ -170,10 +170,8 @@ class PriceHistory():
             'needExtendedHoursData': extended_hours_needed
         }
 
-        content = self.session.make_request(
+        return self.session.make_request(
             method='get',
             endpoint=f'marketdata/{symbol}/pricehistory',
             params=params
         )
-
-        return content

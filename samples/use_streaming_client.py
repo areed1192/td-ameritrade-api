@@ -1,5 +1,3 @@
-from configparser import ConfigParser
-from td.credentials import TdCredentials
 from td.client import TdAmeritradeClient
 from td.utils.enums import LevelOneQuotes
 from td.utils.enums import LevelOneOptions
@@ -19,29 +17,7 @@ from td.utils.enums import ChartFuturesPeriods
 from td.utils.enums import LevelTwoQuotes
 from td.utils.enums import LevelTwoOptions
 
-
-# Initialize the Parser.
-config = ConfigParser()
-
-# Read the file.
-config.read('config/config.ini')
-
-# Get the specified credentials.
-client_id = config.get('main', 'client_id')
-redirect_uri = config.get('main', 'redirect_uri')
-account_number = config.get('main', 'account_number')
-
-# Intialize our `Crednetials` object.
-td_credentials = TdCredentials(
-    client_id=client_id,
-    redirect_uri=redirect_uri,
-    credential_file='config/td_credentials.json'
-)
-
-# Initalize the `TdAmeritradeClient`
-td_client = TdAmeritradeClient(
-    credentials=td_credentials
-)
+td_client = TdAmeritradeClient()
 
 # Initialize the `StreamingApiClient` service.
 streaming_api_service = td_client.streaming_api_client()
@@ -57,31 +33,31 @@ streaming_services.quality_of_service(
 # Grab level one quotes.
 streaming_services.level_one_quotes(
     symbols=['MSFT'],
-    fields=LevelOneQuotes.All
+    fields=LevelOneQuotes.All.value
 )
 
 # Grab level one options quotes.
 streaming_services.level_one_options(
     symbols=['MSFT_043021C120'],
-    fields=LevelOneOptions.All
+    fields=LevelOneOptions.All.value
 )
 
 # Grab level one futures quotes.
 streaming_services.level_one_futures(
     symbols=['/ESM4', '/ES'],
-    fields=LevelOneFutures.All
+    fields=LevelOneFutures.All.value
 )
 
 # Grab level one forex quotes.
 streaming_services.level_one_forex(
     symbols=['EUR/USD'],
-    fields=LevelOneForex.All
+    fields=LevelOneForex.All.value
 )
 
 # Stream News Headlines.
 streaming_services.news_headline(
     symbols=['MSFT', 'GOOG', 'AAPL'],
-    fields=NewsHeadlines.All
+    fields=NewsHeadlines.All.value
 )
 
 # Stream Level One Futures Options.
@@ -94,14 +70,14 @@ streaming_services.level_one_futures_options(
 streaming_services.chart(
     service=ChartServices.ChartEquity,
     symbols=['MSFT', 'GOOG', 'AAPL'],
-    fields=ChartEquity.All
+    fields=ChartEquity.All.value
 )
 
 # Stream Time & Sales data.
 streaming_services.timesale(
-    service=TimesaleServices.TimesaleEquity,
+    service=TimesaleServices.TimesaleEquity.value,
     symbols=['MSFT', 'GOOG', 'AAPL'],
-    fields=Timesale.All
+    fields=Timesale.All.value
 )
 
 # Stream the Actives.
