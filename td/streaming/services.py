@@ -124,18 +124,18 @@ class StreamingServices():
                 if isinstance(field, int):
                     field = str(int)
                 elif isinstance(field, Enum):
-                    field = field.value
+                    field = str(field.value)
                 new_fields.append(field)
 
         if isinstance(fields, Enum):
-            fields = fields.value
+            new_fields = fields.value
 
         # Build the request
         request = self._new_request_template()
         request['service'] = 'QUOTE'
         request['command'] = 'SUBS'
         request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(fields)
+        request['parameters']['fields'] = ','.join(new_fields)
 
         self.streaming_api_client.data_requests['requests'].append(request)
 
@@ -172,18 +172,18 @@ class StreamingServices():
                 if isinstance(field, int):
                     field = str(int)
                 elif isinstance(field, Enum):
-                    field = field.value
+                    field = str(field.value)
                 new_fields.append(field)
 
         if isinstance(fields, Enum):
-            fields = fields.value
+            new_fields = fields.value
 
         # Build the request
         request = self._new_request_template()
         request['service'] = 'OPTION'
         request['command'] = 'SUBS'
         request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(fields)
+        request['parameters']['fields'] = ','.join(new_fields)
 
         self.streaming_api_client.data_requests['requests'].append(request)
 
@@ -220,18 +220,18 @@ class StreamingServices():
                 if isinstance(field, int):
                     field = str(int)
                 elif isinstance(field, Enum):
-                    field = field.value
+                    field = str(field.value)
                 new_fields.append(field)
 
         if isinstance(fields, Enum):
-            fields = fields.value
+            new_fields = fields.value
 
         # Build the request
         request = self._new_request_template()
         request['service'] = 'LEVELONE_FUTURES'
         request['command'] = 'SUBS'
         request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(fields)
+        request['parameters']['fields'] = ','.join(new_fields)
 
         self.streaming_api_client.data_requests['requests'].append(request)
 
@@ -269,18 +269,18 @@ class StreamingServices():
                 if isinstance(field, int):
                     field = str(int)
                 elif isinstance(field, Enum):
-                    field = field.value
+                    field = str(field.value)
                 new_fields.append(field)
 
         if isinstance(fields, Enum):
-            fields = fields.value
+            new_fields = fields.value
 
         # Build the request
         request = self._new_request_template()
         request['service'] = 'LEVELONE_FUTURES_OPTIONS'
         request['command'] = 'SUBS'
         request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(fields)
+        request['parameters']['fields'] = ','.join(new_fields)
 
         self.streaming_api_client.data_requests['requests'].append(request)
 
@@ -317,18 +317,18 @@ class StreamingServices():
                 if isinstance(field, int):
                     field = str(int)
                 elif isinstance(field, Enum):
-                    field = field.value
+                    field = str(field.value)
                 new_fields.append(field)
 
         if isinstance(fields, Enum):
-            fields = fields.value
+            new_fields = fields.value
 
         # Build the request
         request = self._new_request_template()
         request['service'] = 'LEVELONE_FOREX'
         request['command'] = 'SUBS'
         request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(fields)
+        request['parameters']['fields'] = ','.join(new_fields)
 
         self.streaming_api_client.data_requests['requests'].append(request)
 
@@ -389,18 +389,18 @@ class StreamingServices():
                 if isinstance(field, int):
                     field = str(int)
                 elif isinstance(field, Enum):
-                    field = field.value
+                    field = str(field.value)
                 new_fields.append(field)
 
         if isinstance(fields, Enum):
-            fields = fields.value
+            new_fields = fields.value
 
         # Build the request
         request = self._new_request_template()
         request['service'] = 'NEWS_HEADLINE'
         request['command'] = 'SUBS'
         request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(fields)
+        request['parameters']['fields'] = ','.join(new_fields)
 
         self.streaming_api_client.data_requests['requests'].append(request)
 
@@ -451,18 +451,18 @@ class StreamingServices():
                 if isinstance(field, int):
                     field = str(int)
                 elif isinstance(field, Enum):
-                    field = field.value
+                    field = str(field.value)
                 new_fields.append(field)
 
         if isinstance(fields, Enum):
-            fields = fields.value
+            new_fields = fields.value
 
         # Build the request
         request = request = self._new_request_template()
         request['service'] = service
         request['command'] = 'SUBS'
         request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(fields)
+        request['parameters']['fields'] = ','.join(new_fields)
         self.streaming_api_client.data_requests['requests'].append(request)
 
     def timesale(
@@ -507,18 +507,18 @@ class StreamingServices():
                 if isinstance(field, int):
                     field = str(int)
                 elif isinstance(field, Enum):
-                    field = field.value
+                    field = str(field.value)
                 new_fields.append(field)
 
         if isinstance(fields, Enum):
-            fields = fields.value
+            new_fields = fields.value
 
         # Build the request
         request = self._new_request_template()
         request['service'] = service
         request['command'] = 'SUBS'
         request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(fields)
+        request['parameters']['fields'] = ','.join(new_fields)
 
         self.streaming_api_client.data_requests['requests'].append(request)
 
@@ -695,18 +695,18 @@ class StreamingServices():
                 if isinstance(field, int):
                     field = str(int)
                 elif isinstance(field, Enum):
-                    field = field.value
+                    field = str(field.value)
                 new_fields.append(field)
 
         if isinstance(fields, Enum):
-            fields = fields.value
+            new_fields = fields.value
 
         # Build the request
         request = self._new_request_template()
         request['service'] = 'LISTED_BOOK'
         request['command'] = 'SUBS'
         request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(fields)
+        request['parameters']['fields'] = ','.join(new_fields)
 
         self.streaming_api_client.data_requests['requests'].append(request)
 
@@ -743,17 +743,17 @@ class StreamingServices():
                 if isinstance(field, int):
                     field = str(int)
                 elif isinstance(field, Enum):
-                    field = field.value
+                    field = str(field.value)
                 new_fields.append(field)
 
         if isinstance(fields, Enum):
-            fields = fields.value
+            new_fields = fields.value
 
         # Build the request
         request = self._new_request_template()
         request['service'] = 'OPTIONS_BOOK'
         request['command'] = 'SUBS'
         request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(fields)
+        request['parameters']['fields'] = ','.join(new_fields)
 
         self.streaming_api_client.data_requests['requests'].append(request)
