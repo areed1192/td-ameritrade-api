@@ -1,17 +1,17 @@
 import json
 import pathlib
-
-from typing import Union
-from datetime import datetime
-
+import inspect
+import os
+import configparser
 import multiprocessing as mp
 from time import sleep
+from typing import Union
+from datetime import datetime
 from urllib.parse import unquote
 import requests
-
 from splinter import Browser
-from td.config.get_config import config
-from td.logging.create_logger import get_logger
+from td.config import TdConfiguration
+from td.logger import TdLogger
 
 
 class TdCredentials:
@@ -33,11 +33,12 @@ class TdCredentials:
 
     def __init__(
         self,
-        client_id: str,
-        redirect_uri: str,
+        user_config: TdConfiguration = None,
+        client_id: str = None,
+        redirect_uri: str = None,
         token_dict: dict = None,
         token_file: Union[str, pathlib.Path] = None,
-        app_name: str = "td-api-app",
+        app_name: str = None,
         login_credentials_dict: dict = None
         ) -> None:
         """Initializes the `TdCredential` object."""
@@ -54,9 +55,17 @@ class TdCredentials:
         self._token_type = ''
         self._expires_in = 0
         self._refresh_token_expires_in = 0
-        self._app_name = app_name
-        self._client_id = client_id
-        self._redirect_uri = redirect_uri
+
+        if user_config:
+            self._user_config = user_config
+            self._app_name = self._user_config.get('app_info', 'app_name')
+            self._client_id = self._user_config.get('app_info', 'client_id')
+            self._redirect_uri = self._user_config.get('app_info', 'redirect_uri')
+        else:
+            self._app_name = app_name
+            self._client_id = client_id
+            self._redirect_uri = redirect_uri
+
         self.__login_credentials_dict = login_credentials_dict
 
         self.resource_url = 'https://api.tdameritrade.com/'
@@ -65,16 +74,16 @@ class TdCredentials:
         self.authorization_url = 'https://auth.tdameritrade.com/auth?'
         self.authorization_code = ""
         self._file_path = pathlib.Path.joinpath(
-                                        pathlib.Path(config.get('config', 'config_directory_path')),
-                                        self.app_name + "/td_credentials.json"
+                                        pathlib.Path(self._user_config.config_directory_path),
+                                        self._app_name + "/td_credentials.json"
                                         )
         self._file_path_base = pathlib.Path.joinpath(
-                                        pathlib.Path(config.get('config', 'config_directory_path')),
+                                        pathlib.Path(self._user_config.config_directory_path),
                                         self.app_name
                                         )
         self._first_pass = True
 
-        self.log = get_logger(__name__)
+        self.log = TdLogger(self._user_config, __name__)
 
         if token_file:
             if isinstance(token_file, pathlib.Path):
@@ -415,7 +424,7 @@ class TdCredentials:
             The file path to the token file.
 
         """
-        with open(file=file_path, mode='r') as token_file:
+        with open(file=file_path, mode='r', encoding='utf-8') as token_file:
             token_dict = json.load(fp=token_file)
             self.from_token_dict(token_dict=token_dict)
 
@@ -440,7 +449,7 @@ class TdCredentials:
         if isinstance(file_path, pathlib.Path):
             file_path = file_path.resolve()
 
-        with open(file=file_path, mode='w+') as token_file:
+        with open(file=file_path, mode='w+', encoding='utf-8') as token_file:
             json.dump(obj=self.to_token_dict(), fp=token_file, indent=2)
 
     def grab_authorization_code(self) -> None:
@@ -448,11 +457,11 @@ class TdCredentials:
 
         # define the location of the Chrome Driver - CHANGE THIS!!!!!
         executable_path = {
-            'executable_path': config.get('scraping', 'browser_directory_path')
+            'executable_path': self._user_config.browser_directory_path
         }
 
         # Create a new instance of the browser
-        browser = Browser(config.get('scraping', 'browser_type'), **executable_path, headless=True)
+        browser = Browser(self._user_config.browser_type, **executable_path, headless=True)
 
         data = {
             "response_type": "code",
@@ -639,25 +648,34 @@ class TdCredentials:
             self.__login_credentials_dict = None
             self.to_token_file(file_path=self._file_path)
 
+
     @staticmethod
     def authentication_default():
         """
         Quicker initialization of TdCredentials class.
         No longer have to explicitly provide multiple
         parameters. Instead they're loaded from the config
-        file. Requires secret question and answer information
+        file, which is assumed to be on config/config.ini.
+        Requires secret question and answer information
         for automated logging in & generation of tokens.
 
         ### Usage
         ----
             >>> td_credentials = TdCredentials.authentication_default()
         """
+        #user config object
+        caller_filename = inspect.stack()[1].filename
+        caller_directory = os.path.basename(caller_filename)
+        config_path = os.path.join(caller_directory, 'config/config.ini')
+        config = configparser.ConfigParser()
+        config.read(config_path)
+
         # Get the specified credentials.
-        app_name = config.get('credentials', 'app_name')
-        client_id = config.get('credentials', 'client_id')
-        redirect_uri = config.get('credentials', 'redirect_uri')
-        username = config.get('credentials', 'username')
-        account_password = config.get('credentials', 'account_password')
+        app_name = config.get('app_info', 'app_name')
+        client_id = config.get('app_info', 'client_id')
+        redirect_uri = config.get('app_info', 'redirect_uri')
+        username = config.get('app_info', 'username')
+        account_password = config.get('app_info', 'account_password')
 
         secretquestion0 = config.get('credentials', 'secretquestion0')
         secretanswer0 = config.get('credentials', 'secretanswer0')

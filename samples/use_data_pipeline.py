@@ -2,15 +2,19 @@ import asyncio
 from pprint import pprint
 from td.credentials import TdCredentials
 from td.client import TdAmeritradeClient
+from td.config import TdConfiguration
 from td.utils.enums import LevelOneQuotes
 from td.utils.enums import LevelTwoQuotes
+
+config = TdConfiguration("config/config.ini")
 
 # Initialize our `Credentials` object.
 td_credentials = TdCredentials.authentication_default()
 
 # Initialize the `TdAmeritradeClient`
 td_client = TdAmeritradeClient(
-    credentials=td_credentials
+    credentials=td_credentials,
+    config=config
 )
 
 # Initialize the `StreamingApiClient` service.

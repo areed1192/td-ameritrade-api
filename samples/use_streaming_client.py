@@ -1,5 +1,6 @@
 from td.credentials import TdCredentials
 from td.client import TdAmeritradeClient
+from td.config import TdConfiguration
 from td.utils.enums import LevelOneQuotes
 from td.utils.enums import LevelOneOptions
 from td.utils.enums import LevelOneFutures
@@ -18,13 +19,15 @@ from td.utils.enums import ChartFuturesPeriods
 from td.utils.enums import LevelTwoQuotes
 from td.utils.enums import LevelTwoOptions
 
+config = TdConfiguration("config/config.ini")
 
 # Initialize our `Credentials` object.
 td_credentials = TdCredentials.authentication_default()
 
 # Initialize the `TdAmeritradeClient`
 td_client = TdAmeritradeClient(
-    credentials=td_credentials
+    credentials=td_credentials,
+    config=config
 )
 
 # Initialize the `StreamingApiClient` service.

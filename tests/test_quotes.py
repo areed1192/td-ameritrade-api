@@ -3,6 +3,7 @@ from unittest import TestCase
 
 from td.rest.quotes import Quotes
 from td.client import TdAmeritradeClient
+from td.config import TdConfiguration
 from td.credentials import TdCredentials
 
 
@@ -16,9 +17,12 @@ class TestQuotesService(TestCase):
         # Initialize our `Credentials` object.
         self.td_credentials = TdCredentials.authentication_default()
 
+        self.config = TdConfiguration("config/config.ini")
+
         # Initialize the `TdAmeritradeClient`
         self.td_client = TdAmeritradeClient(
-            credentials=self.td_credentials
+            credentials=self.td_credentials,
+            config=self.config
         )
 
         self.service = self.td_client.quotes()

@@ -1,19 +1,23 @@
 from pprint import pprint
 
 from td.client import TdAmeritradeClient
-from td.config.get_config import config
 from td.credentials import TdCredentials
 from td.utils.enums import TransactionTypes
+from td.config import TdConfiguration
 
 # Initialize our `Credentials` object.
 td_credentials = TdCredentials.authentication_default()
 
+# A config object
+config = TdConfiguration("config/config.ini")
+
 # Initialize the `TdAmeritradeClient`
 td_client = TdAmeritradeClient(
-    credentials=td_credentials
+    credentials=td_credentials,
+    config=config
 )
 
-account_number = config.get('accounts', 'default')
+account_number = config.default
 
 # Initialize the `Accounts` service.
 accounts_service = td_client.accounts()
