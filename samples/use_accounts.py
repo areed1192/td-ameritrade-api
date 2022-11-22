@@ -9,7 +9,7 @@ from td.config import TdConfiguration
 td_credentials = TdCredentials.authentication_default()
 
 # A config object
-config = TdConfiguration("config/config.ini")
+config = TdConfiguration()
 
 # Initialize the `TdAmeritradeClient`
 td_client = TdAmeritradeClient(

@@ -5,7 +5,7 @@ from td.utils.enums import OrderStatus
 from td.config import TdConfiguration
 
 # A config object
-config = TdConfiguration("config/config.ini")
+config = TdConfiguration("config-example/config.ini")
 
 # Initialize our `Credentials` object.
 td_credentials = TdCredentials.authentication_default()

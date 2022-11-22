@@ -5,7 +5,7 @@ from td.client import TdAmeritradeClient
 from td.config import TdConfiguration
 from td.utils.enums import Markets
 
-config = TdConfiguration("config/config.ini")
+config = TdConfiguration()
 
 # Initialize our `Credentials` object.
 td_credentials = TdCredentials.authentication_default()

@@ -17,7 +17,7 @@ class TestQuotesService(TestCase):
         # Initialize our `Credentials` object.
         self.td_credentials = TdCredentials.authentication_default()
 
-        self.config = TdConfiguration("config/config.ini")
+        self.config = TdConfiguration()
 
         # Initialize the `TdAmeritradeClient`
         self.td_client = TdAmeritradeClient(

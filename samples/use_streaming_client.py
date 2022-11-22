@@ -19,7 +19,7 @@ from td.utils.enums import ChartFuturesPeriods
 from td.utils.enums import LevelTwoQuotes
 from td.utils.enums import LevelTwoOptions
 
-config = TdConfiguration("config/config.ini")
+config = TdConfiguration()
 
 # Initialize our `Credentials` object.
 td_credentials = TdCredentials.authentication_default()

@@ -19,7 +19,7 @@ class TestMarketHourService(TestCase):
         # Initialize our `Credentials` object.
         self.td_credentials = TdCredentials.authentication_default()
 
-        self.config = TdConfiguration("config/config.ini")
+        self.config = TdConfiguration()
 
         # Initialize the `TdAmeritradeClient`
         self.td_client = TdAmeritradeClient(
@@ -68,7 +68,7 @@ class TestMarketHourService(TestCase):
             date_time=datetime.now()
         )
 
-        self.assertEqual('bond', list(response.keys())[0])
+        self.assertEqual('bond', list(response.keys())[1])
 
         # Grab the market hours for the equity Markets, using Enums.
         response = self.service.get_multiple_market_hours(
@@ -76,7 +76,7 @@ class TestMarketHourService(TestCase):
             date_time=datetime.now()
         )
 
-        self.assertEqual('equity', list(response.keys())[1])
+        self.assertEqual('equity', list(response.keys())[0])
 
     def tearDown(self) -> None:
         """Teardown the `TdAmeritradeClient` Client."""

@@ -1,15 +1,14 @@
 import json
 import pathlib
-import inspect
-import os
-import configparser
 import multiprocessing as mp
 from time import sleep
 from typing import Union
 from datetime import datetime
 from urllib.parse import unquote
 import requests
-from splinter import Browser
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium import webdriver
 from td.config import TdConfiguration
 from td.logger import TdLogger
 
@@ -40,7 +39,7 @@ class TdCredentials:
         token_file: Union[str, pathlib.Path] = None,
         app_name: str = None,
         login_credentials_dict: dict = None
-        ) -> None:
+    ) -> None:
         """Initializes the `TdCredential` object."""
 
         TdCredentials.__consumer_apps[app_name] = {
@@ -60,7 +59,8 @@ class TdCredentials:
             self._user_config = user_config
             self._app_name = self._user_config.get('app_info', 'app_name')
             self._client_id = self._user_config.get('app_info', 'client_id')
-            self._redirect_uri = self._user_config.get('app_info', 'redirect_uri')
+            self._redirect_uri = self._user_config.get(
+                'app_info', 'redirect_uri')
         else:
             self._app_name = app_name
             self._client_id = client_id
@@ -74,13 +74,13 @@ class TdCredentials:
         self.authorization_url = 'https://auth.tdameritrade.com/auth?'
         self.authorization_code = ""
         self._file_path = pathlib.Path.joinpath(
-                                        pathlib.Path(self._user_config.config_directory_path),
-                                        self._app_name + "/td_credentials.json"
-                                        )
+            pathlib.Path(self._user_config._config_directory_parent_path),
+            self._app_name + "/td_credentials.json"
+        )
         self._file_path_base = pathlib.Path.joinpath(
-                                        pathlib.Path(self._user_config.config_directory_path),
-                                        self.app_name
-                                        )
+            pathlib.Path(self._user_config._config_directory_parent_path),
+            self._app_name
+        )
         self._first_pass = True
 
         self.log = TdLogger(self._user_config, __name__)
@@ -293,23 +293,23 @@ class TdCredentials:
         )
         TdCredentials.__consumer_apps[self._app_name]["refresh_token_expiration_time"] = \
             token_dict.get('refresh_token_expiration_time', 0
-        )
+                           )
 
         TdCredentials.__consumer_apps[self._app_name]["access_token_expiration_time"] = \
             token_dict.get('access_token_expiration_time', 0
-        )
+                           )
 
         # Calculate the Refresh Token expiration time.
         if isinstance(
             TdCredentials.__consumer_apps[self._app_name]["refresh_token_expiration_time"], str
-            ):
+        ):
             TdCredentials.__consumer_apps[self._app_name][
                 "refresh_token_expiration_time"] = datetime.fromisoformat(
                 TdCredentials.__consumer_apps[self._app_name]["refresh_token_expiration_time"]
             )
         elif isinstance(
             TdCredentials.__consumer_apps[self._app_name]["refresh_token_expiration_time"], float
-            ):
+        ):
             TdCredentials.__consumer_apps[self._app_name][
                 "refresh_token_expiration_time"] = datetime.fromtimestamp(
                 TdCredentials.__consumer_apps[self._app_name]["refresh_token_expiration_time"]
@@ -322,18 +322,18 @@ class TdCredentials:
         # Calculate the Access Token Expiration Time.
         if isinstance(
             TdCredentials.__consumer_apps[self._app_name]["access_token_expiration_time"], str
-            ):
+        ):
             TdCredentials.__consumer_apps[self._app_name]["access_token_expiration_time"] = \
                 datetime.fromisoformat(
                     TdCredentials.__consumer_apps[self._app_name]["access_token_expiration_time"]
-                )
+            )
         elif isinstance(
             TdCredentials.__consumer_apps[self._app_name]["access_token_expiration_time"], float
-            ):
+        ):
             TdCredentials.__consumer_apps[self._app_name]["access_token_expiration_time"] = \
                 datetime.fromtimestamp(
                     TdCredentials.__consumer_apps[self._app_name]["access_token_expiration_time"]
-                )
+            )
         else:
             self._calculate_access_token_expiration(
                 expiration_secs=self._expires_in,
@@ -399,7 +399,7 @@ class TdCredentials:
             datetime.fromtimestamp(expiration_time)
 
     def from_workflow(self) -> None:
-        """Grabs an Access toke and refresh token using
+        """Grabs an Access token and refresh token using
         the oAuth workflow.
 
         ### Usage
@@ -455,13 +455,22 @@ class TdCredentials:
     def grab_authorization_code(self) -> None:
         """Generates the URL to grab the authorization code."""
 
-        # define the location of the Chrome Driver - CHANGE THIS!!!!!
         executable_path = {
             'executable_path': self._user_config.browser_directory_path
         }
 
-        # Create a new instance of the browser
-        browser = Browser(self._user_config.browser_type, **executable_path, headless=True)
+        # instance of Options class allows
+        # us to configure Headless Chrome
+        options = Options()
+
+        # this parameter tells Chrome that
+        # it should be run without UI (Headless)
+        options.headless = True
+
+        caps = webdriver.DesiredCapabilities.CHROME.copy()
+        caps['goog:loggingPrefs'] = {'browser': 'ALL'}
+        driver = webdriver.Chrome(
+            executable_path=executable_path['executable_path'], desired_capabilities=caps, options=options)
 
         data = {
             "response_type": "code",
@@ -476,7 +485,7 @@ class TdCredentials:
         auth_url = request.url
 
         # go to the URL
-        browser.visit(auth_url)
+        driver.get(auth_url)
 
         sleep(2)
 
@@ -485,53 +494,56 @@ class TdCredentials:
                    'password': self.__login_credentials_dict["account_password"]}
 
         # fill out each part of the form and click submit
-        browser.find_by_id("username0").first.fill(payload['username'])
-        browser.find_by_id("password1").first.fill(payload['password'])
-        browser.find_by_id("accept").first.click()
+        driver.find_element(By.ID, "username0").send_keys(payload['username'])
+        driver.find_element(By.ID, "password1").send_keys(payload['password'])
+        driver.find_element(By.ID, "accept").click()
 
         sleep(2)
 
-        browser.find_by_text('Can\'t get the text message?').first.click()
+        # driver.find_by_text('Can\'t get the text message?').first.click()
+        driver.find_element(By.CSS_SELECTOR, 'summary.row').click()
 
         # Get the Answer Box
-        browser.find_by_value("Answer a security question").first.click()
+        driver.find_element(
+            By.XPATH, "//*[@value='Answer a security question']").click()
 
         sleep(2)
 
         # Answer the Security Questions.
-        if browser.is_text_present(self.__login_credentials_dict["secretquestion0"]):
-            browser.find_by_id("secretquestion0").first.click()
-            browser.find_by_id('secretquestion0').first.fill(
+        if (self.__login_credentials_dict["secretquestion0"] in driver.page_source):
+            driver.find_element("id", "secretquestion0").click()
+            driver.find_element("id", 'secretquestion0').send_keys(
                 self.__login_credentials_dict["secretanswer0"])
-        elif browser.is_text_present(self.__login_credentials_dict["secretquestion1"]):
-            browser.find_by_id("secretquestion0").first.click()
-            browser.find_by_id('secretquestion0').first.fill(
+        elif (self.__login_credentials_dict["secretquestion1"] in driver.page_source):
+            driver.find_element("id", "secretquestion0").click()
+            driver.find_element("id", 'secretquestion0').send_keys(
                 self.__login_credentials_dict["secretanswer1"])
-        elif browser.is_text_present(self.__login_credentials_dict["secretquestion2"]):
-            browser.find_by_id("secretquestion0").first.click()
-            browser.find_by_id('secretquestion0').first.fill(
+        elif (self.__login_credentials_dict["secretquestion2"] in driver.page_source):
+            driver.find_element("id", "secretquestion0").click()
+            driver.find_element("id", 'secretquestion0').send_keys(
                 self.__login_credentials_dict["secretanswer2"])
-        elif browser.is_text_present(self.__login_credentials_dict["secretquestion3"]):
-            browser.find_by_id("secretquestion0").first.click()
-            browser.find_by_id('secretquestion0').first.fill(
+        elif (self.__login_credentials_dict["secretquestion3"] in driver.page_source):
+            driver.find_element("id", "secretquestion0").click()
+            driver.find_element("id", 'secretquestion0').send_keys(
                 self.__login_credentials_dict["secretanswer3"])
 
-        browser.find_by_id('accept').first.click()
+        driver.find_element("id", 'accept').click()
 
         sleep(2)
 
-        browser.find_by_text('No, do not trust this device').first.click()
+        driver.find_element(
+            By.XPATH, "//*[contains(., 'No, do not trust this device')]").click()
         # Submit results
-        browser.find_by_id('accept').first.click()
+        driver.find_element("id", 'accept').click()
 
         sleep(2)
 
-        browser.find_by_id('accept').first.click()
+        driver.find_element("id", 'accept').click()
 
         sleep(2)
 
-        new_url = browser.url
-        browser.quit()
+        new_url = driver.current_url
+        driver.quit()
         self.authorization_code = unquote(
             new_url.split("code=")[1])
 
@@ -648,61 +660,28 @@ class TdCredentials:
             self.__login_credentials_dict = None
             self.to_token_file(file_path=self._file_path)
 
-
     @staticmethod
-    def authentication_default():
+    def authentication_default(config_path: str = "config/config.ini"):
         """
         Quicker initialization of TdCredentials class.
         No longer have to explicitly provide multiple
         parameters. Instead they're loaded from the config
-        file, which is assumed to be on config/config.ini.
+        file, which is assumed to be on config.ini.
         Requires secret question and answer information
         for automated logging in & generation of tokens.
 
         ### Usage
         ----
             >>> td_credentials = TdCredentials.authentication_default()
-        """
-        #user config object
-        caller_filename = inspect.stack()[1].filename
-        caller_directory = os.path.basename(caller_filename)
-        config_path = os.path.join(caller_directory, 'config/config.ini')
-        config = configparser.ConfigParser()
-        config.read(config_path)
-
-        # Get the specified credentials.
-        app_name = config.get('app_info', 'app_name')
-        client_id = config.get('app_info', 'client_id')
-        redirect_uri = config.get('app_info', 'redirect_uri')
-        username = config.get('app_info', 'username')
-        account_password = config.get('app_info', 'account_password')
-
-        secretquestion0 = config.get('credentials', 'secretquestion0')
-        secretanswer0 = config.get('credentials', 'secretanswer0')
-        secretquestion1 = config.get('credentials', 'secretquestion1')
-        secretanswer1 = config.get('credentials', 'secretanswer1')
-        secretquestion2 = config.get('credentials', 'secretquestion2')
-        secretanswer2 = config.get('credentials', 'secretanswer2')
-        secretquestion3 = config.get('credentials', 'secretquestion3')
-        secretanswer3 = config.get('credentials', 'secretanswer3')
-
-        login_credentials = {
-            "username": username,
-            "account_password": account_password,
-            "secretquestion0": secretquestion0,
-            "secretanswer0": secretanswer0,
-            "secretquestion1": secretquestion1,
-            "secretanswer1": secretanswer1,
-            "secretquestion2": secretquestion2,
-            "secretanswer2": secretanswer2,
-            "secretquestion3": secretquestion3,
-            "secretanswer3": secretanswer3,
-        }
+        """ 
+        # user config object
+        td_configuration = TdConfiguration(config_path)
 
         # Initialize our `Credentials` object.
         return TdCredentials(
-            app_name=app_name,
-            client_id=client_id,
-            redirect_uri=redirect_uri,
-            login_credentials_dict=login_credentials
+            user_config=td_configuration,
+            app_name=td_configuration.app_name,
+            client_id=td_configuration.client_id,
+            redirect_uri=td_configuration.redirect_uri,
+            login_credentials_dict=td_configuration.get_login_credentials()
         )
