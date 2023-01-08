@@ -17,7 +17,7 @@ td_client = TdAmeritradeClient(
     config=config
 )
 
-account_number = config.default
+account_number = config.default_account # pylint: disable=E1101:no-member
 
 # Initialize the `Accounts` service.
 accounts_service = td_client.accounts()
