@@ -41,81 +41,81 @@ streaming_services.quality_of_service(
     qos_level='1'
 )
 
-# Grab level one quotes.
-streaming_services.level_one_quotes(
-    symbols=['MSFT'],
-    fields=LevelOneQuotes.All
-)
+# # Grab level one quotes.
+# streaming_services.level_one_quotes(
+#     symbols=['MSFT'],
+#     fields=LevelOneQuotes.All
+# )
 
-# Grab level one options quotes.
-streaming_services.level_one_options(
-    symbols=['MSFT_043021C120'],
-    fields=LevelOneOptions.All
-)
+# # Grab level one options quotes.
+# streaming_services.level_one_options(
+#     symbols=['MSFT_043021C120'],
+#     fields=LevelOneOptions.All
+# )
 
-# Grab level one futures quotes.
-streaming_services.level_one_futures(
-    symbols=['/ESM4', '/ES'],
-    fields=LevelOneFutures.All
-)
+# # Grab level one futures quotes.
+# streaming_services.level_one_futures(
+#     symbols=['/NQ', '/ES'],
+#     fields=LevelOneFutures.All
+# )
 
-# Grab level one forex quotes.
-streaming_services.level_one_forex(
-    symbols=['EUR/USD'],
-    fields=LevelOneForex.All
-)
+# # Grab level one forex quotes.
+# streaming_services.level_one_forex(
+#     symbols=['EUR/USD'],
+#     fields=LevelOneForex.All
+# )
 
-# Stream News Headlines.
-streaming_services.news_headline(
-    symbols=['MSFT', 'GOOG', 'AAPL'],
-    fields=NewsHeadlines.All
-)
+# # Stream News Headlines.
+# streaming_services.news_headline(
+#     symbols=['MSFT', 'GOOG', 'AAPL'],
+#     fields=NewsHeadlines.All
+# )
 
-# Stream Level One Futures Options.
-streaming_services.level_one_futures_options(
-    symbols=['./CLM21P625'],
-    fields=LevelOneFuturesOptions.All
-)
+# # Stream Level One Futures Options.
+# streaming_services.level_one_futures_options(
+#     symbols=['./CLM21P625'],
+#     fields=LevelOneFuturesOptions.All
+# )
 
-# Stream equity bars.
-streaming_services.chart(
-    service=ChartServices.ChartEquity,
-    symbols=['MSFT', 'GOOG', 'AAPL'],
-    fields=ChartEquity.All
-)
+# # Stream equity bars.
+# streaming_services.chart(
+#     service=ChartServices.ChartEquity,
+#     symbols=['MSFT', 'GOOG', 'AAPL'],
+#     fields=ChartEquity.All
+# )
 
-# Stream Time & Sales data.
-streaming_services.timesale(
-    service=TimesaleServices.TimesaleEquity,
-    symbols=['MSFT', 'GOOG', 'AAPL'],
-    fields=Timesale.All
-)
+# # Stream Time & Sales data.
+# streaming_services.timesale(
+#     service=TimesaleServices.TimesaleEquity,
+#     symbols=['MSFT', 'GOOG', 'AAPL'],
+#     fields=Timesale.All
+# )
 
-# Stream the Actives.
-streaming_services.actives(
-    service=ActivesServices.ActivesNasdaq,
-    venue=ActivesVenues.NasdaqExchange,
-    duration=ActivesDurations.All
-)
+# # Stream the Actives.
+# streaming_services.actives(
+#     service=ActivesServices.ActivesNasdaq,
+#     venue=ActivesVenues.NasdaqExchange,
+#     duration=ActivesDurations.All
+# )
 
 # Stream Historical Futures Prices.
 streaming_services.chart_history_futures(
-    symbols=['/ES', '/CL'],
+    symbols=['/ES'],
     frequency=ChartFuturesFrequencies.OneMinute,
     period=ChartFuturesPeriods.OneDay
 )
 
-# Stream Level Two Quotes.
-streaming_services.level_two_quotes(
-    symbols=['MSFT', 'PINS'],
-    fields=LevelTwoQuotes.All
-)
+# # Stream Level Two Quotes.
+# streaming_services.level_two_quotes(
+#     symbols=['MSFT', 'PINS'],
+#     fields=LevelTwoQuotes.All
+# )
 
-# Stream Level Two Quotes.
-streaming_services.level_two_options(
-    symbols=['MSFT_043021C120'],
-    fields=LevelTwoOptions.All
-)
+# # Stream Level Two Quotes.
+# streaming_services.level_two_options(
+#     symbols=['MSFT_043021C120'],
+#     fields=LevelTwoOptions.All
+# )
 
 # Start Streaming.
 streaming_api_service.open_stream()

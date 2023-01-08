@@ -9,6 +9,8 @@ import requests
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from td.config import TdConfiguration
 from td.logger import TdLogger
 
@@ -54,13 +56,13 @@ class TdCredentials:
         self._token_type = ''
         self._expires_in = 0
         self._refresh_token_expires_in = 0
+        self._request_timeout = 3
 
         if user_config:
             self._user_config = user_config
-            self._app_name = self._user_config.get('app_info', 'app_name')
-            self._client_id = self._user_config.get('app_info', 'client_id')
-            self._redirect_uri = self._user_config.get(
-                'app_info', 'redirect_uri')
+            self._app_name = self._user_config.app_name
+            self._client_id = self._user_config.client_id
+            self._redirect_uri = self._user_config.redirect_uri
         else:
             self._app_name = app_name
             self._client_id = client_id
@@ -455,13 +457,10 @@ class TdCredentials:
     def grab_authorization_code(self) -> None:
         """Generates the URL to grab the authorization code."""
 
-        executable_path = {
-            'executable_path': self._user_config.browser_directory_path
-        }
-
         # instance of Options class allows
         # us to configure Headless Chrome
         options = Options()
+        options.add_experimental_option("excludeSwitches", ["enable-logging"])
 
         # this parameter tells Chrome that
         # it should be run without UI (Headless)
@@ -469,8 +468,10 @@ class TdCredentials:
 
         caps = webdriver.DesiredCapabilities.CHROME.copy()
         caps['goog:loggingPrefs'] = {'browser': 'ALL'}
-        driver = webdriver.Chrome(
-            executable_path=executable_path['executable_path'], desired_capabilities=caps, options=options)
+
+        driver = webdriver.Chrome(service=Service(
+            ChromeDriverManager().install()), desired_capabilities=caps, options=options
+        )
 
         data = {
             "response_type": "code",
@@ -510,19 +511,19 @@ class TdCredentials:
         sleep(2)
 
         # Answer the Security Questions.
-        if (self.__login_credentials_dict["secretquestion0"] in driver.page_source):
+        if self.__login_credentials_dict["secretquestion0"] in driver.page_source:
             driver.find_element("id", "secretquestion0").click()
             driver.find_element("id", 'secretquestion0').send_keys(
                 self.__login_credentials_dict["secretanswer0"])
-        elif (self.__login_credentials_dict["secretquestion1"] in driver.page_source):
+        elif self.__login_credentials_dict["secretquestion1"] in driver.page_source:
             driver.find_element("id", "secretquestion0").click()
             driver.find_element("id", 'secretquestion0').send_keys(
                 self.__login_credentials_dict["secretanswer1"])
-        elif (self.__login_credentials_dict["secretquestion2"] in driver.page_source):
+        elif self.__login_credentials_dict["secretquestion2"] in driver.page_source:
             driver.find_element("id", "secretquestion0").click()
             driver.find_element("id", 'secretquestion0').send_keys(
                 self.__login_credentials_dict["secretanswer2"])
-        elif (self.__login_credentials_dict["secretquestion3"] in driver.page_source):
+        elif self.__login_credentials_dict["secretquestion3"] in driver.page_source:
             driver.find_element("id", "secretquestion0").click()
             driver.find_element("id", 'secretquestion0').send_keys(
                 self.__login_credentials_dict["secretanswer3"])
@@ -586,7 +587,8 @@ class TdCredentials:
             headers={
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            data=data
+            data=data,
+            timeout = self._request_timeout
         )
 
         if response.ok:
@@ -621,7 +623,8 @@ class TdCredentials:
             headers={
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            data=data
+            data=data,
+            timeout = self._request_timeout
         )
 
         if response.ok:
@@ -673,15 +676,15 @@ class TdCredentials:
         ### Usage
         ----
             >>> td_credentials = TdCredentials.authentication_default()
-        """ 
+        """
         # user config object
         td_configuration = TdConfiguration(config_path)
 
         # Initialize our `Credentials` object.
         return TdCredentials(
             user_config=td_configuration,
-            app_name=td_configuration.app_name,
-            client_id=td_configuration.client_id,
-            redirect_uri=td_configuration.redirect_uri,
+            app_name=td_configuration.app_name, # pylint: disable = E1101:no-member
+            client_id=td_configuration.client_id, # pylint: disable = E1101:no-member
+            redirect_uri=td_configuration.redirect_uri, # pylint: disable = E1101:no-member
             login_credentials_dict=td_configuration.get_login_credentials()
         )
