@@ -5,17 +5,11 @@ from td.credentials import TdCredentials
 from td.utils.enums import TransactionTypes
 from td.config import TdConfiguration
 
-# Initialize our `Credentials` object.
-td_credentials = TdCredentials.authentication_default()
-
 # A config object
-config = TdConfiguration()
+config = TdConfiguration("config-example/config.ini")
 
 # Initialize the `TdAmeritradeClient`
-td_client = TdAmeritradeClient(
-    credentials=td_credentials,
-    config=config
-)
+td_client = TdAmeritradeClient()
 
 account_number = config.default_account # pylint: disable=E1101:no-member
 

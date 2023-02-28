@@ -4,16 +4,8 @@ from td.client import TdAmeritradeClient
 from td.config import TdConfiguration
 from td.utils.enums import Projections
 
-config = TdConfiguration()
-
-# Initialize our `Credentials` object.
-td_credentials = TdCredentials.authentication_default()
-
 # Initialize the `TdAmeritradeClient`
-td_client = TdAmeritradeClient(
-    credentials=td_credentials,
-    config=config
-)
+td_client = TdAmeritradeClient()
 
 # Initialize the `Instruments` service.
 instruments_service = td_client.instruments()

@@ -24,7 +24,7 @@ class TdAmeritradeClient:
     that your session is authenticated.
     """
 
-    def __init__(self, credentials: TdCredentials, config: TdConfiguration) -> None:
+    def __init__(self, credentials: TdCredentials | None = None, config: TdConfiguration | None = None) -> None:
         """Initializes the `TdClient` object.
 
         ### Parameters
@@ -32,6 +32,11 @@ class TdAmeritradeClient:
             Your TD Credentials stored in your credentials object
             so that you can authenitcate with TD.
         """
+
+        if credentials is None:
+            credentials = TdCredentials.authentication_default()
+        if config is None:
+            config = TdConfiguration()
 
         self.td_credentials = credentials
         self.td_session = TdAmeritradeSession(td_client=self, config=config)

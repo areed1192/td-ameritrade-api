@@ -5,16 +5,9 @@ from td.client import TdAmeritradeClient
 from td.config import TdConfiguration
 from td.utils.enums import Markets
 
-config = TdConfiguration()
-
-# Initialize our `Credentials` object.
-td_credentials = TdCredentials.authentication_default()
 
 # Initialize the `TdAmeritradeClient`
-td_client = TdAmeritradeClient(
-    credentials=td_credentials,
-    config=config
-)
+td_client = TdAmeritradeClient()
 
 # Initialize the `MarketHours` service.
 market_hours_service = td_client.market_hours()

@@ -7,16 +7,8 @@ from td.utils.enums import FrequencyType
 from datetime import datetime
 from datetime import timedelta
 
-config = TdConfiguration()
-
-# Initialize our `Credentials` object.
-td_credentials = TdCredentials.authentication_default()
-
 # Initialize the `TdAmeritradeClient`
-td_client = TdAmeritradeClient(
-    credentials=td_credentials,
-    config=config
-)
+td_client = TdAmeritradeClient()
 
 # Initialize the `PriceHistory` service.
 price_history_service = td_client.price_history()

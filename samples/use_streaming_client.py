@@ -21,14 +21,8 @@ from td.utils.enums import LevelTwoOptions
 
 config = TdConfiguration()
 
-# Initialize our `Credentials` object.
-td_credentials = TdCredentials.authentication_default()
-
 # Initialize the `TdAmeritradeClient`
-td_client = TdAmeritradeClient(
-    credentials=td_credentials,
-    config=config
-)
+td_client = TdAmeritradeClient()
 
 # Initialize the `StreamingApiClient` service.
 streaming_api_service = td_client.streaming_api_client()

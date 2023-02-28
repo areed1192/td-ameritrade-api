@@ -7,13 +7,8 @@ from td.utils.enums import ContractType
 from td.utils.enums import ExpirationMonth
 from td.utils.option_chain import OptionChainQuery
 
-# Initialize our `Credentials` object.
-td_credentials = TdCredentials.authentication_default()
-
 # Initialize the `TdAmeritradeClient`
-td_client = TdAmeritradeClient(
-    credentials=td_credentials
-)
+td_client = TdAmeritradeClient()
 
 # Initialize the `OptionsChain` service.
 options_chain_service = td_client.options_chain()

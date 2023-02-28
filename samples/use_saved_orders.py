@@ -6,16 +6,10 @@ from td.config import TdConfiguration
 # A config object
 config = TdConfiguration("config-example/config.ini")
 
-# Initialize our `Credentials` object.
-td_credentials = TdCredentials.authentication_default()
-
 # Initialize the `TdAmeritradeClient`
-td_client = TdAmeritradeClient(
-    credentials=td_credentials,
-    config=config
-)
+td_client = TdAmeritradeClient()
 
-account_number = config.default
+account_number = config.default_account # pylint: disable=E1101:no-member
 
 # Initialize the `SavedOrders` service.
 saved_orders_service = td_client.saved_orders()
