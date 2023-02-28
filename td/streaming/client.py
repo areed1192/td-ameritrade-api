@@ -69,7 +69,7 @@ class StreamingApiClient():
             "requests": []
         }
 
-        self.debug = False
+        self.debug = True
 
         try:
             self.loop = asyncio.get_event_loop()

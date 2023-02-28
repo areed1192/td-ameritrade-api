@@ -38,7 +38,7 @@ streaming_services = streaming_api_service.services()
 
 # Set the Quality of Service.
 streaming_services.quality_of_service(
-    qos_level='1'
+    qos_level='0'
 )
 
 # # Grab level one quotes.
@@ -55,7 +55,7 @@ streaming_services.quality_of_service(
 
 # # Grab level one futures quotes.
 # streaming_services.level_one_futures(
-#     symbols=['/NQ', '/ES'],
+#     symbols=['/ES'],
 #     fields=LevelOneFutures.All
 # )
 
@@ -98,12 +98,12 @@ streaming_services.quality_of_service(
 #     duration=ActivesDurations.All
 # )
 
-# Stream Historical Futures Prices.
-streaming_services.chart_history_futures(
-    symbols=['/ES'],
-    frequency=ChartFuturesFrequencies.OneMinute,
-    period=ChartFuturesPeriods.OneDay
-)
+# # Stream Historical Futures Prices.
+# streaming_services.chart_history_futures(
+#     symbols=['/ES'],
+#     frequency=ChartFuturesFrequencies.OneMinute,
+#     period=ChartFuturesPeriods.OneDay
+# )
 
 # # Stream Level Two Quotes.
 # streaming_services.level_two_quotes(
@@ -116,6 +116,19 @@ streaming_services.chart_history_futures(
 #     symbols=['MSFT_043021C120'],
 #     fields=LevelTwoOptions.All
 # )
+
+# streaming_services.timesale(
+#     service="TIMESALE_FUTURES",
+#     symbols=["/ES"],
+#     fields=Timesale.All
+# )
+
+# Stream equity bars.
+streaming_services.chart(
+    service=ChartServices._ChartFutures,
+    symbols=["/ES", "/NQ"],
+    fields=ChartEquity.All
+)
 
 # Start Streaming.
 streaming_api_service.open_stream()

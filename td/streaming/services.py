@@ -5,7 +5,7 @@ from datetime import datetime
 from datetime import date
 
 
-class StreamingServices():
+class StreamingServices:
 
     """
     ## Overview
@@ -123,10 +123,12 @@ class StreamingServices():
             new_fields = []
             for field in fields:
                 if isinstance(field, int):
-                    field = str(int)
+                    field = str(field)
                 elif isinstance(field, Enum):
                     field = field.value
                 new_fields.append(field)
+            fields = new_fields
+            
 
         if isinstance(fields, Enum):
             fields = fields.value
@@ -171,10 +173,11 @@ class StreamingServices():
             new_fields = []
             for field in fields:
                 if isinstance(field, int):
-                    field = str(int)
+                    field = str(field)
                 elif isinstance(field, Enum):
                     field = field.value
                 new_fields.append(field)
+            fields = new_fields
 
         if isinstance(fields, Enum):
             fields = fields.value
@@ -219,10 +222,11 @@ class StreamingServices():
             new_fields = []
             for field in fields:
                 if isinstance(field, int):
-                    field = str(int)
+                    field = str(field)
                 elif isinstance(field, Enum):
                     field = field.value
                 new_fields.append(field)
+            fields = new_fields
 
         if isinstance(fields, Enum):
             fields = fields.value
@@ -268,10 +272,11 @@ class StreamingServices():
             new_fields = []
             for field in fields:
                 if isinstance(field, int):
-                    field = str(int)
+                    field = str(field)
                 elif isinstance(field, Enum):
                     field = field.value
                 new_fields.append(field)
+            fields = new_fields
 
         if isinstance(fields, Enum):
             fields = fields.value
@@ -316,10 +321,11 @@ class StreamingServices():
             new_fields = []
             for field in fields:
                 if isinstance(field, int):
-                    field = str(int)
+                    field = str(field)
                 elif isinstance(field, Enum):
                     field = field.value
                 new_fields.append(field)
+            fields = new_fields
 
         if isinstance(fields, Enum):
             fields = fields.value
@@ -388,11 +394,11 @@ class StreamingServices():
             new_fields = []
             for field in fields:
                 if isinstance(field, int):
-                    field = str(int)
+                    field = str(field)
                 elif isinstance(field, Enum):
                     field = field.value
                 new_fields.append(field)
-
+            fields = new_fields
         if isinstance(fields, Enum):
             fields = fields.value
 
@@ -450,11 +456,11 @@ class StreamingServices():
             new_fields = []
             for field in fields:
                 if isinstance(field, int):
-                    field = str(int)
+                    field = str(field)
                 elif isinstance(field, Enum):
                     field = field.value
                 new_fields.append(field)
-
+            fields = new_fields
         if isinstance(fields, Enum):
             fields = fields.value
 
@@ -506,11 +512,11 @@ class StreamingServices():
             new_fields = []
             for field in fields:
                 if isinstance(field, int):
-                    field = str(int)
+                    field = str(field)
                 elif isinstance(field, Enum):
                     field = field.value
                 new_fields.append(field)
-
+            fields = new_fields
         if isinstance(fields, Enum):
             fields = fields.value
 
@@ -700,11 +706,11 @@ class StreamingServices():
             new_fields = []
             for field in fields:
                 if isinstance(field, int):
-                    field = str(int)
+                    field = str(field)
                 elif isinstance(field, Enum):
                     field = field.value
                 new_fields.append(field)
-
+            fields = new_fields
         if isinstance(fields, Enum):
             fields = fields.value
 
@@ -748,11 +754,11 @@ class StreamingServices():
             new_fields = []
             for field in fields:
                 if isinstance(field, int):
-                    field = str(int)
+                    field = str(field)
                 elif isinstance(field, Enum):
                     field = field.value
                 new_fields.append(field)
-
+            fields = new_fields
         if isinstance(fields, Enum):
             fields = fields.value
 
