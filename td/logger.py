@@ -24,12 +24,12 @@ class TdLogger:
             Defaults to the log named after your application.
         """
         self._config = TdConfiguration()
-        self._log_root_path = self._config.logs_directory_path
+        self._log_root_path = self._config.logging.logs_directory_path
 
         if log_name:
             self._log_name = log_name
         else:
-            self._log_name = self._config.app_name
+            self._log_name = self._config.app_info.app_name
 
         self._log_module_path = Path.joinpath(Path(self._log_root_path), self._log_name)
         self._log_path = Path.joinpath(self._log_module_path, self._log_name)

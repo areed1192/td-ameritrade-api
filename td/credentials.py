@@ -60,9 +60,9 @@ class TdCredentials:
 
         if user_config:
             self._user_config = user_config
-            self._app_name = self._user_config.app_name
-            self._client_id = self._user_config.client_id
-            self._redirect_uri = self._user_config.redirect_uri
+            self._app_name = self._user_config.app_info.app_name
+            self._client_id = self._user_config.app_info.client_id
+            self._redirect_uri = self._user_config.app_info.redirect_uri
         else:
             self._app_name = app_name
             self._client_id = client_id
@@ -683,8 +683,8 @@ class TdCredentials:
         # Initialize our `Credentials` object.
         return TdCredentials(
             user_config=td_configuration,
-            app_name=td_configuration.app_name, # pylint: disable = E1101:no-member
-            client_id=td_configuration.client_id, # pylint: disable = E1101:no-member
-            redirect_uri=td_configuration.redirect_uri, # pylint: disable = E1101:no-member
+            app_name=td_configuration.app_info.app_name,
+            client_id=td_configuration.app_info.client_id,
+            redirect_uri=td_configuration.app_info.redirect_uri,
             login_credentials_dict=td_configuration.get_login_credentials()
         )
