@@ -4,7 +4,7 @@ from pathlib import Path
 import configparser
 
 
-class TdConfiguration():
+class TdConfiguration:
     """ ### Overview
         ----
         Handles client configuration data,
@@ -44,15 +44,35 @@ class TdConfiguration():
                 item_name = str(item[0])
                 setattr(self, item_name, item[1])
 
+        if not hasattr(self, 'client_id'):
+            raise ValueError(
+                f"client_id is required, set the value in {self._config_directory_path}")
+        if not hasattr(self, 'redirect_uri'):
+            raise ValueError(
+                f"redirect_uri is required, set the value in {self._config_directory_path}")
+        if not hasattr(self, "username"):
+            raise ValueError(
+                f"username is required, set the value in {self._config_directory_path}")
+        if not hasattr(self, "account_password"):
+            raise ValueError(
+                f"account_password is required, set the value in {self._config_directory_path}")
+        for i in range(4):
+            if not hasattr(self, f'secretquestion{i}'):
+                raise ValueError(
+                    f"secretquestion{i} is required, set the value in {self._config_directory_path}")
+            if not hasattr(self, f'secretanswer{i}'):
+                raise ValueError(
+                    f"secretanswer{i} is required, set the value in {self._config_directory_path}")
+
         self.login_credentials = {
-            "username": self.username, # pylint: disable=E1101:no-member
+            "username": self.username,  # pylint: disable=E1101:no-member
             "account_password": self.account_password,  # pylint: disable=E1101:no-member
             "secretquestion0": self.secretquestion0,  # pylint: disable=E1101:no-member
             "secretanswer0": self.secretanswer0,  # pylint: disable=E1101:no-member
             "secretquestion1": self.secretquestion1,  # pylint: disable=E1101:no-member
             "secretanswer1": self.secretanswer1,  # pylint: disable=E1101:no-member
             "secretquestion2": self.secretquestion2,  # pylint: disable=E1101:no-member
-            "secretanswer2": self.secretanswer2, # pylint: disable=E1101:no-member
+            "secretanswer2": self.secretanswer2,  # pylint: disable=E1101:no-member
             "secretquestion3": self.secretquestion3,  # pylint: disable=E1101:no-member
             "secretanswer3": self.secretanswer3,  # pylint: disable=E1101:no-member
         }

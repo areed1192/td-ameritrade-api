@@ -85,7 +85,7 @@ class TdCredentials:
         )
         self._first_pass = True
 
-        self.log = TdLogger(self._user_config, __name__)
+        self.log = TdLogger(__name__)
 
         if token_file:
             if isinstance(token_file, pathlib.Path):

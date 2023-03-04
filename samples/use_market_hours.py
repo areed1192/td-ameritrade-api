@@ -1,8 +1,6 @@
 from pprint import pprint
 from datetime import datetime
-from td.credentials import TdCredentials
 from td.client import TdAmeritradeClient
-from td.config import TdConfiguration
 from td.utils.enums import Markets
 
 

@@ -30,7 +30,7 @@ class TdAmeritradeClient:
         ### Parameters
         credentials : TdCredentials
             Your TD Credentials stored in your credentials object
-            so that you can authenitcate with TD.
+            so that you can authenticate with TD.
         """
 
         if credentials is None:
@@ -39,7 +39,7 @@ class TdAmeritradeClient:
             config = TdConfiguration()
 
         self.td_credentials = credentials
-        self.td_session = TdAmeritradeSession(td_client=self, config=config)
+        self.td_session = TdAmeritradeSession(td_client=self)
 
     def __repr__(self):
         pass

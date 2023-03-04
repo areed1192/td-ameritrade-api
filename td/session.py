@@ -1,13 +1,12 @@
 import json
 import requests
-from td.config import TdConfiguration
 from td.logger import TdLogger
 
 
 class TdAmeritradeSession:
     """Serves as the Session for TD Ameritrade API."""
 
-    def __init__(self, td_client: object, config: TdConfiguration) -> None:
+    def __init__(self, td_client: "TdAmeritradeClient") -> None:
         """Initializes the `TdAmeritradeSession` client.
 
         ### Overview
@@ -25,13 +24,11 @@ class TdAmeritradeSession:
             >>> td_session = TdAmeritradeSession()
         """
 
-        from td.client import TdAmeritradeClient
-
-        self.client: TdAmeritradeClient = td_client
+        self.client = td_client
         self.resource_url = 'https://api.tdameritrade.com/'
         self.version = 'v1/'
 
-        self.log = TdLogger(config, __name__)
+        self.log = TdLogger(__name__)
 
     def build_headers(self) -> dict:
         """Used to build the headers needed to make the request.

@@ -4,14 +4,14 @@ from logging.handlers import TimedRotatingFileHandler
 from td.config import TdConfiguration
 
 
-class TdLogger():
+class TdLogger:
     """
     ### Overview
 
     Handles logging for the api
     """
 
-    def __init__(self, config: TdConfiguration, log_name: str = None) -> None:
+    def __init__(self, log_name: str = None) -> None:
         """
         Initializes the TdLogger object
 
@@ -23,7 +23,7 @@ class TdLogger():
             The name of the log you want to use. 
             Defaults to the log named after your application.
         """
-        self._config = config
+        self._config = TdConfiguration()
         self._log_root_path = self._config.logs_directory_path
 
         if log_name:
