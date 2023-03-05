@@ -11,7 +11,7 @@ from td.utils.enums import OrderInstructions
 from td.utils.enums import OrderStrategyType
 from td.utils.enums import DefaultOrderDuration
 
-
+# Need TD_API_CONFIG_PATH env variable set, otherwise need to have a config file available to run tests
 class TestTdOrderUtils(TestCase):
 
     """Will perform a unit test for the different `Order` utility objects."""

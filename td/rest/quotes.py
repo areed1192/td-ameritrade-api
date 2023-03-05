@@ -49,14 +49,9 @@ class Quotes():
             >>> quote_service.get_quote(instrument='AAPL')
         """
 
-        params = {
-            'symbol': instrument
-        }
-
         content = self.session.make_request(
             method='get',
-            endpoint='marketdata/quotes',
-            params=params
+            endpoint=f'marketdata/{instrument}/quotes'
         )
 
         return content

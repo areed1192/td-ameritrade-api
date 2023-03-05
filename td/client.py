@@ -1,3 +1,4 @@
+from td.config import TdConfiguration
 from td.session import TdAmeritradeSession
 from td.credentials import TdCredentials
 from td.rest.quotes import Quotes
@@ -14,8 +15,8 @@ from td.rest.saved_orders import SavedOrders
 from td.streaming.client import StreamingApiClient
 
 
-class TdAmeritradeClient():
 
+class TdAmeritradeClient:
     """
     ### Overview
     ----
@@ -23,14 +24,19 @@ class TdAmeritradeClient():
     that your session is authenticated.
     """
 
-    def __init__(self, credentials: TdCredentials) -> None:
+    def __init__(self, credentials: TdCredentials | None = None, config: TdConfiguration | None = None) -> None:
         """Initializes the `TdClient` object.
 
         ### Parameters
         credentials : TdCredentials
             Your TD Credentials stored in your credentials object
-            so that you can authenitcate with TD.
+            so that you can authenticate with TD.
         """
+
+        if credentials is None:
+            credentials = TdCredentials.authentication_default()
+        if config is None:
+            config = TdConfiguration()
 
         self.td_credentials = credentials
         self.td_session = TdAmeritradeSession(td_client=self)

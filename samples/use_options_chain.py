@@ -1,34 +1,14 @@
 from pprint import pprint
-from configparser import ConfigParser
 from td.credentials import TdCredentials
 from td.client import TdAmeritradeClient
-from td.utils.enums import OptionaRange
+from td.utils.enums import OptionRange
 from td.utils.enums import OptionType
 from td.utils.enums import ContractType
 from td.utils.enums import ExpirationMonth
 from td.utils.option_chain import OptionChainQuery
 
-# Initialize the Parser.
-config = ConfigParser()
-
-# Read the file.
-config.read('config/config.ini')
-
-# Get the specified credentials.
-client_id = config.get('main', 'client_id')
-redirect_uri = config.get('main', 'redirect_uri')
-
-# Intialize our `Crednetials` object.
-td_credentials = TdCredentials(
-    client_id=client_id,
-    redirect_uri=redirect_uri,
-    credential_file='config/td_credentials.json'
-)
-
-# Initalize the `TdAmeritradeClient`
-td_client = TdAmeritradeClient(
-    credentials=td_credentials
-)
+# Initialize the `TdAmeritradeClient`
+td_client = TdAmeritradeClient()
 
 # Initialize the `OptionsChain` service.
 options_chain_service = td_client.options_chain()
@@ -41,7 +21,7 @@ option_chain_query = OptionChainQuery(
     contract_type=ContractType.Call,
     expiration_month=ExpirationMonth.June,
     option_type=OptionType.StandardContracts,
-    option_range=OptionaRange.InTheMoney,
+    option_range=OptionRange.InTheMoney,
     include_quotes=True
 )
 
@@ -70,3 +50,4 @@ options_data = options_chain_service.get_option_chain(
 )
 
 pprint(options_data['numberOfContracts'])
+

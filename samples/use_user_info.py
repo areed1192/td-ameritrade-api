@@ -1,39 +1,15 @@
 from pprint import pprint
-from configparser import ConfigParser
 from td.credentials import TdCredentials
 from td.client import TdAmeritradeClient
-from td.utils.enums import DefaultOrderDuration
-from td.utils.enums import DefaultAdvancedToolLaunch
-from td.utils.enums import DefaultOrderLegInstruction
-from td.utils.enums import DefaultOrderMarketSession
-from td.utils.enums import DefaultOrderPriceLinkType
-from td.utils.enums import DefaultOrderType
-from td.utils.enums import TaxLotMethod
-from td.utils.enums import AuthTokenTimeout
-from td.utils.user_preferences import UserPreferences
+from td.config import TdConfiguration
 
-# Initialize the Parser.
-config = ConfigParser()
+# A config object
+config = TdConfiguration("config-example/config.ini")
 
-# Read the file.
-config.read('config/config.ini')
+# Initialize the `TdAmeritradeClient`
+td_client = TdAmeritradeClient()
 
-# Get the specified credentials.
-client_id = config.get('main', 'client_id')
-redirect_uri = config.get('main', 'redirect_uri')
-account_number = config.get('main', 'account_number')
-
-# Intialize our `Crednetials` object.
-td_credentials = TdCredentials(
-    client_id=client_id,
-    redirect_uri=redirect_uri,
-    credential_file='config/td_credentials.json'
-)
-
-# Initalize the `TdAmeritradeClient`
-td_client = TdAmeritradeClient(
-    credentials=td_credentials
-)
+account_number = config.default_account # pylint: disable=E1101:no-member
 
 # Initialize the `UserInfo` service.
 user_info_service = td_client.user_info()
@@ -76,23 +52,27 @@ user_info_service.update_user_preferences(
     }
 )
 
-# Method 2, Update the User Preferences.
-my_preferences = {
-    'default_equity_order_leg_instruction': DefaultOrderLegInstruction.Buy,
-    'default_equity_order_type': DefaultOrderType.Market,
-    'default_equity_order_price_link_type': DefaultOrderPriceLinkType.Percent,
-    'default_equity_order_duration': DefaultOrderDuration.NoneSpecified,
-    'default_equity_order_market_session': DefaultOrderMarketSession.Normal,
-    'mutual_fund_tax_lot_method': TaxLotMethod.Fifo,
-    'option_tax_lot_method': TaxLotMethod.Fifo,
-    'equity_tax_lot_method': TaxLotMethod.Fifo,
-    'default_advanced_tool_launch': DefaultAdvancedToolLaunch.Ta,
-    'auth_token_timeout': AuthTokenTimeout.EightHours
-}
+#
+# Doesn't work currently, at least for me
+#
 
-# Define a new data class that will store our preferences.
-my_user_perferences = UserPreferences(**my_preferences)
-user_info_service.update_user_preferences(
-    account_id=account_number,
-    preferences=my_user_perferences.to_dict()
-)
+# # Method 2, Update the User Preferences.
+# my_preferences = {
+#     'default_equity_order_leg_instruction': DefaultOrderLegInstruction.Buy,
+#     'default_equity_order_type': DefaultOrderType.Market,
+#     'default_equity_order_price_link_type': DefaultOrderPriceLinkType.Percent,
+#     'default_equity_order_duration': DefaultOrderDuration.NoneSpecified,
+#     'default_equity_order_market_session': DefaultOrderMarketSession.Normal,
+#     'mutual_fund_tax_lot_method': TaxLotMethod.Fifo,
+#     'option_tax_lot_method': TaxLotMethod.Fifo,
+#     'equity_tax_lot_method': TaxLotMethod.Fifo,
+#     'default_advanced_tool_launch': DefaultAdvancedToolLaunch.Ta,
+#     'auth_token_timeout': AuthTokenTimeout.EightHours
+# }
+
+# # Define a new data class that will store our preferences.
+# my_user_perferences = UserPreferences(**my_preferences)
+# user_info_service.update_user_preferences(
+#     account_id=account_number,
+#     preferences=my_user_perferences.to_dict()
+# )

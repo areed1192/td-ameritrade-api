@@ -1,33 +1,13 @@
 import asyncio
 from pprint import pprint
-from configparser import ConfigParser
 from td.credentials import TdCredentials
 from td.client import TdAmeritradeClient
+from td.config import TdConfiguration
 from td.utils.enums import LevelOneQuotes
 from td.utils.enums import LevelTwoQuotes
 
-# Initialize the Parser.
-config = ConfigParser()
-
-# Read the file.
-config.read('config/config.ini')
-
-# Get the specified credentials.
-client_id = config.get('main', 'client_id')
-redirect_uri = config.get('main', 'redirect_uri')
-account_number = config.get('main', 'account_number')
-
-# Intialize our `Crednetials` object.
-td_credentials = TdCredentials(
-    client_id=client_id,
-    redirect_uri=redirect_uri,
-    credential_file='config/td_credentials.json'
-)
-
-# Initalize the `TdAmeritradeClient`
-td_client = TdAmeritradeClient(
-    credentials=td_credentials
-)
+# Initialize the `TdAmeritradeClient`
+td_client = TdAmeritradeClient()
 
 # Initialize the `StreamingApiClient` service.
 streaming_api_service = td_client.streaming_api_client()

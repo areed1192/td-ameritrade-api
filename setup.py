@@ -34,9 +34,10 @@ setup(
 
     # there are some dependencies to use the library, so let's list them out.
     install_requires=[
-        'requests>=2.24.0',
+        'requests>=2.26.0',
         'dataclasses>=0.6',
-        'websockets>=9.1'
+        'websockets>=9.1',
+        'selenium>=4.1.0'
     ],
 
     # some keywords for my library.

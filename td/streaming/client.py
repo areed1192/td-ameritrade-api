@@ -69,6 +69,8 @@ class StreamingApiClient():
             "requests": []
         }
 
+        self.debug = True
+
         try:
             self.loop = asyncio.get_event_loop()
         except ws_exceptions.WebSocketProtocolError:
@@ -154,9 +156,10 @@ class StreamingApiClient():
                 # see if we had a login response.
                 for r in responses:
                     if r.get('service') == 'ADMIN' and r.get('command') == 'LOGIN':
-                        print(
-                            "Message: User Login successful, streaming will being shortly."
-                        )
+                        if self.debug:
+                            print(
+                                "Message: User Login successful, streaming will being shortly."
+                            )
                         return self.connection
 
     async def _check_connection(self) -> bool:
@@ -181,15 +184,17 @@ class StreamingApiClient():
 
         # if it's open we can stream.
         if self.connection.open:
-            print("="*80)
-            print('Message: Connection established. Streaming will begin shortly.')
-            print("-"*80)
+            if self.debug:
+                print("="*80)
+                print('Message: Connection established. Streaming will begin shortly.')
+                print("-"*80)
             return True
 
         if self.connection.close:
-            print("="*80)
-            print('Message: Connection was never opened and was closed.')
-            print("-"*80)
+            if self.debug:
+                print("="*80)
+                print('Message: Connection was never opened and was closed.')
+                print("-"*80)
             return False
 
         raise ConnectionError
@@ -228,16 +233,18 @@ class StreamingApiClient():
 
                 message = await self.connection.recv()
                 message_decoded = await self._parse_json_message(message=message)
-                print(message_decoded)
+                if self.debug:
+                    print(message_decoded)
 
                 if return_value:
                     return message_decoded
 
-                print(textwrap.dedent('='*80))
-                print(textwrap.dedent("Message Received:"))
-                print(textwrap.dedent('-'*80))
-                pprint.pprint(message_decoded)
-                print(textwrap.dedent('-'*80))
+                if self.debug:
+                    print(textwrap.dedent('='*80))
+                    print(textwrap.dedent("Message Received:"))
+                    print(textwrap.dedent('-'*80))
+                    pprint.pprint(message_decoded)
+                    print(textwrap.dedent('-'*80))
 
             except ws_exceptions.ConnectionClosed:
                 await self.close_stream()
@@ -336,7 +343,8 @@ class StreamingApiClient():
         # Stop the loop.
         if self.loop.is_running():
             self.loop.call_soon_threadsafe(self.loop.stop())
-            print(message)
+            if self.debug:
+                print(message)
             await asyncio.sleep(3)
 
     async def build_pipeline(self) -> ws_client.WebSocketClientProtocol:

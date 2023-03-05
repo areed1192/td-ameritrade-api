@@ -1,9 +1,9 @@
 import unittest
 from unittest import TestCase
-from configparser import ConfigParser
 
 from td.credentials import TdCredentials
 from td.client import TdAmeritradeClient
+from td.config import TdConfiguration
 from td.rest.quotes import Quotes
 from td.rest.movers import Movers
 from td.rest.accounts import Accounts
@@ -16,7 +16,6 @@ from td.rest.watchlists import Watchlists
 from td.rest.orders import Orders
 from td.rest.saved_orders import SavedOrders
 
-
 class TestTdClient(TestCase):
 
     """Will perform a unit test for the `TdAmeritradeClient` object."""
@@ -24,26 +23,15 @@ class TestTdClient(TestCase):
     def setUp(self) -> None:
         """Set up the `TdAmeritradeClient` Client."""
 
-        # Initialize the Parser.
-        config = ConfigParser()
+        # Initialize our `Credentials` object.
+        self.td_credentials = TdCredentials.authentication_default()
 
-        # Read the file.
-        config.read('config/config.ini')
+        self.config = TdConfiguration()
 
-        # Get the specified credentials.
-        client_id = config.get('main', 'client_id')
-        redirect_uri = config.get('main', 'redirect_uri')
-
-        # Intialize our `Crednetials` object.
-        self.td_credentials = TdCredentials(
-            client_id=client_id,
-            redirect_uri=redirect_uri,
-            credential_file='config/td_credentials.json'
-        )
-
-        # Initalize the `TdAmeritradeClient`
+        # Initialize the `TdAmeritradeClient`
         self.td_client = TdAmeritradeClient(
-            credentials=self.td_credentials
+            credentials=self.td_credentials,
+            config=self.config
         )
 
     def test_creates_instance_of_client(self):

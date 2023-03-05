@@ -84,6 +84,16 @@ ipython_config.py
 # pyenv
 .python-version
 
+# samples experimentation
+samples/*.ipynb
+samples/test*.py
+
+# other experimentation
+experimentation/
+
+# data pull
+data-pull/
+
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
 #   However, in case of collaboration, if having platform-specific dependencies or dependencies
@@ -133,3 +143,9 @@ vscode/
 config/
 .resources and notes/
 venv_test/
+
+# chrome driver related
+chromedriver*
+
+#logs
+logs*

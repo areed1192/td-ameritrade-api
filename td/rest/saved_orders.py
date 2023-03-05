@@ -1,5 +1,5 @@
+from td.utils.orders import OrderOther
 from td.session import TdAmeritradeSession
-from td.utils.orders import Order
 
 
 class SavedOrders():
@@ -96,13 +96,13 @@ class SavedOrders():
 
         return content
 
-    def place_saved_order(
+    def create_saved_order(
         self,
         account_id: str,
-        saved_order_object: Order = None,
+        saved_order_object: OrderOther = None,
         saved_order_dict: dict = None
     ) -> dict:
-        """Place an order for a specific account. Order throttle
+        """Create a saved order for a specific account. Order throttle
         limits may apply.
 
         ### Documentation
@@ -136,7 +136,7 @@ class SavedOrders():
         """
 
         if saved_order_object:
-            order = saved_order_object.save_order_to_json()
+            order = saved_order_object.grab_order()
 
         if saved_order_dict:
             order = saved_order_dict
@@ -156,7 +156,7 @@ class SavedOrders():
         self,
         account_id: str,
         saved_order_id: str,
-        saved_order_object: Order = None,
+        saved_order_object: OrderOther = None,
         saved_order_dict: dict = None
     ) -> dict:
         """Replace an existing saved order for an account.
@@ -202,7 +202,7 @@ class SavedOrders():
         """
 
         if saved_order_object:
-            order = saved_order_object.save_order_to_json()
+            order = saved_order_object.saved_order_to_json()
 
         if saved_order_dict:
             order = saved_order_dict
@@ -218,12 +218,12 @@ class SavedOrders():
 
         return content
 
-    def cancel_saved_order(
+    def delete_saved_order(
         self,
         account_id: str,
         saved_order_id: str
     ) -> dict:
-        """Cancels a saved order for a specific account. Order throttle
+        """Deletes a saved order for a specific account. Order throttle
         limits may apply.
 
         ### Documentation
