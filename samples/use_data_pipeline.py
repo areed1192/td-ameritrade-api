@@ -1,51 +1,48 @@
+"""Demonstrates how to use the data pipeline."""
+
 import asyncio
 from pprint import pprint
 from configparser import ConfigParser
-from td.credentials import TdCredentials
-from td.client import TdAmeritradeClient
-from td.utils.enums import LevelOneQuotes
-from td.utils.enums import LevelTwoQuotes
+
+from schwab.client import CharlesSchwabClient
+from schwab.credentials import CharlesSchwabCredentials
+
+from schwab.utils.enums import LevelOneQuotes
+from schwab.utils.enums import LevelTwoQuotes
 
 # Initialize the Parser.
 config = ConfigParser()
 
 # Read the file.
-config.read('config/config.ini')
+config.read("config/config.ini")
 
 # Get the specified credentials.
-client_id = config.get('main', 'client_id')
-redirect_uri = config.get('main', 'redirect_uri')
-account_number = config.get('main', 'account_number')
+client_id = config.get("main", "client_id")
+client_secret = config.get("main", "client_secret")
+redirect_uri = config.get("main", "redirect_uri")
 
-# Intialize our `Crednetials` object.
-td_credentials = TdCredentials(
+# Intialize our `CharlesSchwabCredentials` object.
+credentials = CharlesSchwabCredentials(
     client_id=client_id,
+    client_secret=client_secret,
     redirect_uri=redirect_uri,
-    credential_file='config/td_credentials.json'
+    credential_file="config/credentials.json",
 )
 
-# Initalize the `TdAmeritradeClient`
-td_client = TdAmeritradeClient(
-    credentials=td_credentials
-)
+# Initalize the `CharlesSchwabClient`
+client = CharlesSchwabClient(credentials=credentials)
 
 # Initialize the `StreamingApiClient` service.
-streaming_api_service = td_client.streaming_api_client()
+streaming_api_service = client.streaming_api_client()
 
 # Let's see what services we have access to.
 streaming_services = streaming_api_service.services()
 
 # Grab level one quotes.
-streaming_services.level_one_quotes(
-    symbols=['MSFT'],
-    fields=LevelOneQuotes.All
-)
+streaming_services.level_one_quotes(symbols=["MSFT"], fields=LevelOneQuotes.All)
 
 # Stream Level Two Quotes.
-streaming_services.level_two_quotes(
-    symbols=['MSFT', 'PINS'],
-    fields=LevelTwoQuotes.All
-)
+streaming_services.level_two_quotes(symbols=["MSFT", "PINS"], fields=LevelTwoQuotes.All)
 
 
 async def data_pipeline():
@@ -84,32 +81,32 @@ async def data_pipeline():
         data = await streaming_api_service.start_pipeline()
 
         # Grab the Data, if there was any. Remember not every message will have `data.`
-        if data and 'data' in data:
+        if data and "data" in data:
 
-            print('='*80)
+            print("=" * 80)
 
-            data_content = data['data'][0]['content']
+            data_content = data["data"][0]["content"]
             pprint(data_content, indent=4)
 
             # Here I can grab data as it comes in and do something with it.
-            if 'key' in data_content[0]:
-                print('Here is my key: {}'.format(data_content[0]['key']))
+            if "key" in data_content[0]:
+                print("Here is my key: {}".format(data_content[0]["key"]))
 
-            print('-'*80)
+            print("-" * 80)
             data_response_count += 1
 
         # If we get a heartbeat notice, let's increment our counter.
-        elif data and 'notify' in data:
-            print(data['notify'][0])
+        elif data and "notify" in data:
+            print(data["notify"][0])
             heartbeat_response_count += 1
 
         # Once we have 1 data responses, we can unsubscribe from a service.
         if data_response_count == 1:
-            unsub = await streaming_api_service.unsubscribe(service='LEVELONE_QUOTES')
+            unsub = await streaming_api_service.unsubscribe(service="LEVELONE_QUOTES")
             data_response_count += 1
-            print('='*80)
+            print("=" * 80)
             print(unsub)
-            print('-'*80)
+            print("-" * 80)
 
         # Once we have 5 heartbeats, let's close the stream. Make sure to break the while loop.
         # or else you will encounter an exception.
@@ -118,6 +115,7 @@ async def data_pipeline():
             break
 
         heartbeat_response_count += 1
+
 
 # Run the pipeline.
 asyncio.run(data_pipeline())

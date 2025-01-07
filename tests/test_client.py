@@ -2,19 +2,19 @@ import unittest
 from unittest import TestCase
 from configparser import ConfigParser
 
-from td.credentials import TdCredentials
-from td.client import TdAmeritradeClient
-from td.rest.quotes import Quotes
-from td.rest.movers import Movers
-from td.rest.accounts import Accounts
-from td.rest.market_hours import MarketHours
-from td.rest.instruments import Instruments
-from td.rest.user_info import UserInfo
-from td.rest.price_history import PriceHistory
-from td.rest.options_chain import OptionsChain
-from td.rest.watchlists import Watchlists
-from td.rest.orders import Orders
-from td.rest.saved_orders import SavedOrders
+from schwab.credentials import TdCredentials
+from schwab.client import TdAmeritradeClient
+from schwab.rest.quotes import Quotes
+from schwab.rest.movers import Movers
+from schwab.rest.accounts import Accounts
+from schwab.rest.market_hours import MarketHours
+from schwab.rest.instruments import Instruments
+from schwab.rest.user_info import UserInfo
+from schwab.rest.price_history import PriceHistory
+from schwab.rest.options_chain import OptionsChain
+from schwab.rest.watchlists import Watchlists
+from schwab.rest.orders import Orders
+from schwab.rest.saved_orders import SavedOrders
 
 
 class TestTdClient(TestCase):

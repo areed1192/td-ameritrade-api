@@ -3,10 +3,10 @@ from datetime import datetime
 from unittest import TestCase
 from configparser import ConfigParser
 
-from td.utils.enums import Markets
-from td.credentials import TdCredentials
-from td.client import TdAmeritradeClient
-from td.rest.market_hours import MarketHours
+from schwab.utils.enums import Markets
+from schwab.credentials import TdCredentials
+from schwab.client import TdAmeritradeClient
+from schwab.rest.market_hours import MarketHours
 
 
 class TestMarketHourService(TestCase):

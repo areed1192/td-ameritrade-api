@@ -22,7 +22,7 @@ class StreamingServices():
             The streaming API client that handles sending requests.
         """
 
-        from td.streaming.client import StreamingApiClient
+        from schwab.streaming.client import StreamingApiClient
 
         self.streaming_api_client: StreamingApiClient = streaming_api_client
 

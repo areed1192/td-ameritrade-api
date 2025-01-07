@@ -1,7 +1,7 @@
 from typing import Union
 from enum import Enum
 from datetime import datetime
-from td.session import TdAmeritradeSession
+from schwab.session import CharlesSchwabSession
 
 
 class PriceHistory():
@@ -13,13 +13,13 @@ class PriceHistory():
     instruments.
     """
 
-    def __init__(self, session: TdAmeritradeSession) -> None:
+    def __init__(self, session: CharlesSchwabSession) -> None:
         """Initializes the `PriceHistory` services.
 
         ### Parameters
         ----
-        session : TdAmeritradeSession
-            An authenticated `TDAmeritradeSession
+        session : CharlesSchwabSession
+            An authenticated `CharlesSchwabSession
             object.
 
         ### Usage

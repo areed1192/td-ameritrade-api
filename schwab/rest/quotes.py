@@ -1,5 +1,5 @@
 from typing import List
-from td.session import TdAmeritradeSession
+from schwab.session import CharlesSchwabSession
 
 
 class Quotes():
@@ -12,13 +12,13 @@ class Quotes():
     will be delayed by 5 minutes.
     """
 
-    def __init__(self, session: TdAmeritradeSession) -> None:
+    def __init__(self, session: CharlesSchwabSession) -> None:
         """Initializes the `Quotes` services.
 
         ### Parameters
         ----
-        session : TdAmeritradeSession
-            An authenticated `TDAmeritradeSession
+        session : CharlesSchwabSession
+            An authenticated `CharlesSchwabSession
             object.
         """
 

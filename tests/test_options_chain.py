@@ -2,15 +2,15 @@ import unittest
 from unittest import TestCase
 from configparser import ConfigParser
 
-from td.utils.enums import OptionaRange
-from td.utils.enums import OptionType
-from td.utils.enums import ContractType
-from td.utils.enums import ExpirationMonth
+from schwab.utils.enums import OptionaRange
+from schwab.utils.enums import OptionType
+from schwab.utils.enums import ContractType
+from schwab.utils.enums import ExpirationMonth
 
-from td.credentials import TdCredentials
-from td.client import TdAmeritradeClient
-from td.rest.options_chain import OptionsChain
-from td.rest.options_chain import OptionChainQuery
+from schwab.credentials import TdCredentials
+from schwab.client import TdAmeritradeClient
+from schwab.rest.options_chain import OptionsChain
+from schwab.rest.options_chain import OptionChainQuery
 
 
 class TestOptionsChainService(TestCase):

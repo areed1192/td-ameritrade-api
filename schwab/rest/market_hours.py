@@ -2,7 +2,7 @@ from enum import Enum
 from typing import Union
 from datetime import date as date_type
 from datetime import datetime
-from td.session import TdAmeritradeSession
+from schwab.session import CharlesSchwabSession
 
 
 class MarketHours():
@@ -14,13 +14,13 @@ class MarketHours():
     the different financial markets.
     """
 
-    def __init__(self, session: TdAmeritradeSession) -> None:
+    def __init__(self, session: CharlesSchwabSession) -> None:
         """Initializes the `MarketHours` services.
 
         ### Parameters
         ----
-        session : TdAmeritradeSession
-            An authenticated `TDAmeritradeSession
+        session : CharlesSchwabSession
+            An authenticated `CharlesSchwabSession
             object.
         """
 
@@ -51,7 +51,7 @@ class MarketHours():
 
         ### Usage
         ----
-            >>> from td.enums import Markets
+            >>> from schwab.enums import Markets
             >>> market_hours_service = td_client.market_hours()
             >>> market_hours_service.get_multiple_market_hours(
                 markets=['EQUITY', Markets.Bond],
@@ -104,7 +104,7 @@ class MarketHours():
 
         ### Usage
         ----
-            >>> from td.enums import Markets
+            >>> from schwab.enums import Markets
             >>> market_hours_service = td_client.market_hours()
             >>> market_hours_service.get_market_hours(
                 markets='EQUITY',

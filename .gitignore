@@ -133,3 +133,5 @@ vscode/
 config/
 .resources and notes/
 venv_test/
+
+.schwab_env/

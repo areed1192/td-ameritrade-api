@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Union
 from datetime import datetime
-from td.session import TdAmeritradeSession
+from schwab.session import CharlesSchwabSession
 
 
 class Accounts():
@@ -12,13 +12,13 @@ class Accounts():
     Allows the user to retrieve account information.
     """
 
-    def __init__(self, session: TdAmeritradeSession) -> None:
+    def __init__(self, session: CharlesSchwabSession) -> None:
         """Initializes the `Accounts` services.
 
         ### Parameters
         ----
-        session : TdAmeritradeSession
-            An authenticated `TDAmeritradeSession
+        session : CharlesSchwabSession
+            An authenticated `CharlesSchwabSession
             object.
         """
 
@@ -118,7 +118,7 @@ class Accounts():
         transaction_type: Union[str, Enum] (optional, default=None)
             The type of transaction you want to query. For more info,
             review the documentation for a full list of transaction
-            types, or review the `td.enums` file.
+            types, or review the `schwab.enums` file.
 
         symbol: str (optional, default=None)
             Filters the transaction to the ones that only include

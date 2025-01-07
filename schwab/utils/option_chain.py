@@ -4,11 +4,11 @@ from typing import Union
 from enum import Enum
 from datetime import datetime
 from datetime import date
-from td.utils.enums import ContractType
-from td.utils.enums import StrategyType
-from td.utils.enums import OptionaRange
-from td.utils.enums import OptionType
-from td.utils.enums import ExpirationMonth
+from schwab.utils.enums import ContractType
+from schwab.utils.enums import StrategyType
+from schwab.utils.enums import OptionaRange
+from schwab.utils.enums import OptionType
+from schwab.utils.enums import ExpirationMonth
 
 
 @dataclass
@@ -18,7 +18,7 @@ class OptionChainQuery():
     ### Overview
     ----
     A python dataclass which is used to represent a query to the
-    Option Chain service on TD Ameritrade.
+    Option Chain service on schwab.
 
     ### Parameters
     ----

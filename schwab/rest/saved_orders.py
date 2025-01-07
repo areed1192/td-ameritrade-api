@@ -1,5 +1,5 @@
-from td.session import TdAmeritradeSession
-from td.utils.orders import Order
+from schwab.session import CharlesSchwabSession
+from schwab.utils.orders import Order
 
 
 class SavedOrders():
@@ -11,13 +11,13 @@ class SavedOrders():
     orders associated with their account.
     """
 
-    def __init__(self, session: TdAmeritradeSession) -> None:
+    def __init__(self, session: CharlesSchwabSession) -> None:
         """Initializes the `SavedOrders` services.
 
         ### Parameters
         ----
-        session : TdAmeritradeSession
-            An authenticated `TDAmeritradeSession
+        session : CharlesSchwabSession
+            An authenticated `CharlesSchwabSession
             object.
         """
 
@@ -135,10 +135,14 @@ class SavedOrders():
             )
         """
 
+        if not saved_order_object or not saved_order_dict:
+            raise ValueError(
+                'You must provide either a `SavedOrder` object or a dictionary object.'
+            )
+
         if saved_order_object:
             order = saved_order_object.save_order_to_json()
-
-        if saved_order_dict:
+        else:
             order = saved_order_dict
 
         # Define the endpoint.
@@ -201,10 +205,14 @@ class SavedOrders():
             )
         """
 
+        if not saved_order_object and not saved_order_dict:
+            raise ValueError(
+                'You must provide either a `SavedOrder` object or a dictionary object.'
+            )
+
         if saved_order_object:
             order = saved_order_object.save_order_to_json()
-
-        if saved_order_dict:
+        else:
             order = saved_order_dict
 
         # Define the endpoint.

@@ -3,8 +3,8 @@ from typing import Union
 from datetime import date
 from datetime import datetime
 
-from td.session import TdAmeritradeSession
-from td.utils.orders import Order
+from schwab.session import CharlesSchwabSession
+from schwab.utils.orders import Order
 
 
 class Orders():
@@ -13,16 +13,16 @@ class Orders():
     ## Overview
     ----
     Allows the user to query, update, delete, and place
-    orders with the TD Ameritrade API.
+    orders with the Charles Schwab API.
     """
 
-    def __init__(self, session: TdAmeritradeSession) -> None:
+    def __init__(self, session: CharlesSchwabSession) -> None:
         """Initializes the `Orders` services.
 
         ### Parameters
         ----
-        session : TdAmeritradeSession
-            An authenticated `TDAmeritradeSession
+        session : CharlesSchwabSession
+            An authenticated `CharlesSchwabSession
             object.
         """
 
@@ -268,10 +268,14 @@ class Orders():
             )
         """
 
+        if not order_object and not order_dict:
+            raise ValueError(
+                'You must provide either an Order object or dictionary to place orders.'
+            )
+
         if order_object:
             order = order_object.save_order_to_json()
-
-        if order_dict:
+        else:
             order = order_dict
 
         # Define the endpoint.
@@ -334,10 +338,14 @@ class Orders():
             )
         """
 
+        if not order_object and not order_dict:
+            raise ValueError(
+                'You must provide either an Order object or dictionary to replace orders.'
+            )
+
         if order_object:
             order = order_object.save_order_to_json()
-
-        if order_dict:
+        else:
             order = order_dict
 
         # Define the endpoint.

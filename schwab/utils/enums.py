@@ -7,7 +7,7 @@ class Direction(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import Directions
+        >>> from schwab.enums import Directions
         >>> Directions.Up.value
     """
 
@@ -21,7 +21,7 @@ class Change(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import Change
+        >>> from schwab.enums import Change
         >>> Change.Percent.value
     """
 
@@ -36,7 +36,7 @@ class TransactionTypes(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import TransactionTypes
+        >>> from schwab.enums import TransactionTypes
         >>> TransactionTypes.Trade.value
     """
 
@@ -58,7 +58,7 @@ class Markets(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import Markets
+        >>> from schwab.enums import Markets
         >>> Markets.Bond.Value
     """
 
@@ -75,7 +75,7 @@ class Projections(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import Projections
+        >>> from schwab.enums import Projections
         >>> Projections.Bond.Value
     """
 
@@ -92,7 +92,7 @@ class DefaultOrderLegInstruction(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import DefaultOrderLegInstruction
+        >>> from schwab.enums import DefaultOrderLegInstruction
         >>> DefaultOrderLegInstruction.Sell.Value
     """
 
@@ -109,7 +109,7 @@ class DefaultOrderType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import DefaultOrderType
+        >>> from schwab.enums import DefaultOrderType
         >>> DefaultOrderType.Market.Value
     """
 
@@ -128,7 +128,7 @@ class DefaultOrderPriceLinkType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import DefaultOrderPriceLinkType
+        >>> from schwab.enums import DefaultOrderPriceLinkType
         >>> DefaultOrderPriceLinkType.Value.Value
     """
 
@@ -143,7 +143,7 @@ class DefaultOrderDuration(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import DefaultOrderDuration
+        >>> from schwab.enums import DefaultOrderDuration
         >>> DefaultOrderDuration.Day.Value
     """
 
@@ -159,7 +159,7 @@ class DefaultOrderMarketSession(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import DefaultOrderMarketSession
+        >>> from schwab.enums import DefaultOrderMarketSession
         >>> DefaultOrderMarketSession.Day.Value
     """
 
@@ -176,7 +176,7 @@ class TaxLotMethod(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import MutualFundTaxLotMethod
+        >>> from schwab.enums import MutualFundTaxLotMethod
         >>> MutualFundTaxLotMethod.Day.Value
     """
 
@@ -195,7 +195,7 @@ class DefaultAdvancedToolLaunch(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import DefaultAdvancedToolLaunch
+        >>> from schwab.enums import DefaultAdvancedToolLaunch
         >>> DefaultAdvancedToolLaunch.Tos.Value
     """
 
@@ -213,7 +213,7 @@ class AuthTokenTimeout(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import AuthTokenTimeout
+        >>> from schwab.enums import AuthTokenTimeout
         >>> AuthTokenTimeout.FiftyFiveMinutes.Value
     """
 
@@ -229,7 +229,7 @@ class FrequencyType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import PriceFrequency
+        >>> from schwab.enums import PriceFrequency
         >>> PriceFrequency.Daily.Value
     """
 
@@ -245,7 +245,7 @@ class PeriodType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import PriceFrequency
+        >>> from schwab.enums import PriceFrequency
         >>> PeriodType.Daily.Value
     """
 
@@ -261,7 +261,7 @@ class StrategyType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import StrategyType
+        >>> from schwab.enums import StrategyType
         >>> StrategyType.Analytical.Value
     """
 
@@ -285,7 +285,7 @@ class OptionaRange(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import OptionaRange
+        >>> from schwab.enums import OptionaRange
         >>> OptionaRange.InTheMoney.Value
     """
 
@@ -304,7 +304,7 @@ class ExpirationMonth(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ExpirationMonth
+        >>> from schwab.enums import ExpirationMonth
         >>> ExpirationMonth.Janurary.Value
     """
 
@@ -329,7 +329,7 @@ class ContractType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ContractType
+        >>> from schwab.enums import ContractType
         >>> ContractType.Call.Value
     """
 
@@ -344,7 +344,7 @@ class OptionType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import OptionType
+        >>> from schwab.enums import OptionType
         >>> OptionType.Call.Value
     """
 
@@ -359,7 +359,7 @@ class OrderStatus(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import OrderStatus
+        >>> from schwab.enums import OrderStatus
         >>> OrderStatus.Working.Value
     """
 
@@ -386,7 +386,7 @@ class OrderStrategyType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import OrderStrategyType
+        >>> from schwab.enums import OrderStrategyType
         >>> OrderStrategyType.Single.Value
     """
 
@@ -401,7 +401,7 @@ class QuantityType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import QuantityType
+        >>> from schwab.enums import QuantityType
         >>> QuantityType.Dollars.Value
     """
 
@@ -416,7 +416,7 @@ class AssetType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import AssetType
+        >>> from schwab.enums import AssetType
         >>> AssetType.Equity.Value
     """
 
@@ -435,7 +435,7 @@ class ComplexOrderStrategyType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ComplexOrderStrategyType
+        >>> from schwab.enums import ComplexOrderStrategyType
         >>> ComplexOrderStrategyType.IronCondor.Value
     """
 
@@ -467,7 +467,7 @@ class OrderInstructions(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import OrderInstructions
+        >>> from schwab.enums import OrderInstructions
         >>> OrderInstructions.SellShort.Value
     """
 
@@ -488,7 +488,7 @@ class RequestedDestination(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import RequestedDestination
+        >>> from schwab.enums import RequestedDestination
         >>> RequestedDestination.Cboe.Value
     """
 
@@ -512,7 +512,7 @@ class StopPriceLinkBasis(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import StopPriceLinkBasis
+        >>> from schwab.enums import StopPriceLinkBasis
         >>> StopPriceLinkBasis.Trigger.Value
     """
 
@@ -533,7 +533,7 @@ class StopPriceLinkType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import StopPriceLinkType
+        >>> from schwab.enums import StopPriceLinkType
         >>> StopPriceLinkType.Trigger.Value
     """
 
@@ -548,7 +548,7 @@ class StopType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import StopType
+        >>> from schwab.enums import StopType
         >>> StopType.Standard.Value
     """
 
@@ -565,7 +565,7 @@ class PriceLinkBasis(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import PriceLinkBasis
+        >>> from schwab.enums import PriceLinkBasis
         >>> PriceLinkBasis.Manual.Value
     """
 
@@ -586,7 +586,7 @@ class PriceLinkType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import PriceLinkType
+        >>> from schwab.enums import PriceLinkType
         >>> PriceLinkType.Trigger.Value
     """
 
@@ -601,7 +601,7 @@ class OrderType(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import OrderType
+        >>> from schwab.enums import OrderType
         >>> OrderType.Market.Value
     """
 
@@ -624,7 +624,7 @@ class PositionEffect(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import PositionEffect
+        >>> from schwab.enums import PositionEffect
         >>> PositionEffect.Opening.Value
     """
 
@@ -639,7 +639,7 @@ class OrderTaxLotMethod(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import OrderTaxLotMethod
+        >>> from schwab.enums import OrderTaxLotMethod
         >>> OrderTaxLotMethod.Fifo.Value
     """
 
@@ -657,7 +657,7 @@ class SpecialInstructions(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import SpecialInstructions
+        >>> from schwab.enums import SpecialInstructions
         >>> SpecialInstructions.AllOrNone.Value
     """
 
@@ -672,7 +672,7 @@ class LevelOneQuotes(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import LevelOneQuotes
+        >>> from schwab.enums import LevelOneQuotes
         >>> LevelOneQuotes.All.Value
     """
 
@@ -738,7 +738,7 @@ class LevelOneOptions(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import LevelOneOptions
+        >>> from schwab.enums import LevelOneOptions
         >>> LevelOneOptions.All.Value
     """
 
@@ -793,7 +793,7 @@ class LevelOneFutures(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import LevelOneFutures
+        >>> from schwab.enums import LevelOneFutures
         >>> LevelOneFutures.All.Value
     """
 
@@ -842,7 +842,7 @@ class LevelOneForex(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import LevelOneForex
+        >>> from schwab.enums import LevelOneForex
         >>> LevelOneForex.All.Value
     """
 
@@ -885,7 +885,7 @@ class NewsHeadlines(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import NewsHeadlines
+        >>> from schwab.enums import NewsHeadlines
         >>> NewsHeadlines.All.Value
     """
 
@@ -909,7 +909,7 @@ class LevelOneFuturesOptions(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import LevelOneFuturesOptions
+        >>> from schwab.enums import LevelOneFuturesOptions
         >>> LevelOneFuturesOptions.All.Value
     """
 
@@ -958,7 +958,7 @@ class ChartServices(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ChartServices
+        >>> from schwab.enums import ChartServices
         >>> ChartServices.ChartEquity.Value
     """
 
@@ -973,7 +973,7 @@ class ChartEquity(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ChartEquity
+        >>> from schwab.enums import ChartEquity
         >>> ChartEquity.All.Value
     """
 
@@ -995,7 +995,7 @@ class ChartFutures(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ChartFutures
+        >>> from schwab.enums import ChartFutures
         >>> ChartFutures.All.Value
     """
 
@@ -1015,7 +1015,7 @@ class TimesaleServices(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import TimesaleServices
+        >>> from schwab.enums import TimesaleServices
         >>> TimesaleServices.TimesaleEquity.Value
     """
 
@@ -1031,7 +1031,7 @@ class Timesale(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import Timesale
+        >>> from schwab.enums import Timesale
         >>> Timesale.All.Value
     """
 
@@ -1049,7 +1049,7 @@ class ActivesServices(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ActivesServices
+        >>> from schwab.enums import ActivesServices
         >>> ActivesServices.ActivesNasdaq.Value
     """
 
@@ -1065,7 +1065,7 @@ class ActivesVenues(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ActivesVenues
+        >>> from schwab.enums import ActivesVenues
         >>> ActivesVenues.Nasdaq.Value
     """
 
@@ -1086,7 +1086,7 @@ class ActivesDurations(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ActivesDurations
+        >>> from schwab.enums import ActivesDurations
         >>> ActivesDurations.All.Value
     """
 
@@ -1104,7 +1104,7 @@ class ChartFuturesFrequencies(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ChartFuturesFrequencies
+        >>> from schwab.enums import ChartFuturesFrequencies
         >>> ChartFuturesFrequencies.OneMinute.Value
     """
 
@@ -1124,7 +1124,7 @@ class ChartFuturesPeriods(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import ChartFuturesPeriods
+        >>> from schwab.enums import ChartFuturesPeriods
         >>> ChartFuturesPeriods.OneDay.Value
     """
 
@@ -1141,7 +1141,7 @@ class LevelTwoQuotes(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import LevelTwoQuotes
+        >>> from schwab.enums import LevelTwoQuotes
         >>> LevelTwoQuotes.All.Value
     """
 
@@ -1156,7 +1156,7 @@ class LevelTwoOptions(Enum):
 
     ### Usage
     ----
-        >>> from td.enums import LevelTwoOptions
+        >>> from schwab.enums import LevelTwoOptions
         >>> LevelTwoOptions.All.Value
     """
 

@@ -2,9 +2,9 @@ import unittest
 from unittest import TestCase
 from configparser import ConfigParser
 
-from td.rest.quotes import Quotes
-from td.client import TdAmeritradeClient
-from td.credentials import TdCredentials
+from schwab.rest.quotes import Quotes
+from schwab.client import TdAmeritradeClient
+from schwab.credentials import TdCredentials
 
 
 class TestQuotesService(TestCase):

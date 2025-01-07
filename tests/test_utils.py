@@ -1,15 +1,15 @@
 import unittest
 from unittest import TestCase
 
-from td.utils.orders import Order
-from td.utils.orders import OrderLeg
-from td.utils.orders import OrderLegInstrument
+from schwab.utils.orders import Order
+from schwab.utils.orders import OrderLeg
+from schwab.utils.orders import OrderLegInstrument
 
-from td.utils.enums import AssetType
-from td.utils.enums import OrderType
-from td.utils.enums import OrderInstructions
-from td.utils.enums import OrderStrategyType
-from td.utils.enums import DefaultOrderDuration
+from schwab.utils.enums import AssetType
+from schwab.utils.enums import OrderType
+from schwab.utils.enums import OrderInstructions
+from schwab.utils.enums import OrderStrategyType
+from schwab.utils.enums import DefaultOrderDuration
 
 
 class TestTdOrderUtils(TestCase):

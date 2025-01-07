@@ -1,6 +1,6 @@
 from enum import Enum
 from typing import Union
-from td.session import TdAmeritradeSession
+from schwab.session import CharlesSchwabSession
 
 
 class Instruments():
@@ -13,13 +13,13 @@ class Instruments():
     methods for searching including regex.
     """
 
-    def __init__(self, session: TdAmeritradeSession) -> None:
+    def __init__(self, session: CharlesSchwabSession) -> None:
         """Initializes the `Instruments` services.
 
         ### Parameters
         ----
-        session : TdAmeritradeSession
-            An authenticated `TDAmeritradeSession
+        session : CharlesSchwabSession
+            An authenticated `CharlesSchwabSession
             object.
         """
 
@@ -46,7 +46,7 @@ class Instruments():
 
         ### Usage
         ----
-            >>> from td.enums import Instruments
+            >>> from schwab.enums import Instruments
             >>> instruments_service = td_client.instruments()
             >>> instruments_service.search_instruments(
                 symbol='MSFT',
@@ -84,7 +84,7 @@ class Instruments():
 
         ### Usage
         ----
-            >>> from td.enums import Instruments
+            >>> from schwab.enums import Instruments
             >>> instruments_service = td_client.instruments()
             >>> instruments_service.get_instrument(
                 cusip='617446448'

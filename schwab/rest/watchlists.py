@@ -1,4 +1,4 @@
-from td.session import TdAmeritradeSession
+from schwab.session import CharlesSchwabSession
 
 
 class Watchlists():
@@ -11,13 +11,13 @@ class Watchlists():
     accounts.
     """
 
-    def __init__(self, session: TdAmeritradeSession) -> None:
+    def __init__(self, session: CharlesSchwabSession) -> None:
         """Initializes the `Watchlists` services.
 
         ### Parameters
         ----
-        session : TdAmeritradeSession
-            An authenticated `TDAmeritradeSession
+        session : CharlesSchwabSession
+            An authenticated `CharlesSchwabSession
             object.
         """
 

@@ -8,9 +8,9 @@ from datetime import datetime
 from websockets import client as ws_client
 from websockets import exceptions as ws_exceptions
 
-from td.rest.user_info import UserInfo
-from td.session import TdAmeritradeSession
-from td.streaming.services import StreamingServices
+from schwab.rest.user_info import UserInfo
+from schwab.session import CharlesSchwabSession
+from schwab.streaming.services import StreamingServices
 
 
 class StreamingApiClient():
@@ -23,7 +23,7 @@ class StreamingApiClient():
     streams data back to the user.
     """
 
-    def __init__(self, session: TdAmeritradeSession) -> None:
+    def __init__(self, session: CharlesSchwabSession) -> None:
         """Initalizes the Streaming Client.
 
         ### Overview
@@ -64,14 +64,14 @@ class StreamingApiClient():
             "acl": self.user_principal_data['streamerInfo']['acl']
         }
 
-        self.connection: ws_client.WebSocketClientProtocol = None
+        self.connection: ws_client.ClientProtocol = None
         self.data_requests = {
             "requests": []
         }
 
         try:
             self.loop = asyncio.get_event_loop()
-        except ws_exceptions.WebSocketProtocolError:
+        except ws_exceptions.ProtocolError:
             self.loop = asyncio.new_event_loop()
             asyncio.set_event_loop(self.loop)
 
@@ -111,7 +111,7 @@ class StreamingApiClient():
 
         return json.dumps(login_request)
 
-    async def _connect(self) -> ws_client.WebSocketClientProtocol:
+    async def _connect(self) -> ws_client.ClientProtocol:
         """Connects the Client to the TD Websocket.
 
         ### Overview
@@ -130,7 +130,9 @@ class StreamingApiClient():
         login_request = self._build_login_request()
 
         # Create a connection.
-        self.connection = await ws_client.connect(self.websocket_url)
+        self.connection = await ws_client.ClientProtocol(
+            wsuri=self.websocket_url
+        ).connect()
 
         # See if we are connected.
         is_connected = await self._check_connection()
@@ -339,7 +341,7 @@ class StreamingApiClient():
             print(message)
             await asyncio.sleep(3)
 
-    async def build_pipeline(self) -> ws_client.WebSocketClientProtocol:
+    async def build_pipeline(self) -> ws_client.ClientProtocol:
         """Builds a data pipeine for processing data.
 
         ### Overview

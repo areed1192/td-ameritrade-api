@@ -1,3 +1,5 @@
+"""This module contains the `CharlesSchwabSession` class."""
+
 import json
 import logging
 import pathlib
@@ -5,35 +7,35 @@ import pathlib
 import requests
 
 
-class TdAmeritradeSession():
+class CharlesSchwabSession():
 
-    """Serves as the Session for TD Ameritrade API."""
+    """Serves as the Session for Charles Schwab API."""
 
-    def __init__(self, td_client: object) -> None:
-        """Initializes the `TdAmeritradeSession` client.
+    def __init__(self, client: object) -> None:
+        """Initializes the `CharlesSchwabSession` client.
 
         ### Overview
         ----
-        The `TdAmeritradeSession` object handles all the requests made
-        for the different endpoints on the TD Ameritrade API.
+        The `CharlesSchwabSession` object handles all the requests made
+        for the different endpoints on the Charles Schwab API.
 
         ### Parameters
         ----
         client : object
-            The `TdAmeritradeClient` Python Client.
+            The `CharlesSchwabClient` Python Client.
 
         ### Usage:
         ----
-            >>> td_session = TdAmeritradeSession()
+            >>> session = CharlesSchwabSession()
         """
 
-        from td.client import TdAmeritradeClient
+        from schwab.client import CharlesSchwabClient
 
         # We can also add custom formatting to our log messages.
         log_format = '%(asctime)-15s|%(filename)s|%(message)s'
 
-        self.client: TdAmeritradeClient = td_client
-        self.resource_url = 'https://api.tdameritrade.com/'
+        self.client: CharlesSchwabClient = client
+        self.resource_url = 'https://api.schwabapi.com/'
         self.version = 'v1/'
 
         if not pathlib.Path('logs').exists():
@@ -60,7 +62,7 @@ class TdAmeritradeSession():
             A dictionary containing all the components.
         """
 
-        # Fake the headers.
+        # Build the headers.
         headers = {
             "Authorization": f"Bearer {self.client.td_credentials.access_token}",
             "Content-Type": "application/json"
@@ -163,32 +165,33 @@ class TdAmeritradeSession():
         # If it's okay and no details.
         if response.ok and len(response.content) > 0:
             return response.json()
-        elif len(response.content) > 0 and response.ok:
+
+        if len(response.content) > 0 and response.ok:
             return {
                 'message': 'response successful',
                 'status_code': response.status_code
             }
-        elif not response.ok:
 
-            if len(response.content) == 0:
-                response_data = ''
-            else:
-                response_data = response.json()
 
-            response.request.headers['Authorization'] = 'Bearer XXXXXXX'
+        if len(response.content) == 0:
+            response_data = ''
+        else:
+            response_data = response.json()
 
-            # Define the error dict.
-            error_dict = {
-                'error_code': response.status_code,
-                'response_url': response.url,
-                'response_body': response_data,
-                'response_request': dict(response.request.headers),
-                'response_method': response.request.method,
-            }
+        response.request.headers['Authorization'] = 'Bearer XXXXXXX'
 
-            # Log the error.
-            logging.error(
-                msg=json.dumps(obj=error_dict, indent=4)
-            )
+        # Define the error dict.
+        error_dict = {
+            'error_code': response.status_code,
+            'response_url': response.url,
+            'response_body': response_data,
+            'response_request': dict(response.request.headers),
+            'response_method': response.request.method,
+        }
 
-            raise requests.HTTPError()
+        # Log the error.
+        logging.error(
+            msg=json.dumps(obj=error_dict, indent=4)
+        )
+
+        raise requests.HTTPError()

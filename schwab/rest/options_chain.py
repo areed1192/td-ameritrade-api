@@ -1,5 +1,5 @@
-from td.session import TdAmeritradeSession
-from td.utils.option_chain import OptionChainQuery
+from schwab.session import CharlesSchwabSession
+from schwab.utils.option_chain import OptionChainQuery
 
 
 class OptionsChain():
@@ -12,13 +12,13 @@ class OptionsChain():
     queries.
     """
 
-    def __init__(self, session: TdAmeritradeSession) -> None:
+    def __init__(self, session: CharlesSchwabSession) -> None:
         """Initializes the `OptionsChain` services.
 
         ### Parameters
         ----
-        session : TdAmeritradeSession
-            An authenticated `TDAmeritradeSession
+        session : CharlesSchwabSession
+            An authenticated `CharlesSchwabSession
             object.
         """
 
@@ -40,7 +40,7 @@ class OptionsChain():
         ----
         option_chain_query: OptionChainQuery (optional, Default=None)
             Represents a query object that can be constructed from
-            the `td.utils` file. This is the preferred method of querying
+            the `schwab.utils` file. This is the preferred method of querying
             of data because additional checks are put in place.
 
         option_chain_dict: dict (optional, Default=None)

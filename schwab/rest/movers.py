@@ -1,7 +1,7 @@
 from enum import Enum
 
 from typing import Union
-from td.session import TdAmeritradeSession
+from schwab.session import CharlesSchwabSession
 
 class Movers():
 
@@ -12,13 +12,13 @@ class Movers():
     different indexes based on the type of move.
     """
 
-    def __init__(self, session: TdAmeritradeSession) -> None:
+    def __init__(self, session: CharlesSchwabSession) -> None:
         """Initializes the `Movers` services.
 
         ### Parameters
         ----
-        session : TdAmeritradeSession
-            An authenticated `TDAmeritradeSession
+        session : CharlesSchwabSession
+            An authenticated `CharlesSchwabSession
             object.
         """
 
