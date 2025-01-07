@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "Python: Run TD OAuth",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "${cwd}/samples/use_quotes.py",
       "console": "integratedTerminal",
@@ -13,7 +13,7 @@
     },
     {
       "name": "Python: Run TD Saved Orders",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "${cwd}/samples/use_saved_orders.py",
       "console": "integratedTerminal",
@@ -23,7 +23,7 @@
     },
     {
       "name": "Python: Run Streaming Session",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "${cwd}/samples/use_streaming_client.py",
       "console": "integratedTerminal",
@@ -33,7 +33,7 @@
     },
     {
       "name": "Python: Run Price History",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "${cwd}/samples/use_price_history.py",
       "console": "integratedTerminal",
