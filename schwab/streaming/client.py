@@ -1,3 +1,5 @@
+"""This module contains the main client for the Charles Schwab Streaming API."""
+
 import json
 import urllib
 import pprint
@@ -29,11 +31,11 @@ class StreamingApiClient():
         ### Overview
         ----
         Initalizes the Client Object and defines different components that will be needed to
-        make a connection with the TD Streaming API.
+        make a connection with the Charles Schwab Streaming API.
 
         ### Usage
         ----
-            >>> td_streaming_client = td_client.streaming_api()
+            >>> streaming_client = client.streaming_api()
         """
         self.user_principal_data = UserInfo(
             session=session
@@ -117,12 +119,12 @@ class StreamingApiClient():
         ### Overview
         ----
         Connecting to webSocket server websockets.client.connect
-        returns a WebSocketClientProtocol, which is used to send
+        returns a ClientProtocol, which is used to send
         and receive messages
 
         ### Returns
         ---
-        websockets.WebSocketClientProtocol:
+        websockets.ClientProtocol:
             The websocket connection.
         """
 
@@ -291,7 +293,7 @@ class StreamingApiClient():
 
         ### Usage
         ----
-            >>> streaming_api_service = td_client.streaming_api_client()
+            >>> streaming_api_service = client.streaming_api_client()
             >>> streaming_services = streaming_api_service.services()
         """
 

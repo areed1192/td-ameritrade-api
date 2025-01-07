@@ -1,3 +1,5 @@
+"""This module contains the different streaming services that you can pull data from."""
+
 from enum import Enum
 from typing import Union
 from typing import List
@@ -66,7 +68,7 @@ class StreamingServices():
         ### Overview
         ----
         Allows the user to set the speed at which they recieve
-        messages from the TD Server.
+        messages from the Charles Schwab Server.
 
         ### Parameters
         ----
@@ -77,7 +79,7 @@ class StreamingServices():
 
         ### Usage
         ----
-            >>> streaming_api_service = td_client.streaming_api_client()
+            >>> streaming_api_service = client.streaming_api_client()
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.quality_of_service(
                 qos_level='1'
@@ -110,7 +112,7 @@ class StreamingServices():
 
         ### Usage
         ----
-            >>> streaming_api_service = td_client.streaming_api_client()
+            >>> streaming_api_service = client.streaming_api_client()
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.level_one_quotes(
                 symbols=['AAPL','SQ'],
@@ -158,7 +160,7 @@ class StreamingServices():
 
         ### Usage
         ----
-            >>> streaming_api_service = td_client.streaming_api_client()
+            >>> streaming_api_service = client.streaming_api_client()
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.level_one_options(
                 symbols=['MSFT_043021C120'],
@@ -206,7 +208,7 @@ class StreamingServices():
 
         ### Usage
         ----
-            >>> streaming_api_service = td_client.streaming_api_client()
+            >>> streaming_api_service = client.streaming_api_client()
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.level_one_futures(
                 symbols=['/ES'],
@@ -255,7 +257,7 @@ class StreamingServices():
 
         ### Usage
         ----
-            >>> streaming_api_service = td_client.streaming_api_client()
+            >>> streaming_api_service = client.streaming_api_client()
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.level_one_futures(
                 symbols=['./EW2J20C2675'],
@@ -303,7 +305,7 @@ class StreamingServices():
 
         ### Usage
         ----
-            >>> streaming_api_service = td_client.streaming_api_client()
+            >>> streaming_api_service = client.streaming_api_client()
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.level_one_forex(
                 symbols=['EUR/USD'],
@@ -336,7 +338,7 @@ class StreamingServices():
         """
         ### Overview
         ----
-        Represents the ACCOUNT_ACTIVITY endpoint of the TD
+        Represents the ACCOUNT_ACTIVITY endpoint of the Charles Schwab
         Streaming API. This service is used to request streaming
         updates for one or more accounts associated with
         the logged in User ID. Common usage would involve issuing
@@ -375,7 +377,7 @@ class StreamingServices():
 
         ### Usage
         ----
-            >>> streaming_api_service = td_client.streaming_api_client()
+            >>> streaming_api_service = client.streaming_api_client()
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.news_headline(
                 symbols=['MSFT', 'GOOG', 'AAPL'],
@@ -433,7 +435,7 @@ class StreamingServices():
 
         ### Usage
         ----
-            >>> streaming_api_service = td_client.streaming_api_client()
+            >>> streaming_api_service = client.streaming_api_client()
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.chart(
                 service=ChartServices.ChartEquity,
@@ -489,7 +491,7 @@ class StreamingServices():
 
         ### Usage
         ----
-            >>> streaming_api_service = td_client.streaming_api_client()
+            >>> streaming_api_service = client.streaming_api_client()
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.timesale(
                 service=TimesaleServices.TimesaleEquity,
@@ -547,7 +549,7 @@ class StreamingServices():
 
         ### Usage
         ----
-            >>> streaming_api_service = td_client.streaming_api_client()
+            >>> streaming_api_service = client.streaming_api_client()
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.actives(
                 service=ActivesServices.ActivesNasdaq,
@@ -604,7 +606,7 @@ class StreamingServices():
 
         ### Usage
         ----
-            >>> streaming_api_service = td_client.streaming_api_client()
+            >>> streaming_api_service = client.streaming_api_client()
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.chart_history_futures(
                 symbols=['/ES', '/CL'],
@@ -681,7 +683,7 @@ class StreamingServices():
 
         ### Usage
         ----
-            >>> streaming_api_service = td_client.streaming_api_client()
+            >>> streaming_api_service = client.streaming_api_client()
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.level_two_quotes(
                 symbols=['MSFT', 'PINS'],
@@ -729,7 +731,7 @@ class StreamingServices():
 
         ### Usage
         ----
-            >>> streaming_api_service = td_client.streaming_api_client()
+            >>> streaming_api_service = client.streaming_api_client()
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.level_two_options(
                 symbols=['MSFT_043021C120'],
