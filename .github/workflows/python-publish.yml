@@ -3,9 +3,13 @@
 
 name: Publish Python Package to PyPi and Test PyPi
 
+# Run only when manual
 on:
-  release:
-    types: [created]
+  workflow_dispatch
+  
+# on:
+#   release:
+#     types: [created]
 
 jobs:
   deploy:

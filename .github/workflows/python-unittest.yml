@@ -3,9 +3,9 @@
 
 name: Python Unit Testing
 
+# Run only when manual
 on:
-  push:
-    branches: [master]
+  workflow_dispatch
 
 jobs:
   build:
@@ -30,4 +30,4 @@ jobs:
         run: |
           # If we have a testing folder, then run with unittest.
           python -m unittest discover -v -s "./tests" -p "test_*.py"
-          # if [ -f tests/test_clients.py ]; then python -m unittest discover -v -s "./tests" -p "test_*.py"; fi
+          # if [ -f tests/test_client.py ]; then python -m unittest discover -v -s "./tests" -p "test_*.py"; fi
