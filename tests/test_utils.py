@@ -1,3 +1,5 @@
+"""Unit tests for the `OrderUtils` object."""
+
 import unittest
 from unittest import TestCase
 
@@ -12,21 +14,17 @@ from schwab.utils.enums import OrderStrategyType
 from schwab.utils.enums import DefaultOrderDuration
 
 
-class TestTdOrderUtils(TestCase):
-
+class TestOrderUtils(TestCase):
     """Will perform a unit test for the different `Order` utility objects."""
 
     def test_order_leg_instrument(self):
         """Create an instance and make sure it's a `OrderLegInstrument` object."""
 
-        correct = {
-            'assetType': 'EQUITY',
-            'symbol': 'SQ'
-        }
+        correct = {"assetType": "EQUITY", "symbol": "SQ"}
 
         my_order_leg_instrument = {
-            'asset_type': 'EQUITY',
-            'symbol': 'SQ',
+            "asset_type": "EQUITY",
+            "symbol": "SQ",
         }
 
         my_order_leg_instrument = OrderLegInstrument(**my_order_leg_instrument)
@@ -36,8 +34,8 @@ class TestTdOrderUtils(TestCase):
         self.assertDictEqual(d1=my_order_leg_instrument, d2=correct)
 
         my_order_leg_instrument = {
-            'asset_type': AssetType.Equity,
-            'symbol': 'SQ',
+            "asset_type": AssetType.Equity,
+            "symbol": "SQ",
         }
 
         my_order_leg_instrument = OrderLegInstrument(**my_order_leg_instrument)
@@ -50,22 +48,16 @@ class TestTdOrderUtils(TestCase):
         """Create an instance and make sure it's a `OrderLeg` object."""
 
         correct = {
-            'instruction': 'BUY',
-            'legId': 0,
-            'instrument': {
-                'assetType': 'EQUITY',
-                'symbol': 'SQ'
-            },
-            'quantity': 2
+            "instruction": "BUY",
+            "legId": 0,
+            "instrument": {"assetType": "EQUITY", "symbol": "SQ"},
+            "quantity": 2,
         }
 
         my_order_leg = {
-            'instruction': 'BUY',
-            'instrument': {
-                'asset_type': 'EQUITY',
-                'symbol': 'SQ'
-            },
-            'quantity': 2
+            "instruction": "BUY",
+            "instrument": {"asset_type": "EQUITY", "symbol": "SQ"},
+            "quantity": 2,
         }
 
         my_order_leg = OrderLeg(**my_order_leg)
@@ -75,12 +67,9 @@ class TestTdOrderUtils(TestCase):
         self.assertDictEqual(d1=my_order_leg, d2=correct)
 
         my_order_leg = {
-            'instruction': OrderInstructions.Buy,
-            'instrument': {
-                'asset_type': AssetType.Equity,
-                'symbol': 'SQ'
-            },
-            'quantity': 2
+            "instruction": OrderInstructions.Buy,
+            "instrument": {"asset_type": AssetType.Equity, "symbol": "SQ"},
+            "quantity": 2,
         }
 
         my_order_leg = OrderLeg(**my_order_leg)
@@ -102,10 +91,7 @@ class TestTdOrderUtils(TestCase):
                 {
                     "instruction": "BUY",
                     "quantity": 10,
-                    "instrument": {
-                        "symbol": "XYZ",
-                        "assetType": "EQUITY"
-                    }
+                    "instrument": {"symbol": "XYZ", "assetType": "EQUITY"},
                 }
             ],
             "childOrderStrategies": [
@@ -119,14 +105,11 @@ class TestTdOrderUtils(TestCase):
                         {
                             "instruction": "SELL",
                             "quantity": 10,
-                            "instrument": {
-                                "symbol": "XYZ",
-                                "assetType": "EQUITY"
-                            }
+                            "instrument": {"symbol": "XYZ", "assetType": "EQUITY"},
                         }
-                    ]
+                    ],
                 }
-            ]
+            ],
         }
 
         my_order = {
@@ -139,10 +122,7 @@ class TestTdOrderUtils(TestCase):
                 {
                     "instruction": "BUY",
                     "quantity": 10,
-                    "instrument": {
-                        "symbol": "XYZ",
-                        "asset_type": "EQUITY"
-                    }
+                    "instrument": {"symbol": "XYZ", "asset_type": "EQUITY"},
                 }
             ],
             "child_order_strategies": [
@@ -156,14 +136,11 @@ class TestTdOrderUtils(TestCase):
                         {
                             "instruction": "SELL",
                             "quantity": 10,
-                            "instrument": {
-                                "symbol": "XYZ",
-                                "asset_type": "EQUITY"
-                            }
+                            "instrument": {"symbol": "XYZ", "asset_type": "EQUITY"},
                         }
-                    ]
+                    ],
                 }
-            ]
+            ],
         }
 
         my_order = Order(**my_order)
@@ -182,10 +159,7 @@ class TestTdOrderUtils(TestCase):
                 {
                     "instruction": OrderInstructions.Buy,
                     "quantity": 10,
-                    "instrument": {
-                        "symbol": "XYZ",
-                        "asset_type": "EQUITY"
-                    }
+                    "instrument": {"symbol": "XYZ", "asset_type": "EQUITY"},
                 }
             ],
             "child_order_strategies": [
@@ -201,12 +175,12 @@ class TestTdOrderUtils(TestCase):
                             "quantity": 10,
                             "instrument": {
                                 "symbol": "XYZ",
-                                "asset_type": AssetType.Equity
-                            }
+                                "asset_type": AssetType.Equity,
+                            },
                         }
-                    ]
+                    ],
                 }
-            ]
+            ],
         }
 
         my_order = Order(**my_order)
@@ -216,5 +190,5 @@ class TestTdOrderUtils(TestCase):
         self.assertDictEqual(d1=my_order, d2=correct)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

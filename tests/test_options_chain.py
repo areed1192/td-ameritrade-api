@@ -1,54 +1,56 @@
+"""Unit tests for the `OptionsChain` service."""
+
 import unittest
 from unittest import TestCase
 from configparser import ConfigParser
+
+from schwab.client import CharlesSchwabClient
+from schwab.credentials import CharlesSchwabCredentials
 
 from schwab.utils.enums import OptionaRange
 from schwab.utils.enums import OptionType
 from schwab.utils.enums import ContractType
 from schwab.utils.enums import ExpirationMonth
 
-from schwab.credentials import TdCredentials
-from schwab.client import TdAmeritradeClient
 from schwab.rest.options_chain import OptionsChain
 from schwab.rest.options_chain import OptionChainQuery
 
 
 class TestOptionsChainService(TestCase):
-
     """Will perform a unit test for the `OptionsChain` object."""
 
     def setUp(self) -> None:
-        """Set up the `TdAmeritradeClient` Client."""
+        """Set up the `CharlesSchwabClient` Client."""
 
         # Initialize the Parser.
         config = ConfigParser()
 
         # Read the file.
-        config.read('config/config.ini')
+        config.read("config/config.ini")
 
         # Get the specified credentials.
-        client_id = config.get('main', 'client_id')
-        redirect_uri = config.get('main', 'redirect_uri')
+        client_id = config.get("main", "client_id")
+        client_secret = config.get("main", "client_secret")
+        redirect_uri = config.get("main", "redirect_uri")
 
-        # Intialize our `Crednetials` object.
-        self.td_credentials = TdCredentials(
+        # Intialize our `CharlesSchwabCredentials` object.
+        self.credentials = CharlesSchwabCredentials(
             client_id=client_id,
+            client_secret=client_secret,
             redirect_uri=redirect_uri,
-            credential_file='config/td_credentials.json'
+            credential_file="config/credentials.json",
         )
 
-        # Initalize the `TdAmeritradeClient`
-        self.td_client = TdAmeritradeClient(
-            credentials=self.td_credentials
-        )
+        # Initalize the `CharlesSchwabClient`
+        self.client = CharlesSchwabClient(credentials=self.credentials)
 
-        self.service = self.td_client.options_chain()
+        self.service = self.client.options_chain()
 
     def test_creates_instance_of_client(self):
-        """Create an instance and make sure it's a `TdAmeritradeClient` object."""
+        """Create an instance and make sure it's a `CharlesSchwabClient` object."""
 
-        self.assertIsInstance(self.td_client, TdAmeritradeClient)
-        self.assertIsInstance(self.td_credentials, TdCredentials)
+        self.assertIsInstance(self.client, CharlesSchwabClient)
+        self.assertIsInstance(self.credentials, CharlesSchwabCredentials)
 
     def test_creates_instance_of_service(self):
         """Create an instance and make sure it's a `OptionsChain` object."""
@@ -60,12 +62,12 @@ class TestOptionsChainService(TestCase):
 
         # Build a Query.
         option_chain_query = OptionChainQuery(
-            symbol='MSFT',
+            symbol="MSFT",
             contract_type=ContractType.Call,
             expiration_month=ExpirationMonth.June,
             option_type=OptionType.StandardContracts,
             option_range=OptionaRange.InTheMoney,
-            include_quotes=True
+            include_quotes=True,
         )
 
         self.assertIsInstance(option_chain_query, OptionChainQuery)
@@ -75,12 +77,12 @@ class TestOptionsChainService(TestCase):
 
         # Build a Query.
         option_chain_query = OptionChainQuery(
-            symbol='MSFT',
+            symbol="MSFT",
             contract_type=ContractType.Call,
             expiration_month=ExpirationMonth.June,
             option_type=OptionType.StandardContracts,
             option_range=OptionaRange.InTheMoney,
-            include_quotes=True
+            include_quotes=True,
         )
 
         # Query the Options Data.
@@ -88,19 +90,19 @@ class TestOptionsChainService(TestCase):
             option_chain_query=option_chain_query
         )
 
-        self.assertIn('numberOfContracts', list(options_data.keys()))
+        self.assertIn("numberOfContracts", list(options_data.keys()))
 
     def test_get_option_chains(self):
         """Test grabbing option chains data using a dictionary object."""
 
         # Build a Query.
         option_chain_dict = {
-            'symbol': 'MSFT',
-            'contractType': 'CALL',
-            'expirationMonth': 'JUN',
-            'optionType': 'SC',
-            'range': 'ITM',
-            'includeQuotes': True
+            "symbol": "MSFT",
+            "contractType": "CALL",
+            "expirationMonth": "JUN",
+            "optionType": "SC",
+            "range": "ITM",
+            "includeQuotes": True,
         }
 
         # Query the Options Data.
@@ -108,14 +110,14 @@ class TestOptionsChainService(TestCase):
             option_chain_dict=option_chain_dict
         )
 
-        self.assertIn('numberOfContracts', list(options_data.keys()))
+        self.assertIn("numberOfContracts", list(options_data.keys()))
 
     def tearDown(self) -> None:
-        """Teardown the `TdAmeritradeClient` Client."""
+        """Teardown the `CharlesSchwabClient` Client."""
 
-        del self.td_client
-        del self.td_credentials
+        del self.client
+        del self.credentials
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
