@@ -1,3 +1,5 @@
+"""Used to access the `SavedOrders` Services and metadata."""
+
 from schwab.session import CharlesSchwabSession
 from schwab.utils.orders import Order
 
@@ -29,10 +31,6 @@ class SavedOrders():
     ) -> dict:
         """Returns the saved orders for a specific account.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/account-access/apis/get/accounts/%7BaccountId%7D/savedorders-0
-
         ### Parameters
         ----
         account_id: str
@@ -41,7 +39,7 @@ class SavedOrders():
 
         ### Usage
         ----
-            >>> saved_orders_service = td_client.saved_orders()
+            >>> saved_orders_service = client.saved_orders()
             >>> saved_orders_service.get_saved_orders_by_path(
                 account_id=account_number
             )
@@ -64,10 +62,6 @@ class SavedOrders():
     ) -> dict:
         """Get a specific saved order for a specific account.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/account-access/apis/get/accounts/%7BaccountId%7D/savedorders/%7BsavedOrderId%7D-0
-
         ### Parameters
         ----
         account_id: str
@@ -79,7 +73,7 @@ class SavedOrders():
 
         ### Usage
         ----
-            >>> saved_orders_service = td_client.saved_orders()
+            >>> saved_orders_service = client.saved_orders()
             >>> saved_orders_service.get_order(
                 account_id=account_number,
                 saved_order_id='12345678;
@@ -105,10 +99,6 @@ class SavedOrders():
         """Place an order for a specific account. Order throttle
         limits may apply.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/account-access/apis/post/accounts/%7BaccountId%7D/savedorders-0
-
         ### Parameters
         ----
         account_id: str (optional, Default=None)
@@ -128,7 +118,7 @@ class SavedOrders():
 
         ### Usage
         ----
-            >>> saved_orders_service = td_client.saved_orders()
+            >>> saved_orders_service = client.saved_orders()
             >>> saved_orders_service.place_saved_order(
                 account_id='123456789',
                 order_dict={}
@@ -171,10 +161,6 @@ class SavedOrders():
         replaced, the old saved order will be canceled and a new order
         will be created. Order throttle limits may apply.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/account-access/apis/put/accounts/%7BaccountId%7D/savedorders/%7BsavedOrderId%7D-0
-
         ### Parameters
         ----
         account_id: str (optional, Default=None)
@@ -197,7 +183,7 @@ class SavedOrders():
 
         ### Usage
         ----
-            >>> saved_orders_service = td_client.saved_orders()
+            >>> saved_orders_service = client.saved_orders()
             >>> saved_orders_service.replace_saved_order(
                 account_id='123456789',
                 order_id='12345678',
@@ -234,10 +220,6 @@ class SavedOrders():
         """Cancels a saved order for a specific account. Order throttle
         limits may apply.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/account-access/apis/delete/accounts/%7BaccountId%7D/savedorders/%7BsavedOrderId%7D-0
-
         ### Parameters
         ----
         account_id: str (optional, Default=None)
@@ -249,7 +231,7 @@ class SavedOrders():
 
         ### Usage
         ----
-            >>> saved_orders_service = td_client.saved_orders()
+            >>> saved_orders_service = client.saved_orders()
             >>> saved_orders_service.cancel_saved_order(
                 account_id='123456789',
                 saved_order_id='12345678'

@@ -1,3 +1,5 @@
+"""Used to access the `Accounts` Services and metadata."""
+
 from enum import Enum
 from typing import Union
 from datetime import datetime
@@ -40,10 +42,6 @@ class Accounts():
         be made and if more than one account is provided
         then a "Get Accounts" request will be made.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/account-access/apis
-
         ### Parameters
         ----
         account_id: str (optional, default=None)
@@ -63,7 +61,7 @@ class Accounts():
 
         ### Usage
         ----
-            >>> account_services = td_client.accounts()
+            >>> account_services = client.accounts()
             >>> account_services.get_accounts(
                 account_id='123456789',
                 include_orders=True,
@@ -105,10 +103,6 @@ class Accounts():
     ) -> dict:
         """Queries the transactions for an account.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/transaction-history/apis
-
         ### Parameters
         ----
         account_id: str
@@ -136,7 +130,7 @@ class Accounts():
 
         ### Usage
         ----
-            >>> account_services = td_client.accounts()
+            >>> account_services = client.accounts()
             >>> account_services.get_transactions(
                 account_id='123456789',
                 transaction_type='ALL'
@@ -176,10 +170,6 @@ class Accounts():
         Endpoint. The transaction ID will be queried for the specific account
         passed through.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/transaction-history/apis
-
         ### Parameters
         ----
         account_id: str
@@ -193,7 +183,7 @@ class Accounts():
 
         ### Usage
         ----
-            >>> account_services = td_client.accounts()
+            >>> account_services = client.accounts()
             >>> account_services.get_transaction(
                 account_id='123456789',
                 transaction_id='123456789'

@@ -6,7 +6,7 @@ from datetime import datetime
 from datetime import date
 from schwab.utils.enums import ContractType
 from schwab.utils.enums import StrategyType
-from schwab.utils.enums import OptionaRange
+from schwab.utils.enums import OptionRange
 from schwab.utils.enums import OptionType
 from schwab.utils.enums import ExpirationMonth
 
@@ -94,21 +94,21 @@ class OptionChainQuery():
     """
 
     symbol: str
-    contract_type: Union[str, Enum] = ContractType.All
+    contract_type: Union[str, Enum] = ContractType.ALL
     strike_count: int = None
     include_quotes: bool = False
-    strategy: Union[str, Enum] = StrategyType.Single
+    strategy: Union[str, Enum] = StrategyType.SINGLE
     interval: int = None
     strike: float = None
-    option_range: Union[str, Enum] = OptionaRange.All
+    option_range: Union[str, Enum] = OptionRange.ALL
     from_date: Union[str, datetime, date] = None
     to_date: Union[str, datetime, date] = None
     volatility: int = None
     underlying_price: float = None
     interest_rate: float = None
     days_to_expiration: int = None
-    expiration_month: Union[str, Enum] = ExpirationMonth.All
-    option_type: Union[str, Enum] = OptionType.All
+    expiration_month: Union[str, Enum] = ExpirationMonth.ALL
+    option_type: Union[str, Enum] = OptionType.ALL
 
     def to_dict(self, raise_errors: bool) -> dict:
         """Generates a dictionary containing all the field

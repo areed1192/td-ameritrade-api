@@ -1,3 +1,5 @@
+"""Used to access the `UserInfo` Services and metadata."""
+
 from typing import List
 from typing import Union
 from schwab.session import CharlesSchwabSession
@@ -26,17 +28,13 @@ class UserInfo():
 
         ### Usage
         ----
-            >>> user_info_service = td_client.user_service()
+            >>> user_info_service = client.user_service()
         """
 
         self.session = session
 
     def get_preferences(self, account_id: str) -> dict:
         """Get's User Preferences for a specific account.
-
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/user-principal/apis/get/accounts/%7BaccountId%7D/preferences-0
 
         ### Parameters
         ----
@@ -45,7 +43,7 @@ class UserInfo():
 
         ### Usage
         ----
-            >>> user_info_service = td_client.user_service()
+            >>> user_info_service = client.user_service()
             >>> user_info_service.get_preferences(
                 account_id='123456789'
             )
@@ -61,10 +59,6 @@ class UserInfo():
     def get_streamer_subscription_keys(self, account_ids: List[str]) -> dict:
         """SubscriptionKey for provided accounts or default accounts.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/user-principal/apis/get/userprincipals/streamersubscriptionkeys-0
-
         ### Parameters
         ----
         account_ids: List[str]
@@ -72,7 +66,7 @@ class UserInfo():
 
         ### Usage
         ----
-            >>> user_info_service = td_client.user_service()
+            >>> user_info_service = client.user_service()
             >>> user_info_service.get_streamer_subscription_keys(
                 account_ids=['123456789']
             )
@@ -93,13 +87,9 @@ class UserInfo():
     def get_user_principals(self) -> dict:
         """Get's User principals details.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/user-principal/apis/get/userprincipals-0
-
         ### Usage
         ----
-            >>> user_info_service = td_client.user_service()
+            >>> user_info_service = client.user_service()
             >>> user_info_service.get_user_principals()
         """
 
@@ -122,10 +112,6 @@ class UserInfo():
     ) -> dict:
         """Update preferences for a specific account.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/user-principal/apis/put/accounts/%7BaccountId%7D/preferences-0
-
         ### Parameters
         ----
         account_id: str
@@ -137,7 +123,7 @@ class UserInfo():
 
         ### Usage
         ----
-            >>> user_service = td_client.user_service()
+            >>> user_service = client.user_service()
             >>> user_info_service.update_user_preferences(
                 preferences={
                     'authTokenTimeout': 'EIGHT_HOURS'

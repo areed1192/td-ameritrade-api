@@ -1,3 +1,5 @@
+"""Used to access the `Quotes` Services and metadata."""
+
 from typing import List
 from schwab.session import CharlesSchwabSession
 
@@ -34,10 +36,6 @@ class Quotes():
         a Get Quote request will be made and if more than one
         item is provided then a Get Quotes request will be made.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/quotes/apis
-
         ### Parameters
         ----
         instruments: str
@@ -45,7 +43,7 @@ class Quotes():
 
         ### Usage
         ----
-            >>> quote_service = td_client.quotes()
+            >>> quote_service = client.quotes()
             >>> quote_service.get_quote(instrument='AAPL')
         """
 
@@ -72,10 +70,6 @@ class Quotes():
         item is provided then a Get Quotes request will be made.
         Only 500 symbols can be sent at a single time.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/quotes/apis
-
         ### Parameters
         ----
         instruments: str
@@ -83,7 +77,7 @@ class Quotes():
 
         ### Usage
         ----
-            >>> quote_service = td_client.quotes()
+            >>> quote_service = client.quotes()
             >>> quote_service.get_quotes(instruments=['AAPL','SQ'])
         """
 

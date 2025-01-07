@@ -1,3 +1,5 @@
+"""Used to access the `MarketHours` Services and metadata."""
+
 from enum import Enum
 from typing import Union
 from datetime import date as date_type
@@ -33,10 +35,6 @@ class MarketHours():
     ) -> dict:
         """Returns the market hours for all the markets.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/market-hours/apis
-
         ### Parameters
         ----
         markets: list
@@ -52,7 +50,7 @@ class MarketHours():
         ### Usage
         ----
             >>> from schwab.enums import Markets
-            >>> market_hours_service = td_client.market_hours()
+            >>> market_hours_service = client.market_hours()
             >>> market_hours_service.get_multiple_market_hours(
                 markets=['EQUITY', Markets.Bond],
                 date='2021-12-31'
@@ -86,10 +84,6 @@ class MarketHours():
     ) -> dict:
         """Returns the market hours for the specified market.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/market-hours/apis
-
         ### Parameters
         ----
         market: Union[str, Enum]
@@ -105,7 +99,7 @@ class MarketHours():
         ### Usage
         ----
             >>> from schwab.enums import Markets
-            >>> market_hours_service = td_client.market_hours()
+            >>> market_hours_service = client.market_hours()
             >>> market_hours_service.get_market_hours(
                 markets='EQUITY',
                 date='2021-12-31'

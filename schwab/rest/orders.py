@@ -1,3 +1,5 @@
+"""Used to access the `Orders` Services and metadata."""
+
 from enum import Enum
 from typing import Union
 from datetime import date
@@ -38,10 +40,6 @@ class Orders():
     ) -> dict:
         """Returns the orders for a specific account.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/account-access/apis/get/accounts/%7BaccountId%7D/orders-0
-
         ### Parameters
         ----
         account_id: str
@@ -68,7 +66,7 @@ class Orders():
 
         ### Usage
         ----
-            >>> orders_service = td_client.orders()
+            >>> orders_service = client.orders()
             >>> orders_service.get_orders_by_path(
                 account_id=account_number,
                 order_status=OrderStatus.Filled
@@ -117,10 +115,6 @@ class Orders():
     ) -> dict:
         """Get a specific order for a specific account.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/account-access/apis/get/accounts/%7BaccountId%7D/orders/%7BorderId%7D-0
-
         ### Parameters
         ----
         account_id: str
@@ -132,7 +126,7 @@ class Orders():
 
         ### Usage
         ----
-            >>> orders_service = td_client.orders()
+            >>> orders_service = client.orders()
             >>> orders_service.get_order(
                 account_id=account_number,
                 order_id='12345678;
@@ -158,10 +152,6 @@ class Orders():
         order_status: Union[Enum, str] = None
     ) -> dict:
         """Returns the orders for a specific account.
-
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/account-access/apis/get/accounts/%7BaccountId%7D/orders-0
 
         ### Parameters
         ----
@@ -189,7 +179,7 @@ class Orders():
 
         ### Usage
         ----
-            >>> orders_service = td_client.orders()
+            >>> orders_service = client.orders()
             >>> orders_service.get_orders_by_query()
         """
 
@@ -238,10 +228,6 @@ class Orders():
         """Place an order for a specific account. Order throttle
         limits may apply.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/account-access/apis/post/accounts/%7BaccountId%7D/orders-0
-
         ### Parameters
         ----
         account_id: str (optional, Default=None)
@@ -261,7 +247,7 @@ class Orders():
 
         ### Usage
         ----
-            >>> orders_service = td_client.orders()
+            >>> orders_service = client.orders()
             >>> orders_service.place_order(
                 account_id='123456789',
                 order_dict={}
@@ -304,10 +290,6 @@ class Orders():
         replaced, the old order will be canceled and a new order
         will be created. Order throttle limits may apply.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/account-access/apis/put/accounts/%7BaccountId%7D/orders/%7BorderId%7D-0
-
         ### Parameters
         ----
         account_id: str (optional, Default=None)
@@ -330,7 +312,7 @@ class Orders():
 
         ### Usage
         ----
-            >>> orders_service = td_client.orders()
+            >>> orders_service = client.orders()
             >>> orders_service.replace_order(
                 account_id='123456789',
                 order_id='12345678',
@@ -367,10 +349,6 @@ class Orders():
         """Cancels an order for a specific account. Order throttle
         limits may apply.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/account-access/apis/delete/accounts/%7BaccountId%7D/orders/%7BorderId%7D-0
-
         ### Parameters
         ----
         account_id: str (optional, Default=None)
@@ -382,7 +360,7 @@ class Orders():
 
         ### Usage
         ----
-            >>> orders_service = td_client.orders()
+            >>> orders_service = client.orders()
             >>> orders_service.cancel_order(
                 account_id='123456789',
                 order_id='12345678'

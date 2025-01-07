@@ -1,3 +1,5 @@
+"""Common Enums for the Schwab API."""
+
 from enum import Enum
 
 
@@ -8,11 +10,11 @@ class Direction(Enum):
     ### Usage
     ----
         >>> from schwab.enums import Directions
-        >>> Directions.Up.value
+        >>> Directions.UP.value
     """
 
-    Up = 'up'
-    Down = 'down'
+    UP = "up"
+    DOWN = "down"
 
 
 class Change(Enum):
@@ -22,11 +24,11 @@ class Change(Enum):
     ### Usage
     ----
         >>> from schwab.enums import Change
-        >>> Change.Percent.value
+        >>> Change.PERCENT.value
     """
 
-    Percent = 'percent'
-    Value = 'value'
+    PERCENT = "percent"
+    VALUE = "value"
 
 
 class TransactionTypes(Enum):
@@ -37,19 +39,19 @@ class TransactionTypes(Enum):
     ### Usage
     ----
         >>> from schwab.enums import TransactionTypes
-        >>> TransactionTypes.Trade.value
+        >>> TransactionTypes.TRADE.value
     """
 
-    All = 'ALL'
-    Trade = 'TRADE'
-    BuyOnly = 'BUY_ONLY'
-    SellOnly = 'SELL_ONLY'
-    CashInOrCashOut = 'CASH_IN_OR_CASH_OUT'
-    Checking = 'CHECKING'
-    Dividend = 'DIVIDEND'
-    Interest = 'INTEREST'
-    Other = 'OTHER'
-    AdvisorFees = 'ADVISOR_FEES'
+    ALL = "ALL"
+    TRADE = "TRADE"
+    BUY_ONLY = "BUY_ONLY"
+    SELL_ONLY = "SELL_ONLY"
+    CASH_IN_OR_CASH_OUT = "CASH_IN_OR_CASH_OUT"
+    CHECKING = "CHECKING"
+    DIVIDEND = "DIVIDEND"
+    INTEREST = "INTEREST"
+    OTHER = "OTHER"
+    ADVISOR_FEES = "ADVISOR_FEES"
 
 
 class Markets(Enum):
@@ -59,14 +61,14 @@ class Markets(Enum):
     ### Usage
     ----
         >>> from schwab.enums import Markets
-        >>> Markets.Bond.Value
+        >>> Markets.BOND.Value
     """
 
-    Bond = 'BOND'
-    Equity = 'EQUITY'
-    Option = 'OPTION'
-    Forex = 'FOREX'
-    Futures = 'FUTURES'
+    BOND = "BOND"
+    EQUITY = "EQUITY"
+    OPTION = "OPTION"
+    FOREX = "FOREX"
+    FUTURES = "FUTURES"
 
 
 class Projections(Enum):
@@ -76,14 +78,15 @@ class Projections(Enum):
     ### Usage
     ----
         >>> from schwab.enums import Projections
-        >>> Projections.Bond.Value
+        >>> Projections.SYMBOL_SEARCH.value
+        'symbol-search'
     """
 
-    SymbolSearch = 'symbol-search'
-    SymbolRegex = 'symbol-regex'
-    DescriptionSearch = 'desc-search'
-    DescriptionRegex = 'desc-regex'
-    Fundamental = 'fundamental'
+    SYMBOL_SEARCH = "symbol-search"
+    SYMBOL_REGEX = "symbol-regex"
+    DESCRIPTION_SEARCH = "desc-search"
+    DESCRIPTION_REGEX = "desc-regex"
+    FUNDAMENTAL = "fundamental"
 
 
 class DefaultOrderLegInstruction(Enum):
@@ -93,14 +96,15 @@ class DefaultOrderLegInstruction(Enum):
     ### Usage
     ----
         >>> from schwab.enums import DefaultOrderLegInstruction
-        >>> DefaultOrderLegInstruction.Sell.Value
+        >>> DefaultOrderLegInstruction.SELL.value
+        'SELL'
     """
 
-    Buy = 'BUY'
-    Sell = 'SELL'
-    BuyToCover = 'BUY_TO_COVER'
-    SellShort = 'SELL_SHORT'
-    NoneSpecified = 'NONE'
+    BUY = "BUY"
+    SELL = "SELL"
+    BUY_TO_COVER = "BUY_TO_COVER"
+    SELL_SHORT = "SELL_SHORT"
+    NONE_SPECIFIED = "NONE"
 
 
 class DefaultOrderType(Enum):
@@ -110,16 +114,17 @@ class DefaultOrderType(Enum):
     ### Usage
     ----
         >>> from schwab.enums import DefaultOrderType
-        >>> DefaultOrderType.Market.Value
+        >>> DefaultOrderType.MARKET.value
+        'MARKET'
     """
 
-    Market = 'MARKET'
-    Limit = 'LIMIT'
-    Stop = 'STOP'
-    StopLimit = 'STOP_LIMIT'
-    TrailingStop = 'TRAILING_STOP'
-    MarketOnClose = 'MARKET_ON_CLOSE'
-    NoneSpecified = 'NONE'
+    MARKET = "MARKET"
+    LIMIT = "LIMIT"
+    STOP = "STOP"
+    STOP_LIMIT = "STOP_LIMIT"
+    TRAILING_STOP = "TRAILING_STOP"
+    MARKET_ON_CLOSE = "MARKET_ON_CLOSE"
+    NONE_SPECIFIED = "NONE"
 
 
 class DefaultOrderPriceLinkType(Enum):
@@ -129,12 +134,13 @@ class DefaultOrderPriceLinkType(Enum):
     ### Usage
     ----
         >>> from schwab.enums import DefaultOrderPriceLinkType
-        >>> DefaultOrderPriceLinkType.Value.Value
+        >>> DefaultOrderPriceLinkType.VALUE.value
+        'VALUE'
     """
 
-    Value = 'VALUE'
-    Percent = 'PERCENT'
-    NoneSpecified = 'NONE'
+    VALUE = "VALUE"
+    PERCENT = "PERCENT"
+    NONE_SPECIFIED = "NONE"
 
 
 class DefaultOrderDuration(Enum):
@@ -144,13 +150,14 @@ class DefaultOrderDuration(Enum):
     ### Usage
     ----
         >>> from schwab.enums import DefaultOrderDuration
-        >>> DefaultOrderDuration.Day.Value
+        >>> DefaultOrderDuration.DAY.value
+        'DAY'
     """
 
-    Day = 'DAY'
-    GoodTillCancel = 'GOOD_TILL_CANCEL'
-    FillOrKill = 'FILL_OR_KILL'
-    NoneSpecified = 'NONE'
+    DAY = "DAY"
+    GOOD_TILL_CANCEL = "GOOD_TILL_CANCEL"
+    FILL_OR_KILL = "FILL_OR_KILL"
+    NONE_SPECIFIED = "NONE"
 
 
 class DefaultOrderMarketSession(Enum):
@@ -160,14 +167,15 @@ class DefaultOrderMarketSession(Enum):
     ### Usage
     ----
         >>> from schwab.enums import DefaultOrderMarketSession
-        >>> DefaultOrderMarketSession.Day.Value
+        >>> DefaultOrderMarketSession.AM.value
+        'AM'
     """
 
-    Am = 'AM'
-    Pm = 'PM'
-    Normal = 'NORMAL'
-    Seamless = 'SEAMLESS'
-    NoneSpecified = 'NONE'
+    AM = "AM"
+    PM = "PM"
+    NORMAL = "NORMAL"
+    SEAMLESS = "SEAMLESS"
+    NONE_SPECIFIED = "NONE"
 
 
 class TaxLotMethod(Enum):
@@ -176,35 +184,37 @@ class TaxLotMethod(Enum):
 
     ### Usage
     ----
-        >>> from schwab.enums import MutualFundTaxLotMethod
-        >>> MutualFundTaxLotMethod.Day.Value
+        >>> from schwab.enums import TaxLotMethod
+        >>> TaxLotMethod.FIFO.value
+        'FIFO'
     """
 
-    Fifo = 'FIFO'
-    Lifo = 'LIFO'
-    HighCost = 'HIGH_COST'
-    LowCost = 'LOW_COST'
-    MinimumTax = 'MINIMUM_TAX'
-    AverageCost = 'AVERAGE_COST'
-    NoneSpecified = 'NONE'
+    FIFO = "FIFO"
+    LIFO = "LIFO"
+    HIGH_COST = "HIGH_COST"
+    LOW_COST = "LOW_COST"
+    MINIMUM_TAX = "MINIMUM_TAX"
+    AVERAGE_COST = "AVERAGE_COST"
+    NONE_SPECIFIED = "NONE"
 
 
 class DefaultAdvancedToolLaunch(Enum):
-    """Represents the different Default Advanced Tool
-    Lauch for the `UserInfo` service.
+    """Represents the different Default Advanced Tool Launch
+    for the `UserInfo` service.
 
     ### Usage
     ----
         >>> from schwab.enums import DefaultAdvancedToolLaunch
-        >>> DefaultAdvancedToolLaunch.Tos.Value
+        >>> DefaultAdvancedToolLaunch.TOS.value
+        'TOS'
     """
 
-    Ta = 'Ta'
-    No = 'N'
-    Yes = 'Y'
-    Tos = 'TOS'
-    Cc2 = 'CC2'
-    NoneSpecified = 'NONE'
+    TA = "Ta"  # Note: The value remains "Ta" if needed.
+    NO = "N"
+    YES = "Y"
+    TOS = "TOS"
+    CC2 = "CC2"
+    NONE_SPECIFIED = "NONE"
 
 
 class AuthTokenTimeout(Enum):
@@ -214,13 +224,14 @@ class AuthTokenTimeout(Enum):
     ### Usage
     ----
         >>> from schwab.enums import AuthTokenTimeout
-        >>> AuthTokenTimeout.FiftyFiveMinutes.Value
+        >>> AuthTokenTimeout.FIFTY_FIVE_MINUTES.value
+        'FIFTY_FIVE_MINUTES'
     """
 
-    FiftyFiveMinutes = 'FIFTY_FIVE_MINUTES'
-    TwoHours = 'TWO_HOURS'
-    FourHours = 'FOUR_HOURS'
-    EightHours = 'EIGHT_HOURS'
+    FIFTY_FIVE_MINUTES = "FIFTY_FIVE_MINUTES"
+    TWO_HOURS = "TWO_HOURS"
+    FOUR_HOURS = "FOUR_HOURS"
+    EIGHT_HOURS = "EIGHT_HOURS"
 
 
 class FrequencyType(Enum):
@@ -229,14 +240,15 @@ class FrequencyType(Enum):
 
     ### Usage
     ----
-        >>> from schwab.enums import PriceFrequency
-        >>> PriceFrequency.Daily.Value
+        >>> from schwab.enums import FrequencyType
+        >>> FrequencyType.DAILY.value
+        'daily'
     """
 
-    Minute = 'minute'
-    Daily = 'daily'
-    Weekly = 'weekly'
-    Monthly = 'monthly'
+    MINUTE = "minute"
+    DAILY = "daily"
+    WEEKLY = "weekly"
+    MONTHLY = "monthly"
 
 
 class PeriodType(Enum):
@@ -245,14 +257,15 @@ class PeriodType(Enum):
 
     ### Usage
     ----
-        >>> from schwab.enums import PriceFrequency
-        >>> PeriodType.Daily.Value
+        >>> from schwab.enums import PeriodType
+        >>> PeriodType.DAY.value
+        'day'
     """
 
-    Day = 'day'
-    Month = 'month'
-    Year = 'year'
-    YearToDate = 'ytd'
+    DAY = "day"
+    MONTH = "month"
+    YEAR = "year"
+    YEAR_TO_DATE = "ytd"
 
 
 class StrategyType(Enum):
@@ -262,40 +275,42 @@ class StrategyType(Enum):
     ### Usage
     ----
         >>> from schwab.enums import StrategyType
-        >>> StrategyType.Analytical.Value
+        >>> StrategyType.ANALYTICAL.value
+        'ANALYTICAL'
     """
 
-    Analytical = 'ANALYTICAL'
-    Butterfly = 'BUTTERFLY'
-    Calendar = 'CALENDAR'
-    Collar = 'COLLAR'
-    Condor = 'CONDOR'
-    Covered = 'COVERED'
-    Diagonal = 'DIAGONAL'
-    Roll = 'ROLL'
-    Single = 'SINGLE'
-    Straddle = 'STRADDLE'
-    Strangle = 'STRANGLE'
-    Vertical = 'VERTICAL'
+    ANALYTICAL = "ANALYTICAL"
+    BUTTERFLY = "BUTTERFLY"
+    CALENDAR = "CALENDAR"
+    COLLAR = "COLLAR"
+    CONDOR = "CONDOR"
+    COVERED = "COVERED"
+    DIAGONAL = "DIAGONAL"
+    ROLL = "ROLL"
+    SINGLE = "SINGLE"
+    STRADDLE = "STRADDLE"
+    STRANGLE = "STRANGLE"
+    VERTICAL = "VERTICAL"
 
 
-class OptionaRange(Enum):
+class OptionRange(Enum):
     """Represents the different option range types
     when querying the `OptionChain` service.
 
     ### Usage
     ----
-        >>> from schwab.enums import OptionaRange
-        >>> OptionaRange.InTheMoney.Value
+        >>> from schwab.enums import OptionRange
+        >>> OptionRange.IN_THE_MONEY.value
+        'ITM'
     """
 
-    All = 'ALL'
-    InTheMoney = 'ITM'
-    NearTheMoney = 'NTM'
-    OutTheMoney = 'OTM'
-    StrikesAboveMarket = 'SAK'
-    StrikesBelowMarket = 'SBK'
-    StrikesNearMarket = 'SNK'
+    ALL = "ALL"
+    IN_THE_MONEY = "ITM"
+    NEAR_THE_MONEY = "NTM"
+    OUT_THE_MONEY = "OTM"
+    STRIKES_ABOVE_MARKET = "SAK"
+    STRIKES_BELOW_MARKET = "SBK"
+    STRIKES_NEAR_MARKET = "SNK"
 
 
 class ExpirationMonth(Enum):
@@ -305,52 +320,55 @@ class ExpirationMonth(Enum):
     ### Usage
     ----
         >>> from schwab.enums import ExpirationMonth
-        >>> ExpirationMonth.Janurary.Value
+        >>> ExpirationMonth.JANUARY.Value
+        'JAN'
     """
 
-    All = 'ALL'
-    Janurary = 'JAN'
-    Feburary = 'FEB'
-    March = 'MAR'
-    April = 'April'
-    May = 'MAY'
-    June = 'JUN'
-    July = 'JUL'
-    August = 'AUG'
-    September = 'SEP'
-    October = 'OCT'
-    November = 'NOV'
-    December = 'DEC'
+    ALL = "ALL"
+    JANUARY = "JAN"
+    FEBRUARY = "FEB"
+    MARCH = "MAR"
+    APRIL = "APRIL"
+    MAY = "MAY"
+    JUNE = "JUN"
+    JULY = "JUL"
+    AUGUST = "AUG"
+    SEPTEMBER = "SEP"
+    OCTOBER = "OCT"
+    NOVEMBER = "NOV"
+    DECEMBER = "DEC"
 
 
 class ContractType(Enum):
     """Represents the different option contract types
-    when querying the `OptionChain` service.
+    when querying the `ContractType` service.
 
     ### Usage
     ----
         >>> from schwab.enums import ContractType
-        >>> ContractType.Call.Value
+        >>> ContractType.CALL.Value
+        'CALL'
     """
 
-    All = 'ALL'
-    Call = 'CALL'
-    Put = 'PUT'
+    ALL = "ALL"
+    CALL = "CALL"
+    PUT = "PUT"
 
 
 class OptionType(Enum):
     """Represents the different option types
-    when querying the `OptionChain` service.
+    when querying the `OptionType` service.
 
     ### Usage
     ----
         >>> from schwab.enums import OptionType
-        >>> OptionType.Call.Value
+        >>> OptionType.ALL.Value
+        'ALL'
     """
 
-    All = 'ALL'
-    StandardContracts = 'S'
-    NonStandardContracts = 'NS'
+    ALL = "ALL"
+    STANDARD_CONTRACTS = "S"
+    NON_STANDARD_CONTRACTS = "NS"
 
 
 class OrderStatus(Enum):
@@ -360,24 +378,25 @@ class OrderStatus(Enum):
     ### Usage
     ----
         >>> from schwab.enums import OrderStatus
-        >>> OrderStatus.Working.Value
+        >>> OrderStatus.WORKING.Value
+        'WORKING'
     """
 
-    AwaitingParentOrder = 'AWAITING_PARENT_ORDER'
-    AwaitingCondition = 'AWAITING_CONDITION'
-    AwaitingManualReview = 'AWAITING_MANUAL_REVIEW'
-    Accepted = 'ACCEPTED'
-    AwaitingUrOut = 'AWAITING_UR_OUT'
-    PendingActivation = 'PENDING_ACTIVATION'
-    Queded = 'QUEUED'
-    Working = 'WORKING'
-    Rejected = 'REJECTED'
-    PendingCancel = 'PENDING_CANCEL'
-    Canceled = 'CANCELED'
-    PendingReplace = 'PENDING_REPLACE'
-    Replaced = 'REPLACED'
-    Filled = 'FILLED'
-    Expired = 'EXPIRED'
+    AWAITING_PARENT_ORDER = "AWAITING_PARENT_ORDER"
+    AWAITING_CONDITION = "AWAITING_CONDITION"
+    AWAITING_MANUAL_REVIEW = "AWAITING_MANUAL_REVIEW"
+    ACCEPTED = "ACCEPTED"
+    AWAITING_UR_OUT = "AWAITING_UR_OUT"
+    PENDING_ACTIVATION = "PENDING_ACTIVATION"
+    QUEUED = "QUEUED"
+    WORKING = "WORKING"
+    REJECTED = "REJECTED"
+    PENDING_CANCEL = "PENDING_CANCEL"
+    CANCELED = "CANCELED"
+    PENDING_REPLACE = "PENDING_REPLACE"
+    REPLACED = "REPLACED"
+    FILLED = "FILLED"
+    EXPIRED = "EXPIRED"
 
 
 class OrderStrategyType(Enum):
@@ -387,12 +406,13 @@ class OrderStrategyType(Enum):
     ### Usage
     ----
         >>> from schwab.enums import OrderStrategyType
-        >>> OrderStrategyType.Single.Value
+        >>> OrderStrategyType.SINGLE.Value
+        'SINGLE'
     """
 
-    Single = 'SINGLE'
-    Oco = 'OCO'
-    Trigger = 'TRIGGER'
+    SINGLE = "SINGLE"
+    OCO = "OCO"
+    TRIGGER = "TRIGGER"
 
 
 class QuantityType(Enum):
@@ -402,12 +422,13 @@ class QuantityType(Enum):
     ### Usage
     ----
         >>> from schwab.enums import QuantityType
-        >>> QuantityType.Dollars.Value
+        >>> QuantityType.DOLLARS.Value
+        'DOLLARS'
     """
 
-    AllShares = 'ALL_SHARES'
-    Dollars = 'DOLLARS'
-    Shares = 'SHARES'
+    ALL_SHARES = "ALL_SHARES"
+    DOLLARS = "DOLLARS"
+    SHARES = "SHARES"
 
 
 class AssetType(Enum):
@@ -417,48 +438,50 @@ class AssetType(Enum):
     ### Usage
     ----
         >>> from schwab.enums import AssetType
-        >>> AssetType.Equity.Value
+        >>> AssetType.EQUITY.Value
+        'EQUITY'
     """
 
-    Equity = 'EQUITY'
-    Option = 'OPTION'
-    Index = 'INDEX'
-    MutualFund = 'MUTUAL_FUND'
-    CashEquivalent = 'CASH_EQUIVALENT'
-    FixedIncome = 'FIXED_INCOME'
-    Currency = 'CURRENCY'
+    EQUITY = "EQUITY"
+    OPTION = "OPTION"
+    INDEX = "INDEX"
+    MUTUAL_FUND = "MUTUAL_FUND"
+    CASH_EQUIVALENT = "CASH_EQUIVALENT"
+    FIXED_INCOME = "FIXED_INCOME"
+    CURRENCY = "CURRENCY"
 
 
 class ComplexOrderStrategyType(Enum):
-    """Represents the different order Asset types
+    """Represents the different complex order strategy types
     when constructing and `Order` object.
 
     ### Usage
     ----
         >>> from schwab.enums import ComplexOrderStrategyType
-        >>> ComplexOrderStrategyType.IronCondor.Value
+        >>> ComplexOrderStrategyType.IRON_CONDOR.Value
+        'IRON_CONDOR'
     """
 
-    NoneProvided = 'NONE'
-    Covered = 'COVERED'
-    Vertical = 'VERTICAL'
-    BackRatio = 'BACK_RATIO'
-    Calendar = 'CALENDAR'
-    Diagonal = 'DIAGONAL'
-    Straddle = 'STRADDLE'
-    Strangle = 'STRANGLE'
-    CollarSynthetic = 'COLLAR_SYNTHETIC'
-    Butterfly = 'BUTTERFLY'
-    Condor = 'CONDOR'
-    IronCondor = 'IRON_CONDOR'
-    VerticalRoll = 'VERTICAL_ROLL'
-    CollarWithStock = 'COLLAR_WITH_STOCK'
-    DoubleDiagonal = 'DOUBLE_DIAGONAL'
-    UnbalancedButterfly = 'UNBALANCED_BUTTERFLY'
-    UnbalancedCondor = 'UNBALANCED_CONDOR'
-    UnbalancedIronCondor = 'UNBALANCED_IRON_CONDOR'
-    UnbalancedVerticalRoll = 'UNBALANCED_VERTICAL_ROLL'
-    Custom = 'CUSTOM'
+    NONE_PROVIDED = "NONE"
+    COVERED = "COVERED"
+    VERTICAL = "VERTICAL"
+    BACK_RATIO = "BACK_RATIO"
+    CALENDAR = "CALENDAR"
+    DIAGONAL = "DIAGONAL"
+    STRADDLE = "STRADDLE"
+    STRANGLE = "STRANGLE"
+    COLLAR_SYNTHETIC = "COLLAR_SYNTHETIC"
+    BUTTERFLY = "BUTTERFLY"
+    CONDOR = "CONDOR"
+    IRON_CONDOR = "IRON_CONDOR"
+    VERTICAL_ROLL = "VERTICAL_ROLL"
+    COLLAR_WITH_STOCK = "COLLAR_WITH_STOCK"
+    DOUBLE_DIAGONAL = "DOUBLE_DIAGONAL"
+    UNBALANCED_BUTTERFLY = "UNBALANCED_BUTTERFLY"
+    UNBALANCED_CONDOR = "UNBALANCED_CONDOR"
+    UNBALANCED_IRON_CONDOR = "UNBALANCED_IRON_CONDOR"
+    UNBALANCED_VERTICAL_ROLL = "UNBALANCED_VERTICAL_ROLL"
+    CUSTOM = "CUSTOM"
 
 
 class OrderInstructions(Enum):
@@ -468,202 +491,213 @@ class OrderInstructions(Enum):
     ### Usage
     ----
         >>> from schwab.enums import OrderInstructions
-        >>> OrderInstructions.SellShort.Value
+        >>> OrderInstructions.SELL_SHORT.Value
+        'SELL_SHORT'
     """
 
-    Buy = 'BUY'
-    Sell = 'SELL'
-    BuyToCover = 'BUY_TO_COVER'
-    SellShort = 'SELL_SHORT'
-    BuyToOpen = 'BUY_TO_OPEN'
-    BuyToClose = 'BUY_TO_CLOSE'
-    SellToOpen = 'SELL_TO_OPEN'
-    SellToClose = 'SELL_TO_CLOSE'
-    Exchange = 'EXCHANGE'
+    BUY = "BUY"
+    SELL = "SELL"
+    BUY_TO_COVER = "BUY_TO_COVER"
+    SELL_SHORT = "SELL_SHORT"
+    BUY_TO_OPEN = "BUY_TO_OPEN"
+    BUY_TO_CLOSE = "BUY_TO_CLOSE"
+    SELL_TO_OPEN = "SELL_TO_OPEN"
+    SELL_TO_CLOSE = "SELL_TO_CLOSE"
+    EXCHANGE = "EXCHANGE"
 
 
 class RequestedDestination(Enum):
     """Represents the different order requested
-    destinations when constructing and `Order` object.
+    destinations when constructing an `Order` object.
 
     ### Usage
     ----
         >>> from schwab.enums import RequestedDestination
-        >>> RequestedDestination.Cboe.Value
+        >>> RequestedDestination.CBOE.value
+        'CBOE'
     """
 
-    Inet = 'INET'
-    EcnArca = 'ECN_ARCA'
-    Cboe = 'CBOE'
-    Amex = 'AMEX'
-    Phlx = 'PHLX'
-    Ise = 'ISE'
-    Box = 'BOX'
-    Nyse = 'NYSE'
-    Nasdaq = 'NASDAQ'
-    Bats = 'BATS'
-    C2 = 'C2'
-    Auto = 'AUTO'
+    INET = "INET"
+    ECN_ARCA = "ECN_ARCA"
+    CBOE = "CBOE"
+    AMEX = "AMEX"
+    PHLX = "PHLX"
+    ISE = "ISE"
+    BOX = "BOX"
+    NYSE = "NYSE"
+    NASDAQ = "NASDAQ"
+    BATS = "BATS"
+    C2 = "C2"
+    AUTO = "AUTO"
 
 
 class StopPriceLinkBasis(Enum):
     """Represents the different stop price link basis
-    when constructing and `Order` object.
+    when constructing an `Order` object.
 
     ### Usage
     ----
         >>> from schwab.enums import StopPriceLinkBasis
-        >>> StopPriceLinkBasis.Trigger.Value
+        >>> StopPriceLinkBasis.TRIGGER.value
+        'TRIGGER'
     """
 
-    Manual = 'MANUAL'
-    Base = 'BASE'
-    Trigger = 'TRIGGER'
-    Last = 'LAST'
-    Bid = 'BID'
-    Ask = 'ASK'
-    AskBid = 'ASK_BID'
-    Mark = 'MARK'
-    Average = 'AVERAGE'
+    MANUAL = "MANUAL"
+    BASE = "BASE"
+    TRIGGER = "TRIGGER"
+    LAST = "LAST"
+    BID = "BID"
+    ASK = "ASK"
+    ASK_BID = "ASK_BID"
+    MARK = "MARK"
+    AVERAGE = "AVERAGE"
 
 
 class StopPriceLinkType(Enum):
     """Represents the different stop price link type
-    when constructing and `Order` object.
+    when constructing an `Order` object.
 
     ### Usage
     ----
         >>> from schwab.enums import StopPriceLinkType
-        >>> StopPriceLinkType.Trigger.Value
+        >>> StopPriceLinkType.TRIGGER.value
+        'TRIGGER'
     """
 
-    Value = 'VALUE'
-    Percent = 'PERCENT'
-    Tick = 'TICK'
+    VALUE = "VALUE"
+    PERCENT = "PERCENT"
+    TICK = "TICK"
 
 
 class StopType(Enum):
     """Represents the different stop type
-    when constructing and `Order` object.
+    when constructing an `Order` object.
 
     ### Usage
     ----
         >>> from schwab.enums import StopType
-        >>> StopType.Standard.Value
+        >>> StopType.STANDARD.value
+        'STANDARD'
     """
 
-    Standard = 'STANDARD'
-    Bid = 'BID'
-    Ask = 'ASK'
-    Last = 'LAST'
-    Mark = 'MARK'
+    STANDARD = "STANDARD"
+    BID = "BID"
+    ASK = "ASK"
+    LAST = "LAST"
+    MARK = "MARK"
 
 
 class PriceLinkBasis(Enum):
     """Represents the different price link basis
-    when constructing and `Order` object.
+    when constructing an `Order` object.
 
     ### Usage
     ----
         >>> from schwab.enums import PriceLinkBasis
-        >>> PriceLinkBasis.Manual.Value
+        >>> PriceLinkBasis.MANUAL.value
+        'MANUAL'
     """
 
-    Manual = 'MANUAL'
-    Base = 'BASE'
-    Trigger = 'TRIGGER'
-    Last = 'LAST'
-    Bid = 'BID'
-    Ask = 'ASK'
-    AskBid = 'ASK_BID'
-    Mark = 'MARK'
-    Average = 'AVERAGE'
+    MANUAL = "MANUAL"
+    BASE = "BASE"
+    TRIGGER = "TRIGGER"
+    LAST = "LAST"
+    BID = "BID"
+    ASK = "ASK"
+    ASK_BID = "ASK_BID"
+    MARK = "MARK"
+    AVERAGE = "AVERAGE"
 
 
 class PriceLinkType(Enum):
     """Represents the different price link type
-    when constructing and `Order` object.
+    when constructing an `Order` object.
 
     ### Usage
     ----
         >>> from schwab.enums import PriceLinkType
-        >>> PriceLinkType.Trigger.Value
+        >>> PriceLinkType.TRIGGER.value
+        'TRIGGER'
     """
 
-    Value = 'VALUE'
-    Percent = 'PERCENT'
-    Tick = 'TICK'
+    VALUE = "VALUE"
+    PERCENT = "PERCENT"
+    TICK = "TICK"
 
 
 class OrderType(Enum):
     """Represents the different order type
-    when constructing and `Order` object.
+    when constructing an `Order` object.
 
     ### Usage
     ----
         >>> from schwab.enums import OrderType
-        >>> OrderType.Market.Value
+        >>> OrderType.MARKET.value
+        'MARKET'
     """
 
-    Market = 'MARKET'
-    Limit = 'LIMIT'
-    Stop = 'STOP'
-    StopLimit = 'STOP_LIMIT'
-    TrailingStop = 'TRAILING_STOP'
-    MarketOnClose = 'MARKET_ON_CLOSE'
-    Exercise = 'EXERCISE'
-    TrailingStopLimit = 'TRAILING_STOP_LIMIT'
-    NetDebit = 'NET_DEBIT'
-    NetCredit = 'NET_CREDIT'
-    NetZero = 'NET_ZERO'
+    MARKET = "MARKET"
+    LIMIT = "LIMIT"
+    STOP = "STOP"
+    STOP_LIMIT = "STOP_LIMIT"
+    TRAILING_STOP = "TRAILING_STOP"
+    MARKET_ON_CLOSE = "MARKET_ON_CLOSE"
+    EXERCISE = "EXERCISE"
+    TRAILING_STOP_LIMIT = "TRAILING_STOP_LIMIT"
+    NET_DEBIT = "NET_DEBIT"
+    NET_CREDIT = "NET_CREDIT"
+    NET_ZERO = "NET_ZERO"
 
 
 class PositionEffect(Enum):
     """Represents the different position effects
-    when constructing and `Order` object.
+    when constructing an `Order` object.
 
     ### Usage
     ----
         >>> from schwab.enums import PositionEffect
-        >>> PositionEffect.Opening.Value
+        >>> PositionEffect.OPENING.value
+        'OPENING'
     """
 
-    Opening = 'OPENING'
-    Closing = 'CLOSING'
-    Automatic = 'AUTOMATIC'
+    OPENING = "OPENING"
+    CLOSING = "CLOSING"
+    AUTOMATIC = "AUTOMATIC"
 
 
 class OrderTaxLotMethod(Enum):
     """Represents the different order tax lot methods
-    when constructing and `Order` object.
+    when constructing an `Order` object.
 
     ### Usage
     ----
         >>> from schwab.enums import OrderTaxLotMethod
-        >>> OrderTaxLotMethod.Fifo.Value
+        >>> OrderTaxLotMethod.FIFO.value
+        'FIFO'
     """
 
-    Fifo = 'FIFO'
-    Lifo = 'LIFO'
-    HighCost = 'HIGH_COST'
-    LowCost = 'LOW_COST'
-    AverageCost = 'AVERAGE_COST'
-    SpecificLot = 'SPECIFIC_LOT'
+    FIFO = "FIFO"
+    LIFO = "LIFO"
+    HIGH_COST = "HIGH_COST"
+    LOW_COST = "LOW_COST"
+    AVERAGE_COST = "AVERAGE_COST"
+    SPECIFIC_LOT = "SPECIFIC_LOT"
 
 
 class SpecialInstructions(Enum):
     """Represents the different order special instructions
-    when constructing and `Order` object.
+    when constructing an `Order` object.
 
     ### Usage
     ----
         >>> from schwab.enums import SpecialInstructions
-        >>> SpecialInstructions.AllOrNone.Value
+        >>> SpecialInstructions.ALL_OR_NONE.value
+        'ALL_OR_NONE'
     """
 
-    AllOrNone = 'ALL_OR_NONE'
-    DoNotReduce = 'DO_NOT_REDUCE'
-    AllOrNoneDoNotReduce = 'ALL_OR_NONE_DO_NOT_REDUCE'
+    ALL_OR_NONE = "ALL_OR_NONE"
+    DO_NOT_REDUCE = "DO_NOT_REDUCE"
+    ALL_OR_NONE_DO_NOT_REDUCE = "ALL_OR_NONE_DO_NOT_REDUCE"
 
 
 class LevelOneQuotes(Enum):
@@ -673,63 +707,64 @@ class LevelOneQuotes(Enum):
     ### Usage
     ----
         >>> from schwab.enums import LevelOneQuotes
-        >>> LevelOneQuotes.All.Value
+        >>> LevelOneQuotes.ALL.value  # Returns a list of strings 0-52
+        ['0', '1', ..., '52']
     """
 
-    All = [str(item) for item in range(0, 53)]
-    Symbol = 0
-    BidPrice = 1
-    AskPrice = 2
-    LastPrice = 3
-    BidSize = 4
-    AskSize = 5
-    AskId = 6
-    BidId = 7
-    TotalVolume = 8
-    LastSize = 9
-    TradeTime = 10
-    QuoteTime = 11
-    HighPrice = 12
-    LowPrice = 13
-    BidTick = 14
-    ClosePrice = 15
-    ExchangeId = 16
-    Marginable = 17
-    Shortable = 18
-    IslandBid = 19
-    IslandAsk = 20
-    IslandVolume = 21
-    QuoteDay = 22
-    TradeDay = 23
-    Volatility = 24
-    Description = 25
-    LastId = 26
-    Digits = 27
-    OpenPrice = 28
-    NetChange = 29
-    FiftyTwoWeekHigh = 30
-    FiftyTwoWeekLow = 31
-    PeRatio = 32
-    DividendAmount = 33
-    DividendYield = 34
-    IslandBidSize = 35
-    IslandAskSize = 36
-    Nav = 37
-    FundPrice = 38
-    ExchangeName = 39
-    DividendDate = 40
-    RegularMarketQuote = 41
-    RegularMarketTrade = 42
-    RegularMarketLastPrice = 43
-    RegularMarketLastSize = 44
-    RegularMarketTradeTime = 45
-    RegularMarketTradeDay = 46
-    RegularMarketNetChange = 47
-    SecurityStatus = 48
-    Mark = 49
-    QuoteTimeInLong = 50
-    TradeTimeInLong = 51
-    RegularMarketTradeTimeInLong = 52
+    ALL = [str(item) for item in range(0, 53)]
+    SYMBOL = 0
+    BID_PRICE = 1
+    ASK_PRICE = 2
+    LAST_PRICE = 3
+    BID_SIZE = 4
+    ASK_SIZE = 5
+    ASK_ID = 6
+    BID_ID = 7
+    TOTAL_VOLUME = 8
+    LAST_SIZE = 9
+    TRADE_TIME = 10
+    QUOTE_TIME = 11
+    HIGH_PRICE = 12
+    LOW_PRICE = 13
+    BID_TICK = 14
+    CLOSE_PRICE = 15
+    EXCHANGE_ID = 16
+    MARGINABLE = 17
+    SHORTABLE = 18
+    ISLAND_BID = 19
+    ISLAND_ASK = 20
+    ISLAND_VOLUME = 21
+    QUOTE_DAY = 22
+    TRADE_DAY = 23
+    VOLATILITY = 24
+    DESCRIPTION = 25
+    LAST_ID = 26
+    DIGITS = 27
+    OPEN_PRICE = 28
+    NET_CHANGE = 29
+    FIFTY_TWO_WEEK_HIGH = 30
+    FIFTY_TWO_WEEK_LOW = 31
+    PE_RATIO = 32
+    DIVIDEND_AMOUNT = 33
+    DIVIDEND_YIELD = 34
+    ISLAND_BID_SIZE = 35
+    ISLAND_ASK_SIZE = 36
+    NAV = 37
+    FUND_PRICE = 38
+    EXCHANGE_NAME = 39
+    DIVIDEND_DATE = 40
+    REGULAR_MARKET_QUOTE = 41
+    REGULAR_MARKET_TRADE = 42
+    REGULAR_MARKET_LAST_PRICE = 43
+    REGULAR_MARKET_LAST_SIZE = 44
+    REGULAR_MARKET_TRADE_TIME = 45
+    REGULAR_MARKET_TRADE_DAY = 46
+    REGULAR_MARKET_NET_CHANGE = 47
+    SECURITY_STATUS = 48
+    MARK = 49
+    QUOTE_TIME_IN_LONG = 50
+    TRADE_TIME_IN_LONG = 51
+    REGULAR_MARKET_TRADE_TIME_IN_LONG = 52
 
 
 class LevelOneOptions(Enum):
@@ -739,52 +774,53 @@ class LevelOneOptions(Enum):
     ### Usage
     ----
         >>> from schwab.enums import LevelOneOptions
-        >>> LevelOneOptions.All.Value
+        >>> LevelOneOptions.ALL.value  # Returns a list of strings 0-41
+        ['0', '1', ..., '41']
     """
 
-    All = [str(item) for item in range(0, 42)]
-    Symbol = 0
-    Description = 1
-    BidPrice = 2
-    AskPrice = 3
-    LastPrice = 4
-    HighPrice = 5
-    LowPrice = 6
-    ClosePrice = 7
-    TotalVolume = 8
-    OpenInterest = 9
-    Volatility = 10
-    QuoteTime = 11
-    TradeTime = 12
-    MoneyIntrinsicValue = 13
-    QuoteDay = 14
-    TradeDay = 15
-    ExpirationYear = 16
-    Multiplier = 17
-    Digits = 18
-    OpenPrice = 19
-    BidSize = 20
-    AskSize = 21
-    LastSize = 22
-    NetChange = 23
-    StrikePrice = 24
-    ContractType = 25
-    Underlying = 26
-    ExpirationMonth = 27
-    Deliverables = 28
-    TimeValue = 29
-    ExpirationDay = 30
-    DaysToExpiration = 31
-    Delta = 32
-    Gamma = 33
-    Theta = 34
-    Vega = 35
-    Rho = 36
-    SecurityStatus = 37
-    TheoreticalOptionValue = 38
-    UnderlyingPrice = 39
-    UvExpirationType = 40
-    Mark = 41
+    ALL = [str(item) for item in range(0, 42)]
+    SYMBOL = 0
+    DESCRIPTION = 1
+    BID_PRICE = 2
+    ASK_PRICE = 3
+    LAST_PRICE = 4
+    HIGH_PRICE = 5
+    LOW_PRICE = 6
+    CLOSE_PRICE = 7
+    TOTAL_VOLUME = 8
+    OPEN_INTEREST = 9
+    VOLATILITY = 10
+    QUOTE_TIME = 11
+    TRADE_TIME = 12
+    MONEY_INTRINSIC_VALUE = 13
+    QUOTE_DAY = 14
+    TRADE_DAY = 15
+    EXPIRATION_YEAR = 16
+    MULTIPLIER = 17
+    DIGITS = 18
+    OPEN_PRICE = 19
+    BID_SIZE = 20
+    ASK_SIZE = 21
+    LAST_SIZE = 22
+    NET_CHANGE = 23
+    STRIKE_PRICE = 24
+    CONTRACT_TYPE = 25
+    UNDERLYING = 26
+    EXPIRATION_MONTH = 27
+    DELIVERABLES = 28
+    TIME_VALUE = 29
+    EXPIRATION_DAY = 30
+    DAYS_TO_EXPIRATION = 31
+    DELTA = 32
+    GAMMA = 33
+    THETA = 34
+    VEGA = 35
+    RHO = 36
+    SECURITY_STATUS = 37
+    THEORETICAL_OPTION_VALUE = 38
+    UNDERLYING_PRICE = 39
+    UV_EXPIRATION_TYPE = 40
+    MARK = 41
 
 
 class LevelOneFutures(Enum):
@@ -794,46 +830,47 @@ class LevelOneFutures(Enum):
     ### Usage
     ----
         >>> from schwab.enums import LevelOneFutures
-        >>> LevelOneFutures.All.Value
+        >>> LevelOneFutures.ALL.value  # Returns a list of strings 0-35
+        ['0', '1', ..., '35']
     """
 
-    All = [str(item) for item in range(0, 36)]
-    Symbol = 0
-    BidPrice = 1
-    AskPrice = 2
-    LastPrice = 3
-    BidSize = 4
-    AskSize = 5
-    AskId = 6
-    BidId = 7
-    TotalVolume = 8
-    LastSize = 9
-    QuoteTime = 10
-    TradeTime = 11
-    HighPrice = 12
-    LowPrice = 13
-    ClosePrice = 14
-    ExchangeId = 15
-    Description = 16
-    LastId = 17
-    OpenPrice = 18
-    NetChange = 19
-    FuturePercentChange = 20
-    ExhangeName = 21
-    SecurityStatus = 22
-    OpenInterest = 23
-    Mark = 24
-    Tick = 25
-    TickAmount = 26
-    Product = 27
-    FuturePriceFormat = 28
-    FutureTradingHours = 29
-    FutureIsTradable = 30
-    FutureMultiplier = 31
-    FutureIsActive = 32
-    FutureSettlementPrice = 33
-    FutureActiveSymbol = 34
-    FutureExpirationDate = 35
+    ALL = [str(item) for item in range(0, 36)]
+    SYMBOL = 0
+    BID_PRICE = 1
+    ASK_PRICE = 2
+    LAST_PRICE = 3
+    BID_SIZE = 4
+    ASK_SIZE = 5
+    ASK_ID = 6
+    BID_ID = 7
+    TOTAL_VOLUME = 8
+    LAST_SIZE = 9
+    QUOTE_TIME = 10
+    TRADE_TIME = 11
+    HIGH_PRICE = 12
+    LOW_PRICE = 13
+    CLOSE_PRICE = 14
+    EXCHANGE_ID = 15
+    DESCRIPTION = 16
+    LAST_ID = 17
+    OPEN_PRICE = 18
+    NET_CHANGE = 19
+    FUTURE_PERCENT_CHANGE = 20
+    EXHANGE_NAME = 21  # Might be a typo, but left as-is
+    SECURITY_STATUS = 22
+    OPEN_INTEREST = 23
+    MARK = 24
+    TICK = 25
+    TICK_AMOUNT = 26
+    PRODUCT = 27
+    FUTURE_PRICE_FORMAT = 28
+    FUTURE_TRADING_HOURS = 29
+    FUTURE_IS_TRADABLE = 30
+    FUTURE_MULTIPLIER = 31
+    FUTURE_IS_ACTIVE = 32
+    FUTURE_SETTLEMENT_PRICE = 33
+    FUTURE_ACTIVE_SYMBOL = 34
+    FUTURE_EXPIRATION_DATE = 35
 
 
 class LevelOneForex(Enum):
@@ -843,40 +880,41 @@ class LevelOneForex(Enum):
     ### Usage
     ----
         >>> from schwab.enums import LevelOneForex
-        >>> LevelOneForex.All.Value
+        >>> LevelOneForex.ALL.value  # Returns a list of strings 0-29
+        ['0', '1', ..., '29']
     """
 
-    All = [str(item) for item in range(0, 30)]
-    Symbol = 0
-    BidPrice = 1
-    AskPrice = 2
-    LastPrice = 3
-    BidSize = 4
-    AskSize = 5
-    TotalVolume = 6
-    LastSize = 7
-    QuoteTime = 8
-    TradeTime = 9
-    HighPrice = 10
-    LowPrice = 11
-    ClosePrice = 12
-    ExchangeId = 13
-    Description = 14
-    OpenPrice = 15
-    NetChange = 16
-    PercentChange = 17
-    ExchangeName = 18
-    Digits = 19
-    SecurityStatus = 20
-    Tick = 21
-    TickAmount = 22
-    Product = 23
-    TradingHours = 24
-    IsTradable = 25
-    MarketMaker = 26
-    FiftyTwoWeekHigh = 27
-    FiftyTwoWeekLow = 28
-    Mark = 29
+    ALL = [str(item) for item in range(0, 30)]
+    SYMBOL = 0
+    BID_PRICE = 1
+    ASK_PRICE = 2
+    LAST_PRICE = 3
+    BID_SIZE = 4
+    ASK_SIZE = 5
+    TOTAL_VOLUME = 6
+    LAST_SIZE = 7
+    QUOTE_TIME = 8
+    TRADE_TIME = 9
+    HIGH_PRICE = 10
+    LOW_PRICE = 11
+    CLOSE_PRICE = 12
+    EXCHANGE_ID = 13
+    DESCRIPTION = 14
+    OPEN_PRICE = 15
+    NET_CHANGE = 16
+    PERCENT_CHANGE = 17
+    EXCHANGE_NAME = 18
+    DIGITS = 19
+    SECURITY_STATUS = 20
+    TICK = 21
+    TICK_AMOUNT = 22
+    PRODUCT = 23
+    TRADING_HOURS = 24
+    IS_TRADABLE = 25
+    MARKET_MAKER = 26
+    FIFTY_TWO_WEEK_HIGH = 27
+    FIFTY_TWO_WEEK_LOW = 28
+    MARK = 29
 
 
 class NewsHeadlines(Enum):
@@ -886,21 +924,22 @@ class NewsHeadlines(Enum):
     ### Usage
     ----
         >>> from schwab.enums import NewsHeadlines
-        >>> NewsHeadlines.All.Value
+        >>> NewsHeadlines.ALL.value  # Returns a list of strings 0-10
+        ['0', '1', ..., '10']
     """
 
-    All = [str(item) for item in range(0, 11)]
-    Symbol = 0
-    ErrorCode = 1
-    StoryDatetime = 2
-    HeadlineId = 3
-    Status = 4
-    Headline = 5
-    StoryId = 6
-    CountForKeyword = 7
-    KeywordArray = 8
-    IsHot = 9
-    StorySource = 10
+    ALL = [str(item) for item in range(0, 11)]
+    SYMBOL = 0
+    ERROR_CODE = 1
+    STORY_DATETIME = 2
+    HEADLINE_ID = 3
+    STATUS = 4
+    HEADLINE = 5
+    STORY_ID = 6
+    COUNT_FOR_KEYWORD = 7
+    KEYWORD_ARRAY = 8
+    IS_HOT = 9
+    STORY_SOURCE = 10
 
 
 class LevelOneFuturesOptions(Enum):
@@ -910,46 +949,47 @@ class LevelOneFuturesOptions(Enum):
     ### Usage
     ----
         >>> from schwab.enums import LevelOneFuturesOptions
-        >>> LevelOneFuturesOptions.All.Value
+        >>> LevelOneFuturesOptions.ALL.value  # Returns a list of strings 0-35
+        ['0', '1', ..., '35']
     """
 
-    All = [str(item) for item in range(0, 36)]
-    Symbol = 0
-    BidPrice = 1
-    AskPrice = 2
-    LastPrice = 3
-    BidSize = 4
-    AskSize = 5
-    AskId = 6
-    BidId = 7
-    TotalVolume = 8
-    LastSize = 9
-    QuoteTime = 10
-    TradeTime = 11
-    HighPrice = 12
-    LowPrice = 13
-    ClosePrice = 14
-    ExchangeId = 15
-    Description = 16
-    LastId = 17
-    OpenPrice = 18
-    NetChange = 19
-    FuturePercentChange = 20
-    ExhangeName = 21
-    SecurityStatus = 22
-    OpenInterest = 23
-    Mark = 24
-    Tick = 25
-    TickAmount = 26
-    Product = 27
-    FuturePriceFormat = 28
-    FutureTradingHours = 29
-    FutureIsTradable = 30
-    FutureMultiplier = 31
-    FutureIsActive = 32
-    FutureSettlementPrice = 33
-    FutureActiveSymbol = 34
-    FutureExpirationDate = 35
+    ALL = [str(item) for item in range(0, 36)]
+    SYMBOL = 0
+    BID_PRICE = 1
+    ASK_PRICE = 2
+    LAST_PRICE = 3
+    BID_SIZE = 4
+    ASK_SIZE = 5
+    ASK_ID = 6
+    BID_ID = 7
+    TOTAL_VOLUME = 8
+    LAST_SIZE = 9
+    QUOTE_TIME = 10
+    TRADE_TIME = 11
+    HIGH_PRICE = 12
+    LOW_PRICE = 13
+    CLOSE_PRICE = 14
+    EXCHANGE_ID = 15
+    DESCRIPTION = 16
+    LAST_ID = 17
+    OPEN_PRICE = 18
+    NET_CHANGE = 19
+    FUTURE_PERCENT_CHANGE = 20
+    EXHANGE_NAME = 21
+    SECURITY_STATUS = 22
+    OPEN_INTEREST = 23
+    MARK = 24
+    TICK = 25
+    TICK_AMOUNT = 26
+    PRODUCT = 27
+    FUTURE_PRICE_FORMAT = 28
+    FUTURE_TRADING_HOURS = 29
+    FUTURE_IS_TRADABLE = 30
+    FUTURE_MULTIPLIER = 31
+    FUTURE_IS_ACTIVE = 32
+    FUTURE_SETTLEMENT_PRICE = 33
+    FUTURE_ACTIVE_SYMBOL = 34
+    FUTURE_EXPIRATION_DATE = 35
 
 
 class ChartServices(Enum):
@@ -959,12 +999,13 @@ class ChartServices(Enum):
     ### Usage
     ----
         >>> from schwab.enums import ChartServices
-        >>> ChartServices.ChartEquity.Value
+        >>> ChartServices.CHART_EQUITY.value
+        'CHART_EQUITY'
     """
 
-    ChartEquity = "CHART_EQUITY"
-    _ChartFutures = "CHART_FUTURES"
-    ChartOptions = "CHART_OPTIONS"
+    CHART_EQUITY = "CHART_EQUITY"
+    CHART_FUTURES = "CHART_FUTURES"  # Was _ChartFutures
+    CHART_OPTIONS = "CHART_OPTIONS"
 
 
 class ChartEquity(Enum):
@@ -974,19 +1015,20 @@ class ChartEquity(Enum):
     ### Usage
     ----
         >>> from schwab.enums import ChartEquity
-        >>> ChartEquity.All.Value
+        >>> ChartEquity.ALL.value  # Returns a list of strings 0-8
+        ['0', '1', ..., '8']
     """
 
-    All = [str(item) for item in range(0, 9)]
-    Symbol = 0
-    OpenPrice = 1
-    HighPrice = 2
-    LowPrice = 3
-    Close_Price = 4
-    Volume = 5
-    Sequence = 6
-    Chart_Time = 7
-    Chart_Day = 8
+    ALL = [str(item) for item in range(0, 9)]
+    SYMBOL = 0
+    OPEN_PRICE = 1
+    HIGH_PRICE = 2
+    LOW_PRICE = 3
+    CLOSE_PRICE = 4  # Renamed from Close_Price
+    VOLUME = 5
+    SEQUENCE = 6
+    CHART_TIME = 7
+    CHART_DAY = 8
 
 
 class ChartFutures(Enum):
@@ -996,17 +1038,18 @@ class ChartFutures(Enum):
     ### Usage
     ----
         >>> from schwab.enums import ChartFutures
-        >>> ChartFutures.All.Value
+        >>> ChartFutures.ALL.value  # Returns a list of strings 0-6
+        ['0', '1', ..., '6']
     """
 
-    All = [str(item) for item in range(0, 7)]
-    Symbol = 0
-    ChartTime = 1
-    OpenPrice = 2
-    HighPrice = 3
-    LowPrice = 4
-    ClosePrice = 5
-    Volume = 6
+    ALL = [str(item) for item in range(0, 7)]
+    SYMBOL = 0
+    CHART_TIME = 1
+    OPEN_PRICE = 2
+    HIGH_PRICE = 3
+    LOW_PRICE = 4
+    CLOSE_PRICE = 5
+    VOLUME = 6
 
 
 class TimesaleServices(Enum):
@@ -1016,13 +1059,14 @@ class TimesaleServices(Enum):
     ### Usage
     ----
         >>> from schwab.enums import TimesaleServices
-        >>> TimesaleServices.TimesaleEquity.Value
+        >>> TimesaleServices.TIMESALE_EQUITY.value
+        'TIMESALE_EQUITY'
     """
 
-    TimesaleEquity = 'TIMESALE_EQUITY'
-    TimesaleForex = 'TIMESALE_FOREX'
-    TimesaleFutures = 'TIMESALE_FUTURES'
-    TimesaleOptions = 'TIMESALE_OPTIONS'
+    TIMESALE_EQUITY = "TIMESALE_EQUITY"
+    TIMESALE_FOREX = "TIMESALE_FOREX"
+    TIMESALE_FUTURES = "TIMESALE_FUTURES"
+    TIMESALE_OPTIONS = "TIMESALE_OPTIONS"
 
 
 class Timesale(Enum):
@@ -1032,15 +1076,16 @@ class Timesale(Enum):
     ### Usage
     ----
         >>> from schwab.enums import Timesale
-        >>> Timesale.All.Value
+        >>> Timesale.ALL.value
+        ['0', '1', ..., '4']
     """
 
-    All = [str(item) for item in range(0, 5)]
-    Symbol = 0
-    TradeTime = 1
-    LastPrice = 2
-    LastSize = 3
-    LastSequence = 4
+    ALL = [str(item) for item in range(0, 5)]
+    SYMBOL = 0
+    TRADE_TIME = 1
+    LAST_PRICE = 2
+    LAST_SIZE = 3
+    LAST_SEQUENCE = 4
 
 
 class ActivesServices(Enum):
@@ -1050,13 +1095,14 @@ class ActivesServices(Enum):
     ### Usage
     ----
         >>> from schwab.enums import ActivesServices
-        >>> ActivesServices.ActivesNasdaq.Value
+        >>> ActivesServices.ACTIVES_NASDAQ.value
+        'ACTIVES_NASDAQ'
     """
 
-    ActivesNasdaq = 'ACTIVES_NASDAQ'
-    ActivesNyse = 'ACTIVES_NYSE'
-    ActivesOptions = 'ACTIVES_OPTIONS'
-    ActivesOtcbb = 'ACTIVES_OTCBB'
+    ACTIVES_NASDAQ = "ACTIVES_NASDAQ"
+    ACTIVES_NYSE = "ACTIVES_NYSE"
+    ACTIVES_OPTIONS = "ACTIVES_OPTIONS"
+    ACTIVES_OTCBB = "ACTIVES_OTCBB"
 
 
 class ActivesVenues(Enum):
@@ -1066,18 +1112,19 @@ class ActivesVenues(Enum):
     ### Usage
     ----
         >>> from schwab.enums import ActivesVenues
-        >>> ActivesVenues.Nasdaq.Value
+        >>> ActivesVenues.NASDAQ_EXCHANGE.value
+        'NASDAQ'
     """
 
-    NasdaqExchange = 'NASDAQ'
-    NewYorkStockExchange = 'NYSE'
-    OverTheCounterBulletinBoard = 'OTCBB'
-    Calls = 'CALLS'
-    Puts = 'PUTS'
-    Options = 'OPTS'
-    CallsDesc = 'CALLS-DESC'
-    PutsDesc = 'PUTS-DESC'
-    OptionsDec = 'OPTS-DESC'
+    NASDAQ_EXCHANGE = "NASDAQ"
+    NEW_YORK_STOCK_EXCHANGE = "NYSE"
+    OVER_THE_COUNTER_BULLETIN_BOARD = "OTCBB"
+    CALLS = "CALLS"
+    PUTS = "PUTS"
+    OPTIONS = "OPTS"
+    CALLS_DESC = "CALLS-DESC"
+    PUTS_DESC = "PUTS-DESC"
+    OPTIONS_DESC = "OPTS-DESC"
 
 
 class ActivesDurations(Enum):
@@ -1087,15 +1134,16 @@ class ActivesDurations(Enum):
     ### Usage
     ----
         >>> from schwab.enums import ActivesDurations
-        >>> ActivesDurations.All.Value
+        >>> ActivesDurations.ALL.value
+        'ALL'
     """
 
-    All = 'ALL'
-    SixtySeconds = '60'
-    ThreeHundredSeconds = '300'
-    SixHundredSeconds = '600'
-    EighteenHundredSeconds = '1800'
-    ThritySixHundredSeconds = '3600'
+    ALL = "ALL"
+    SIXTY_SECONDS = "60"
+    THREE_HUNDRED_SECONDS = "300"
+    SIX_HUNDRED_SECONDS = "600"
+    EIGHTEEN_HUNDRED_SECONDS = "1800"
+    THIRTY_SIX_HUNDRED_SECONDS = "3600"  # Fixed spelling
 
 
 class ChartFuturesFrequencies(Enum):
@@ -1105,17 +1153,18 @@ class ChartFuturesFrequencies(Enum):
     ### Usage
     ----
         >>> from schwab.enums import ChartFuturesFrequencies
-        >>> ChartFuturesFrequencies.OneMinute.Value
+        >>> ChartFuturesFrequencies.ONE_MINUTE.value
+        'm1'
     """
 
-    OneMinute = 'm1'
-    FiveMinute = 'm5'
-    TenMinute = 'm10'
-    ThirtyMinute = 'm30'
-    OneHour = 'h1'
-    OneDay = 'd1'
-    OneWeek = 'w1'
-    OneMonth = 'n1'
+    ONE_MINUTE = "m1"
+    FIVE_MINUTE = "m5"
+    TEN_MINUTE = "m10"
+    THIRTY_MINUTE = "m30"
+    ONE_HOUR = "h1"
+    ONE_DAY = "d1"
+    ONE_WEEK = "w1"
+    ONE_MONTH = "n1"
 
 
 class ChartFuturesPeriods(Enum):
@@ -1125,15 +1174,16 @@ class ChartFuturesPeriods(Enum):
     ### Usage
     ----
         >>> from schwab.enums import ChartFuturesPeriods
-        >>> ChartFuturesPeriods.OneDay.Value
+        >>> ChartFuturesPeriods.ONE_DAY.value
+        'd1'
     """
 
-    OneDay = 'd1'
-    FiveDay = 'd5'
-    FourWeeks = 'w4'
-    TenMonths = 'n10'
-    OneYear = 'y1'
-    TenYear = 'y10'
+    ONE_DAY = "d1"
+    FIVE_DAY = "d5"
+    FOUR_WEEKS = "w4"
+    TEN_MONTHS = "n10"
+    ONE_YEAR = "y1"
+    TEN_YEAR = "y10"
 
 
 class LevelTwoQuotes(Enum):
@@ -1142,13 +1192,14 @@ class LevelTwoQuotes(Enum):
     ### Usage
     ----
         >>> from schwab.enums import LevelTwoQuotes
-        >>> LevelTwoQuotes.All.Value
+        >>> LevelTwoQuotes.ALL.value
+        ['0', '1', '2']
     """
 
-    All = [str(item) for item in range(0, 3)]
-    Key = 0
-    Time = 1
-    Data = 2
+    ALL = [str(item) for item in range(0, 3)]
+    KEY = 0
+    TIME = 1
+    DATA = 2
 
 
 class LevelTwoOptions(Enum):
@@ -1157,10 +1208,11 @@ class LevelTwoOptions(Enum):
     ### Usage
     ----
         >>> from schwab.enums import LevelTwoOptions
-        >>> LevelTwoOptions.All.Value
+        >>> LevelTwoOptions.ALL.value
+        ['0', '1', '2']
     """
 
-    All = [str(item) for item in range(0, 3)]
-    Key = 0
-    Time = 1
-    Data = 2
+    ALL = [str(item) for item in range(0, 3)]
+    KEY = 0
+    TIME = 1
+    DATA = 2

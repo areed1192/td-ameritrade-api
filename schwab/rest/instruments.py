@@ -1,3 +1,5 @@
+"""Used to access the `Instruments` Services and metadata."""
+
 from enum import Enum
 from typing import Union
 from schwab.session import CharlesSchwabSession
@@ -9,7 +11,7 @@ class Instruments():
     ## Overview
     ----
     Allows the user to query and search for financial instruments
-    inside of the TD Ameritrade database. The endpoint allows multiple
+    inside of the Charles Schwab database. The endpoint allows multiple
     methods for searching including regex.
     """
 
@@ -28,10 +30,6 @@ class Instruments():
     def search_instruments(self, symbol: str, projection: Union[str, Enum]) -> dict:
         """Search or retrieve instrument data, including fundamental data.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/instruments/apis/get/instruments
-
         ### Parameters
         ----
         symbol: str
@@ -47,7 +45,7 @@ class Instruments():
         ### Usage
         ----
             >>> from schwab.enums import Instruments
-            >>> instruments_service = td_client.instruments()
+            >>> instruments_service = client.instruments()
             >>> instruments_service.search_instruments(
                 symbol='MSFT',
                 projection='symbol-search'
@@ -73,10 +71,6 @@ class Instruments():
     def get_instrument(self, cusip: str) -> dict:
         """Get an instrument by CUSIP.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/instruments/apis/get/instruments/%7Bcusip%7D
-
         ### Parameters
         ----
         cusip: str
@@ -85,7 +79,7 @@ class Instruments():
         ### Usage
         ----
             >>> from schwab.enums import Instruments
-            >>> instruments_service = td_client.instruments()
+            >>> instruments_service = client.instruments()
             >>> instruments_service.get_instrument(
                 cusip='617446448'
             )

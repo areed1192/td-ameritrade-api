@@ -1,8 +1,9 @@
+"""Used to access the `Watchlists` Services and metadata."""
+
 from schwab.session import CharlesSchwabSession
 
 
-class Watchlists():
-
+class Watchlists:
     """
     ## Overview
     ----
@@ -26,29 +27,20 @@ class Watchlists():
     def get_all_accounts_watchlists(self) -> dict:
         """All watchlists for all of the user's linked accounts.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/watchlist/apis/get/accounts/watchlists-0
-
         ### Usage
         ----
-            >>> watchlists_service = td_client.watchlists()
+            >>> watchlists_service = client.watchlists()
             >>> watchlists_service.get_all_accounts_watchlists()
         """
 
         content = self.session.make_request(
-            method='get',
-            endpoint='accounts/watchlists'
+            method="get", endpoint="accounts/watchlists"
         )
 
         return content
 
     def get_accounts_watchlist(self, account_id: str) -> dict:
         """Gets all the watchlists of an account.
-
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/watchlist/apis/get/accounts/%7BaccountId%7D/watchlists-0
 
         ### Parameters
         ----
@@ -57,25 +49,20 @@ class Watchlists():
 
         ### Usage
         ----
-            >>> watchlists_service = td_client.watchlists()
+            >>> watchlists_service = client.watchlists()
             >>> watchlists_service.get_accounts_watchlist(
                 account_id='123456789'
             )
         """
 
         content = self.session.make_request(
-            method='get',
-            endpoint=f'accounts/{account_id}/watchlists'
+            method="get", endpoint=f"accounts/{account_id}/watchlists"
         )
 
         return content
 
     def get_watchlist(self, account_id: str, watchlist_id: str) -> dict:
         """Gets a specific watchlist for a specific account.
-
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/watchlist/apis/get/accounts/%7BaccountId%7D/watchlists/%7BwatchlistId%7D-0
 
         ### Parameters
         ----
@@ -87,7 +74,7 @@ class Watchlists():
 
         ### Usage
         ----
-            >>> watchlists_service = td_client.watchlists()
+            >>> watchlists_service = client.watchlists()
             >>> watchlists_service.get_watchlist(
                 account_id='123456789',
                 watchlist_id='1365748039'
@@ -95,23 +82,20 @@ class Watchlists():
         """
 
         content = self.session.make_request(
-            method='get',
-            endpoint=f'accounts/{account_id}/watchlists/{watchlist_id}'
+            method="get", endpoint=f"accounts/{account_id}/watchlists/{watchlist_id}"
         )
 
         return content
 
-    def create_watchlist(self, account_id: str, name: str, watchlist_items: dict) -> dict:
+    def create_watchlist(
+        self, account_id: str, name: str, watchlist_items: dict
+    ) -> dict:
         """Creates a new watchlist.
 
         ### Overview
         ----
         Create watchlist for specific account. This method does not verify
         that the symbol or asset type are valid.
-
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/watchlist/apis/post/accounts/%7BaccountId%7D/watchlists-0
 
         ### Parameters
         ----
@@ -127,7 +111,7 @@ class Watchlists():
 
         ### Usage
         ----
-            >>> watchlists_service = td_client.watchlists()
+            >>> watchlists_service = client.watchlists()
             >>> watchlists_service.create_watchlist(
                 account_id='123456789',
                 name='space companies',
@@ -140,15 +124,12 @@ class Watchlists():
         """
 
         # define the payload
-        payload = {
-            "name": name,
-            "watchlistItems": watchlist_items
-        }
+        payload = {"name": name, "watchlistItems": watchlist_items}
 
         content = self.session.make_request(
-            method='post',
-            endpoint=f'accounts/{account_id}/watchlists',
-            json_payload=payload
+            method="post",
+            endpoint=f"accounts/{account_id}/watchlists",
+            json_payload=payload,
         )
 
         return content
@@ -158,7 +139,7 @@ class Watchlists():
         account_id: str,
         watchlist_id: str,
         name: str = None,
-        watchlist_items: dict = None
+        watchlist_items: dict = None,
     ) -> dict:
         """Updates an existing watchlist.
 
@@ -167,10 +148,6 @@ class Watchlists():
         Partially update watchlist for a specific account: change watchlist name, add to the
         beginning/end of a watchlist, update or delete items in a watchlist. This method
         does not verify that the symbol or asset type are valid.
-
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/watchlist/apis/patch/accounts/%7BaccountId%7D/watchlists/%7BwatchlistId%7D-0
 
         ### Parameters
         ----
@@ -189,7 +166,7 @@ class Watchlists():
 
         ### Usage
         ----
-            >>> watchlists_service = td_client.watchlists()
+            >>> watchlists_service = client.watchlists()
             >>> watchlists_service.update_watchlist(
                 account_id='123456789',
                 watchlist_id='111111111',
@@ -210,25 +187,18 @@ class Watchlists():
         """
 
         # define the payload
-        payload = {
-            "name": name,
-            "watchlistItems": watchlist_items
-        }
+        payload = {"name": name, "watchlistItems": watchlist_items}
 
         content = self.session.make_request(
-            method='patch',
-            endpoint=f'accounts/{account_id}/watchlists/{watchlist_id}',
-            json_payload=payload
+            method="patch",
+            endpoint=f"accounts/{account_id}/watchlists/{watchlist_id}",
+            json_payload=payload,
         )
 
         return content
 
     def replace_watchlist(
-        self,
-        account_id: str,
-        watchlist_id: str,
-        name: str,
-        watchlist_items: dict
+        self, account_id: str, watchlist_id: str, name: str, watchlist_items: dict
     ) -> dict:
         """Replaces an existing watchlist.
 
@@ -237,10 +207,6 @@ class Watchlists():
         This method does not verify that the symbol or asset type are valid. Additionally,
         this method from what I can see will only append on new values. It will not delete
         an old watchlist.
-
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/watchlist/apis/patch/accounts/%7BaccountId%7D/watchlists/%7BwatchlistId%7D-0
 
         ### Parameters
         ----
@@ -259,7 +225,7 @@ class Watchlists():
 
         ### Usage
         ----
-            >>> watchlists_service = td_client.watchlists()
+            >>> watchlists_service = client.watchlists()
             >>> watchlists_service.replace_watchlist(
                 account_id='123456789',
                 watchlist_id='111111111',
@@ -280,25 +246,18 @@ class Watchlists():
         """
 
         # define the payload
-        payload = {
-            "name": name,
-            "watchlistItems": watchlist_items
-        }
+        payload = {"name": name, "watchlistItems": watchlist_items}
 
         content = self.session.make_request(
-            method='put',
-            endpoint=f'accounts/{account_id}/watchlists/{watchlist_id}',
-            json_payload=payload
+            method="put",
+            endpoint=f"accounts/{account_id}/watchlists/{watchlist_id}",
+            json_payload=payload,
         )
 
         return content
 
     def delete_watchlist(self, account_id: str, watchlist_id: str) -> dict:
         """Deletes a watchlist for a specific account.
-
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/watchlist/apis/delete/accounts/%7BaccountId%7D/watchlists/%7BwatchlistId%7D-0.
 
         ### Parameters
         ----
@@ -310,7 +269,7 @@ class Watchlists():
 
         ### Usage
         ----
-            >>> watchlists_service = td_client.watchlists()
+            >>> watchlists_service = client.watchlists()
             >>> watchlists_service.delete_watchlist(
                 account_id='123456789',
                 watchlist_id='1365748039'
@@ -318,8 +277,7 @@ class Watchlists():
         """
 
         content = self.session.make_request(
-            method='delete',
-            endpoint=f'accounts/{account_id}/watchlists/{watchlist_id}'
+            method="delete", endpoint=f"accounts/{account_id}/watchlists/{watchlist_id}"
         )
 
         return content

@@ -1,3 +1,5 @@
+"""Used to access the `PriceHistory` Services and metadata."""
+
 from typing import Union
 from enum import Enum
 from datetime import datetime
@@ -24,8 +26,8 @@ class PriceHistory():
 
         ### Usage
         ----
-            >>> td_client = TdAmeritradeClient()
-            >>> price_history_service = td_client.price_history()
+            >>> client = CharlesSchwabClient()
+            >>> price_history_service = client.price_history()
         """
 
         self.session = session
@@ -49,10 +51,6 @@ class PriceHistory():
         extended_hours_needed: bool = True
     ) -> dict:
         """Gets historical candle data for a financial instrument.
-
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/price-history/apis
 
         ### Parameters
         ----
@@ -86,7 +84,7 @@ class PriceHistory():
 
         ### Usage
         ----
-            >>> price_history_service = td_client.price_history()
+            >>> price_history_service = client.price_history()
             >>> price_history = price_history_service.get_price_history(
                 symbol='MSFT',
                 frequency_type='minute',

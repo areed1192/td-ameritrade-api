@@ -1,3 +1,5 @@
+"""Used to access the `Movers` Services and metadata."""
+
 from enum import Enum
 
 from typing import Union
@@ -37,10 +39,6 @@ class Movers():
         Top 10 (up or down) movers by value or percent for
         a particular market.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/movers/apis/get/marketdata
-
         ### Parameters
         ----
         market: str
@@ -58,7 +56,7 @@ class Movers():
 
         ### Usage
         ----
-            >>> movers_service = td_client.movers()
+            >>> movers_service = client.movers()
             >>> movers_service.get_movers(
                 index='$DJI',
                 direction='up',

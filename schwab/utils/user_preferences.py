@@ -1,3 +1,5 @@
+"""Utility class for user preferences."""
+
 from dataclasses import dataclass
 from dataclasses import fields
 from typing import Union
@@ -5,17 +7,11 @@ from enum import Enum
 
 
 @dataclass
-class UserPreferences():
-
+class UserPreferences:
     """
     ### Overview
     ----
     A python dataclass which is used to represent the UserPreferences.
-    TD Ameritrade has multiple preferences that can be adjusted by the
-    user. To make the process of generating these complex dictionaries
-    slightly easier you can use the `UserPreferences` object to store
-    your values and then generate the proper dictionary needed for the
-    API.
     """
 
     default_equity_order_leg_instruction: Union[str, Enum]
@@ -72,9 +68,7 @@ class UserPreferences():
 
             # Generate the API Key.
             key_parts = key.split("_")
-            key = "".join(
-                [key_parts[0]] + [key.capitalize() for key in key_parts[1:]]
-            )
+            key = "".join([key_parts[0]] + [key.capitalize() for key in key_parts[1:]])
 
             class_dict[key] = value
 

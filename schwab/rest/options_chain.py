@@ -1,3 +1,5 @@
+"""Used to access the `OptionsChain` Services and metadata."""
+
 from schwab.session import CharlesSchwabSession
 from schwab.utils.option_chain import OptionChainQuery
 
@@ -32,10 +34,6 @@ class OptionsChain():
     ) -> dict:
         """Get option chain for an optionable Symbol.
 
-        ### Documentation
-        ----
-        https://developer.tdameritrade.com/option-chains/apis/get/marketdata/chains
-
         ### Parameters
         ----
         option_chain_query: OptionChainQuery (optional, Default=None)
@@ -56,7 +54,7 @@ class OptionsChain():
 
         ### Usage
         ----
-            >>> options_chain_service = td_client.options_chain()
+            >>> options_chain_service = client.options_chain()
             >>> # Method 1: Using the `OptionChainQuery` object.
             >>> option_chain_query = OptionChainQuery(
                     symbol='MSFT',
