@@ -34,10 +34,4 @@ client = CharlesSchwabClient(credentials=credentials)
 user_info_service = client.user_info()
 
 # Grab the preferences for a specific account.
-pprint(user_info_service.get_preferences(account_id=account_number))
-
-# Grab the streamer subscription keys.
-pprint(user_info_service.get_streamer_subscription_keys(account_ids=[account_number]))
-
-# Grab User Principals.
-pprint(user_info_service.get_user_principals())
+pprint(user_info_service.get_preferences())
