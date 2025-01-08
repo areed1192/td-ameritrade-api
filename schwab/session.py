@@ -38,6 +38,9 @@ class CharlesSchwabSession():
         self.resource_url = 'https://api.schwabapi.com/'
         self.version = 'v1/'
 
+        self.http_session = requests.Session()
+        self.http_session.verify = True
+
         if not pathlib.Path('logs').exists():
             pathlib.Path('logs').mkdir()
             pathlib.Path('logs/log_file_custom.log').touch()
@@ -64,7 +67,7 @@ class CharlesSchwabSession():
 
         # Build the headers.
         headers = {
-            "Authorization": f"Bearer {self.client.td_credentials.access_token}",
+            "Authorization": f"Bearer {self.client.credentials.access_token}",
             "Content-Type": "application/json"
         }
 
@@ -118,7 +121,7 @@ class CharlesSchwabSession():
             The URL params for the request.
 
         data : dict (optional, Default={})
-        A data payload for a request.
+            A data payload for a request.
 
         json_payload : dict (optional, Default={})
             A json data payload for a request
@@ -140,10 +143,6 @@ class CharlesSchwabSession():
 
         logging.info("Request URL: %s", url)
 
-        # Define a new session.
-        request_session = requests.Session()
-        request_session.verify = True
-
         # Define a new request.
         request_request = requests.Request(
             method=method.upper(),
@@ -155,23 +154,13 @@ class CharlesSchwabSession():
         ).prepare()
 
         # Send the request.
-        response: requests.Response = request_session.send(
+        response: requests.Response = self.http_session.send(
             request=request_request
         )
-
-        # Close the session.
-        request_session.close()
 
         # If it's okay and no details.
         if response.ok and len(response.content) > 0:
             return response.json()
-
-        if len(response.content) > 0 and response.ok:
-            return {
-                'message': 'response successful',
-                'status_code': response.status_code
-            }
-
 
         if len(response.content) == 0:
             response_data = ''
