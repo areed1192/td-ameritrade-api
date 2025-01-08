@@ -10,9 +10,7 @@ from schwab.rest.instruments import Instruments
 from schwab.rest.user_info import UserInfo
 from schwab.rest.price_history import PriceHistory
 from schwab.rest.options_chain import OptionsChain
-from schwab.rest.watchlists import Watchlists
 from schwab.rest.orders import Orders
-from schwab.rest.saved_orders import SavedOrders
 from schwab.streaming.client import StreamingApiClient
 
 
@@ -171,22 +169,6 @@ class CharlesSchwabClient():
 
         return OptionsChain(session=self.session)
 
-    def watchlists(self) -> Watchlists:
-        """Used to access the `Watchlists` Services and metadata.
-
-        ### Returns
-        ---
-        `Watchlists`:
-            The `Watchlists` services Object.
-
-        ### Usage
-        ----
-            >>> client = ChralesSchwabClient()
-            >>> watchlists_service = client.watchlists()
-        """
-
-        return Watchlists(session=self.session)
-
     def orders(self) -> Orders:
         """Used to access the `Orders` Services and metadata.
 
@@ -202,22 +184,6 @@ class CharlesSchwabClient():
         """
 
         return Orders(session=self.session)
-
-    def saved_orders(self) -> SavedOrders:
-        """Used to access the `SavedOrders` Services and metadata.
-
-        ### Returns
-        ---
-        `SavedOrders`:
-            The `SavedOrders` services Object.
-
-        ### Usage
-        ----
-            >>> client = ChralesSchwabClient()
-            >>> saved_orders_service = client.saved_orders()
-        """
-
-        return SavedOrders(session=self.session)
 
     def streaming_api_client(self) -> StreamingApiClient:
         """Used to access the `StreamingApiClient` Services and metadata.
