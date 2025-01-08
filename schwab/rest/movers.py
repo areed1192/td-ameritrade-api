@@ -28,9 +28,9 @@ class Movers():
 
     def get_movers(
         self,
-        index=str,
-        direction: Union[str, Enum] = None,
-        change: Union[str, Enum] = None
+        symbol_id=Union[str, Enum],
+        sort: Union[str, Enum] = None,
+        frequency: Union[int, Enum] = 0
     ) -> dict:
         """Gets Active movers for a specific Index.
 
@@ -41,43 +41,43 @@ class Movers():
 
         ### Parameters
         ----
-        market: str
+        symbol_id: Union[str, Enum]
             The index symbol to get movers for, can be
-            `$DJI`, `$COMPX`, or `$SPX.X`.
+            `$DJI`, `$COMPX`, or `$SPX`.
 
-        direction: Union[str, Enum] (optional, default=None)
-            To return movers with the specified directions
-            of up or down. Valid values are `up` or `down`
+        sort: Union[str, Enum] (optional, default=None)
+            Sort by a particular attribute. Available values:
+            `VOLUME`, `TRADES`, `PERCENT_CHANGE_UP`,
+            `PERCENT_CHANGE_DOWN`.
 
-        change: Union[str, Enum] (optional, default=None)
-            To return movers with the specified change
-            types of percent or value. Valid values are
-            `percent` or `value`.
+        frequency: Union[int, Enum] (optional, default=0)
+            To return movers with the specified directions of
+            up or down. Available values: 0, 1, 5, 10, 30, 60.
 
         ### Usage
         ----
             >>> movers_service = client.movers()
             >>> movers_service.get_movers(
-                index='$DJI',
-                direction='up',
-                change='percent'
+                symbol_id='$DJI',
+                sort='VOLUME',
+                frequency=10
             )
         """
 
-        if isinstance(direction, Enum):
-            direction = direction.value
+        if isinstance(sort, Enum):
+            sort = sort.value
 
-        if isinstance(change, Enum):
-            change = change.value
+        if isinstance(frequency, Enum):
+            frequency = frequency.value
 
         params = {
-            'direction': direction,
-            'change': change
+            'sort': sort,
+            'frequency': frequency
         }
 
         content = self.session.make_request(
             method='get',
-            endpoint=f'marketdata/{index}/movers',
+            endpoint=f'movers/{symbol_id}',
             params=params
         )
 

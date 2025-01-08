@@ -1,34 +1,43 @@
 """Common Enums for the Schwab API."""
 
 from enum import Enum
+from enum import IntEnum
 
 
-class Direction(Enum):
-    """Represents the direction options for the
+class Sort(Enum):
+    """Represents the sort options for the
     `Movers` service.
 
     ### Usage
     ----
-        >>> from schwab.enums import Directions
-        >>> Directions.UP.value
+        >>> from schwab.enums import Sort
+        >>> Sort.VOLUME.value
+        'VOLUME'
     """
 
-    UP = "up"
-    DOWN = "down"
+    VOLUME = "VOLUME"
+    TRADES = "TRADES"
+    PERCENT_CHANGE_UP = "PERCENT_CHANGE_UP"
+    PERCENT_CHANGE_DOWN = "PERCENT_CHANGE_DOWN"
 
 
-class Change(Enum):
-    """Represents the change options for the
+class Frequency(IntEnum):
+    """Represents the Frequency options for the
     `Movers` service.
 
     ### Usage
     ----
-        >>> from schwab.enums import Change
-        >>> Change.PERCENT.value
+        >>> from schwab.enums import Frequency
+        >>> Frequency.ZERO.value
+        0
     """
 
-    PERCENT = "percent"
-    VALUE = "value"
+    ZERO = 0
+    ONE = 1
+    FIVE = 5
+    TEN = 10
+    THIRTY = 30
+    SIXTY = 60
 
 
 class TransactionTypes(Enum):
@@ -412,6 +421,7 @@ class OptionType(Enum):
     STANDARD_CONTRACTS = "S"
     NON_STANDARD_CONTRACTS = "NS"
 
+
 class EntitlementType(Enum):
     """Represents the different option types
     when querying the `OptionType` service.
@@ -426,6 +436,7 @@ class EntitlementType(Enum):
     PP_PAYING_PRO = "PP-PayingPro"
     NP_NON_PRO = "NP-NonPro"
     PN_NON_PAYING_PRO = "PN-NonPayingPro"
+
 
 class OrderStatus(Enum):
     """Represents the different order status types
@@ -460,6 +471,7 @@ class OrderStatus(Enum):
     PENDING_RECALL = "PENDING_RECALL"
     UNKNOWN = "UNKNOWN"
 
+
 class QuoteRequest(Enum):
     """Represents the different fields you can request
     when querying the `Quote` service.
@@ -477,6 +489,7 @@ class QuoteRequest(Enum):
     REFERENCE = "reference"
     EXTENDED = "extended"
     REGULAR = "regular"
+
 
 class OrderStrategyType(Enum):
     """Represents the different order strategy types
@@ -1397,3 +1410,27 @@ class StreamingServiceCommands(Enum):
     UNSUBS = "UNSUBS"
     VIEW = "VIEW"
     LOGOUT = "LOGOUT"
+
+
+class IndexSymbol(Enum):
+    """Represents the different index symbols. For the
+    `Movers` service.
+
+    ### Usage
+    ----
+        >>> from schwab.enums import IndexSymbol
+        >>> IndexSymbol.DJI.value
+        '$DJI'
+    """
+
+    DJI = "$DJI"
+    COMPX = "$COMPX"
+    SPX = "$SPX"
+    NYSE = "NYSE"
+    NASDAQ = "NASDAQ"
+    OTCBB = "OTCBB"
+    INDEX_ALL = "INDEX_ALL"
+    EQUITY_ALL = "EQUITY_ALL"
+    OPTION_ALL = "OPTION_ALL"
+    OPTION_PUT = "OPTION_PUT"
+    OPTION_CALL = "OPTION_CALL"
