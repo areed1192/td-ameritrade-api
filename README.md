@@ -20,7 +20,7 @@ the [official documentation](https://developer.schwab.com/products).
 
 ## Setup
 
-**Setup - Requirements Install:\***
+**Setup - Requirements Install:**
 
 For this particular project, you only need to install the dependencies, to use the project. The dependencies
 are listed in the `requirements.txt` file and can be installed by running the following command:

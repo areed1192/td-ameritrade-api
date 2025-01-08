@@ -15,8 +15,7 @@ from schwab.session import CharlesSchwabSession
 from schwab.streaming.services import StreamingServices
 
 
-class StreamingApiClient():
-
+class StreamingApiClient:
     """
     ## Overview
     ----
@@ -30,46 +29,41 @@ class StreamingApiClient():
 
         ### Overview
         ----
-        Initalizes the Client Object and defines different components that will be needed to
-        make a connection with the Charles Schwab Streaming API.
+        Initalizes the Client Object and defines different components that
+        will be needed to make a connection with the Charles Schwab
+        Streaming API.
 
         ### Usage
         ----
             >>> streaming_client = client.streaming_api()
         """
-        self.user_principal_data = UserInfo(
-            session=session
-        ).get_user_principals()
+        self.user_principal_data = UserInfo(session=session).get_user_principals()
 
-        socket_url = self.user_principal_data['streamerInfo']['streamerSocketUrl']
+        socket_url = self.user_principal_data["streamerInfo"]["streamerSocketUrl"]
         self.websocket_url = f"wss://{socket_url}/ws"
 
         # Grab the token timestamp.
-        token_timestamp = self.user_principal_data['streamerInfo']['tokenTimestamp']
-        token_timestamp = datetime.strptime(
-            token_timestamp, "%Y-%m-%dT%H:%M:%S%z"
-        )
+        token_timestamp = self.user_principal_data["streamerInfo"]["tokenTimestamp"]
+        token_timestamp = datetime.strptime(token_timestamp, "%Y-%m-%dT%H:%M:%S%z")
         token_timestamp = int(token_timestamp.timestamp()) * 1000
 
         # Define our Credentials Dictionary used for authentication.
         self.credentials = {
-            "userid": self.user_principal_data['accounts'][0]['accountId'],
-            "token": self.user_principal_data['streamerInfo']['token'],
-            "company": self.user_principal_data['accounts'][0]['company'],
-            "segment": self.user_principal_data['accounts'][0]['segment'],
-            "cddomain": self.user_principal_data['accounts'][0]['accountCdDomainId'],
-            "usergroup": self.user_principal_data['streamerInfo']['userGroup'],
-            "accesslevel": self.user_principal_data['streamerInfo']['accessLevel'],
+            "userid": self.user_principal_data["accounts"][0]["accountId"],
+            "token": self.user_principal_data["streamerInfo"]["token"],
+            "company": self.user_principal_data["accounts"][0]["company"],
+            "segment": self.user_principal_data["accounts"][0]["segment"],
+            "cddomain": self.user_principal_data["accounts"][0]["accountCdDomainId"],
+            "usergroup": self.user_principal_data["streamerInfo"]["userGroup"],
+            "accesslevel": self.user_principal_data["streamerInfo"]["accessLevel"],
             "authorized": "Y",
             "timestamp": token_timestamp,
-            "appid": self.user_principal_data['streamerInfo']['appId'],
-            "acl": self.user_principal_data['streamerInfo']['acl']
+            "appid": self.user_principal_data["streamerInfo"]["appId"],
+            "acl": self.user_principal_data["streamerInfo"]["acl"],
         }
 
         self.connection: ws_client.ClientProtocol = None
-        self.data_requests = {
-            "requests": []
-        }
+        self.data_requests = {"requests": []}
 
         try:
             self.loop = asyncio.get_event_loop()
@@ -100,13 +94,13 @@ class StreamingApiClient():
                     "service": "ADMIN",
                     "requestid": "0",
                     "command": "LOGIN",
-                    "account": self.user_principal_data['accounts'][0]['accountId'],
-                    "source": self.user_principal_data['streamerInfo']['appId'],
+                    "account": self.user_principal_data["accounts"][0]["accountId"],
+                    "source": self.user_principal_data["streamerInfo"]["appId"],
                     "parameters": {
                         "credential": urllib.parse.urlencode(self.credentials),
-                        "token": self.user_principal_data['streamerInfo']['token'],
-                        "version": "1.0"
-                    }
+                        "token": self.user_principal_data["streamerInfo"]["token"],
+                        "version": "1.0",
+                    },
                 }
             ]
         }
@@ -147,17 +141,15 @@ class StreamingApiClient():
 
                 # Grab the Response.
                 response = await self._receive_message(return_value=True)
-                responses = response.get('response')
+                responses = response.get("response")
 
                 # If we get a code 3, we had a login error.
-                if responses[0]['content']['code'] == 3:
-                    raise ValueError(
-                        f"LOGIN ERROR: {responses[0]['content']['msg']}"
-                    )
+                if responses[0]["content"]["code"] == 3:
+                    raise ValueError(f"LOGIN ERROR: {responses[0]['content']['msg']}")
 
                 # see if we had a login response.
                 for r in responses:
-                    if r.get('service') == 'ADMIN' and r.get('command') == 'LOGIN':
+                    if r.get("service") == "ADMIN" and r.get("command") == "LOGIN":
                         print(
                             "Message: User Login successful, streaming will being shortly."
                         )
@@ -185,15 +177,15 @@ class StreamingApiClient():
 
         # if it's open we can stream.
         if self.connection.open:
-            print("="*80)
-            print('Message: Connection established. Streaming will begin shortly.')
-            print("-"*80)
+            print("=" * 80)
+            print("Message: Connection established. Streaming will begin shortly.")
+            print("-" * 80)
             return True
 
         if self.connection.close:
-            print("="*80)
-            print('Message: Connection was never opened and was closed.')
-            print("-"*80)
+            print("=" * 80)
+            print("Message: Connection was never opened and was closed.")
+            print("-" * 80)
             return False
 
         raise ConnectionError
@@ -237,11 +229,11 @@ class StreamingApiClient():
                 if return_value:
                     return message_decoded
 
-                print(textwrap.dedent('='*80))
+                print(textwrap.dedent("=" * 80))
                 print(textwrap.dedent("Message Received:"))
-                print(textwrap.dedent('-'*80))
+                print(textwrap.dedent("-" * 80))
                 pprint.pprint(message_decoded)
-                print(textwrap.dedent('-'*80))
+                print(textwrap.dedent("-" * 80))
 
             except ws_exceptions.ConnectionClosed:
                 await self.close_stream()
@@ -264,9 +256,11 @@ class StreamingApiClient():
         try:
             message_decoded = json.loads(message)
         except TypeError:
-            message = message.encode(
-                'utf-8'
-            ).replace(b'\xef\xbf\xbd', bytes('"None"', 'utf-8')).decode('utf-8')
+            message = (
+                message.encode("utf-8")
+                .replace(b"\xef\xbf\xbd", bytes('"None"', "utf-8"))
+                .decode("utf-8")
+            )
             message_decoded = json.loads(message)
 
         return message_decoded
@@ -276,7 +270,7 @@ class StreamingApiClient():
 
         while True:
             try:
-                await self.connection.send('ping')
+                await self.connection.send("ping")
                 await asyncio.sleep(5)
             except ws_exceptions.ConnectionClosed:
                 self.close_stream()
@@ -325,14 +319,16 @@ class StreamingApiClient():
         await self.connection.close()
 
         # Define the Message.
-        message = textwrap.dedent("""
+        message = textwrap.dedent(
+            """
         {lin_brk}
         CLOSING PROCESS INITIATED:
         {lin_brk}
         WebSocket Closed: True
         Event Loop Closed: True
         {lin_brk}
-        """).format(lin_brk="="*80)
+        """
+        ).format(lin_brk="=" * 80)
 
         # Shutdown all asynchronus generators.
         await self.loop.shutdown_asyncgens()
@@ -396,18 +392,16 @@ class StreamingApiClient():
 
         self.unsubscribe_count += 1
 
-        service_count = len(
-            self.data_requests['requests']
-        ) + self.unsubscribe_count
+        service_count = len(self.data_requests["requests"]) + self.unsubscribe_count
 
         request = {
             "requests": [
                 {
                     "service": service.upper(),
                     "requestid": service_count,
-                    "command": 'UNSUBS',
-                    "account": self.user_principal_data['accounts'][0]['accountId'],
-                    "source": self.user_principal_data['streamerInfo']['appId']
+                    "command": "UNSUBS",
+                    "account": self.user_principal_data["accounts"][0]["accountId"],
+                    "source": self.user_principal_data["streamerInfo"]["appId"],
                 }
             ]
         }

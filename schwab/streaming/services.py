@@ -1,15 +1,15 @@
 """This module contains the different streaming services that you can pull data from."""
 
 from enum import Enum
-from typing import Union
 from typing import List
+from typing import Union
+
 from datetime import datetime
 
 from schwab.utils.enums import StreamingServices as Services
 
 
-class StreamingServices():
-
+class StreamingServices:
     """
     ## Overview
     ----
@@ -26,7 +26,9 @@ class StreamingServices():
             The streaming API client that handles sending requests.
         """
 
-        from schwab.streaming.client import StreamingApiClient  #pylint: disable=import-outside-toplevel
+        from schwab.streaming.client import ( # pylint: disable=import-outside-toplevel
+            StreamingApiClient,
+        )
 
         self.streaming_api_client: StreamingApiClient = streaming_api_client
 
@@ -46,20 +48,19 @@ class StreamingServices():
         """
 
         # Grab the current count of the services.
-        service_count = len(
-            self.streaming_api_client.data_requests['requests']
-        ) + 1
+        service_count = len(self.streaming_api_client.data_requests["requests"]) + 1
 
         request = {
             "service": None,
             "requestid": service_count,
             "command": None,
-            "account": self.streaming_api_client.user_principal_data['accounts'][0]['accountId'],
-            "source": self.streaming_api_client.user_principal_data['streamerInfo']['appId'],
-            "parameters": {
-                "keys": None,
-                "fields": None
-            }
+            "account": self.streaming_api_client.user_principal_data["accounts"][0][
+                "accountId"
+            ],
+            "source": self.streaming_api_client.user_principal_data["streamerInfo"][
+                "appId"
+            ],
+            "parameters": {"keys": None, "fields": None},
         }
 
         return request
@@ -90,15 +91,13 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = Services.ADMIN.value
-        request['command'] = 'QOS'
-        request['parameters']['qoslevel'] = qos_level
-        self.streaming_api_client.data_requests['requests'].append(request)
+        request["service"] = Services.ADMIN.value
+        request["command"] = "QOS"
+        request["parameters"]["qoslevel"] = qos_level
+        self.streaming_api_client.data_requests["requests"].append(request)
 
     def level_one_quotes(
-        self,
-        symbols: List[str],
-        fields: Union[List[Enum], List[str], List[int]]
+        self, symbols: List[str], fields: Union[List[Enum], List[str], List[int]]
     ) -> None:
         """Provides access to level one streaming quotes.
 
@@ -136,17 +135,15 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = Services.LEVELONE_EQUITIES.value
-        request['command'] = 'SUBS'
-        request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(new_fields)
+        request["service"] = Services.LEVELONE_EQUITIES.value
+        request["command"] = "SUBS"
+        request["parameters"]["keys"] = ",".join(symbols)
+        request["parameters"]["fields"] = ",".join(new_fields)
 
-        self.streaming_api_client.data_requests['requests'].append(request)
+        self.streaming_api_client.data_requests["requests"].append(request)
 
     def level_one_options(
-        self,
-        symbols: List[str],
-        fields: Union[List[Enum], List[str], List[int]]
+        self, symbols: List[str], fields: Union[List[Enum], List[str], List[int]]
     ) -> None:
         """Provides access to level one streaming options quotes.
 
@@ -184,17 +181,15 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = Services.LEVELONE_OPTIONS.value
-        request['command'] = 'SUBS'
-        request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(new_fields)
+        request["service"] = Services.LEVELONE_OPTIONS.value
+        request["command"] = "SUBS"
+        request["parameters"]["keys"] = ",".join(symbols)
+        request["parameters"]["fields"] = ",".join(new_fields)
 
-        self.streaming_api_client.data_requests['requests'].append(request)
+        self.streaming_api_client.data_requests["requests"].append(request)
 
     def level_one_futures(
-        self,
-        symbols: List[str],
-        fields: Union[List[Enum], List[str], List[int]]
+        self, symbols: List[str], fields: Union[List[Enum], List[str], List[int]]
     ) -> None:
         """Provides access to level one streaming futures quotes.
 
@@ -232,18 +227,15 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = Services.LEVELONE_FUTURES.value
-        request['command'] = 'SUBS'
-        request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(new_fields)
+        request["service"] = Services.LEVELONE_FUTURES.value
+        request["command"] = "SUBS"
+        request["parameters"]["keys"] = ",".join(symbols)
+        request["parameters"]["fields"] = ",".join(new_fields)
 
-        self.streaming_api_client.data_requests['requests'].append(request)
+        self.streaming_api_client.data_requests["requests"].append(request)
 
     def level_one_futures_options(
-        self,
-        symbols: List[str],
-        fields: Union[List[Enum],
-        List[str], Enum]
+        self, symbols: List[str], fields: Union[List[Enum], List[str], Enum]
     ) -> None:
         """Provides access to level one streaming futures options quotes.
 
@@ -281,17 +273,15 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = Services.LEVELONE_FUTURES_OPTIONS.value
-        request['command'] = 'SUBS'
-        request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(new_fields)
+        request["service"] = Services.LEVELONE_FUTURES_OPTIONS.value
+        request["command"] = "SUBS"
+        request["parameters"]["keys"] = ",".join(symbols)
+        request["parameters"]["fields"] = ",".join(new_fields)
 
-        self.streaming_api_client.data_requests['requests'].append(request)
+        self.streaming_api_client.data_requests["requests"].append(request)
 
     def level_one_forex(
-        self,
-        symbols: List[str],
-        fields: Union[List[str], List[int]]
+        self, symbols: List[str], fields: Union[List[str], List[int]]
     ) -> None:
         """Provides access to level one streaming forex quotes.
 
@@ -329,12 +319,12 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = Services.LEVELONE_FOREX.value
-        request['command'] = 'SUBS'
-        request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(new_fields)
+        request["service"] = Services.LEVELONE_FOREX.value
+        request["command"] = "SUBS"
+        request["parameters"]["keys"] = ",".join(symbols)
+        request["parameters"]["fields"] = ",".join(new_fields)
 
-        self.streaming_api_client.data_requests['requests'].append(request)
+        self.streaming_api_client.data_requests["requests"].append(request)
 
     def account_activity(self) -> None:
         """
@@ -348,23 +338,25 @@ class StreamingServices():
         account, and subscribing to ACCT_ACTIVITY to get any updates.
         """
 
-        sub_keys =  self.streaming_api_client.user_principal_data['streamerSubscriptionKeys']
-        keys = sub_keys['keys'][0]['key']
+        sub_keys = self.streaming_api_client.user_principal_data[
+            "streamerSubscriptionKeys"
+        ]
+        keys = sub_keys["keys"][0]["key"]
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = Services.ACCT_ACTIVITY.value
-        request['command'] = 'SUBS'
-        request['parameters']['keys'] = keys
-        request['parameters']['fields'] = '0,1,2,3'
+        request["service"] = Services.ACCT_ACTIVITY.value
+        request["command"] = "SUBS"
+        request["parameters"]["keys"] = keys
+        request["parameters"]["fields"] = "0,1,2,3"
 
-        self.streaming_api_client.data_requests['requests'].append(request)
+        self.streaming_api_client.data_requests["requests"].append(request)
 
     def chart(
         self,
         service: Union[str, Enum],
         symbols: List[str],
-        fields: Union[List[str], List[int]]
+        fields: Union[List[str], List[int]],
     ) -> None:
         """Subscribes to the Chart Service.
 
@@ -415,17 +407,14 @@ class StreamingServices():
 
         # Build the request
         request = request = self._new_request_template()
-        request['service'] = service
-        request['command'] = 'SUBS'
-        request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(new_fields)
-        self.streaming_api_client.data_requests['requests'].append(request)
+        request["service"] = service
+        request["command"] = "SUBS"
+        request["parameters"]["keys"] = ",".join(symbols)
+        request["parameters"]["fields"] = ",".join(new_fields)
+        self.streaming_api_client.data_requests["requests"].append(request)
 
     def timesale(
-        self,
-        service: str,
-        symbols: List[str],
-        fields: Union[List[str], List[int]]
+        self, service: str, symbols: List[str], fields: Union[List[str], List[int]]
     ) -> None:
         """Stream Time & Sales Data.
 
@@ -471,18 +460,18 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = service
-        request['command'] = 'SUBS'
-        request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(new_fields)
+        request["service"] = service
+        request["command"] = "SUBS"
+        request["parameters"]["keys"] = ",".join(symbols)
+        request["parameters"]["fields"] = ",".join(new_fields)
 
-        self.streaming_api_client.data_requests['requests'].append(request)
+        self.streaming_api_client.data_requests["requests"].append(request)
 
     def actives(
         self,
         service: Union[str, Enum],
         venue: Union[str, Enum],
-        duration: Union[str, Enum]
+        duration: Union[str, Enum],
     ) -> None:
         """Stream most actively traded stocks for a specific exchange.
 
@@ -523,11 +512,11 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = service
-        request['command'] = 'SUBS'
-        request['parameters']['keys'] = venue + '-' + duration
-        request['parameters']['fields'] = '1'
-        self.streaming_api_client.data_requests['requests'].append(request)
+        request["service"] = service
+        request["command"] = "SUBS"
+        request["parameters"]["keys"] = venue + "-" + duration
+        request["parameters"]["fields"] = "1"
+        self.streaming_api_client.data_requests["requests"].append(request)
 
     def chart_history_futures(
         self,
@@ -535,7 +524,7 @@ class StreamingServices():
         frequency: Union[str, Enum],
         period: Union[str, Enum] = None,
         start_time: Union[str, datetime] = None,
-        end_time: Union[str, datetime] = None
+        end_time: Union[str, datetime] = None,
     ) -> None:
         """Stream historical futures prices for charting. For normal equity charts, please use the
         the `get_historical_prices` method.
@@ -583,8 +572,8 @@ class StreamingServices():
             period = period.value
 
         # define the valid inputs.
-        valid_frequencies = ['m1', 'm5', 'm10', 'm30', 'h1', 'd1', 'w1', 'n1']
-        valid_periods = ['d1', 'd5', 'w4', 'n10', 'y1', 'y10']
+        valid_frequencies = ["m1", "m5", "m10", "m30", "h1", "d1", "w1", "n1"]
+        valid_periods = ["d1", "d5", "w4", "n10", "y1", "y10"]
 
         # validate the frequency input.
         if frequency not in valid_frequencies:
@@ -600,28 +589,26 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = Services.CHART_FUTURES.value
-        request['command'] = 'GET'
-        request['parameters']['symbol'] = ','.join(symbols)
-        request['parameters']['frequency'] = frequency
+        request["service"] = Services.CHART_FUTURES.value
+        request["command"] = "GET"
+        request["parameters"]["symbol"] = ",".join(symbols)
+        request["parameters"]["frequency"] = frequency
 
         # handle the case where we get a start time or end time. DO FURTHER VALIDATION.
         if start_time is not None or end_time is not None:
-            request['parameters']['END_TIME'] = end_time
-            request['parameters']['START_TIME'] = start_time
+            request["parameters"]["END_TIME"] = end_time
+            request["parameters"]["START_TIME"] = start_time
         else:
-            request['parameters']['period'] = period
+            request["parameters"]["period"] = period
 
-        del request['parameters']['keys']
-        del request['parameters']['fields']
+        del request["parameters"]["keys"]
+        del request["parameters"]["fields"]
 
-        request['requestid'] = str(request['requestid'])
-        self.streaming_api_client.data_requests['requests'].append(request)
+        request["requestid"] = str(request["requestid"])
+        self.streaming_api_client.data_requests["requests"].append(request)
 
     def level_two_quotes(
-        self,
-        symbols: List[str],
-        fields: Union[Enum, List[str], List[int]]
+        self, symbols: List[str], fields: Union[Enum, List[str], List[int]]
     ) -> None:
         """Stream Level Two Equity Quotes.
 
@@ -659,17 +646,15 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = 'LISTED_BOOK'
-        request['command'] = 'SUBS'
-        request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(new_fields)
+        request["service"] = "LISTED_BOOK"
+        request["command"] = "SUBS"
+        request["parameters"]["keys"] = ",".join(symbols)
+        request["parameters"]["fields"] = ",".join(new_fields)
 
-        self.streaming_api_client.data_requests['requests'].append(request)
+        self.streaming_api_client.data_requests["requests"].append(request)
 
     def level_two_options(
-        self,
-        symbols: List[str],
-        fields: Union[Enum, List[str], List[int]]
+        self, symbols: List[str], fields: Union[Enum, List[str], List[int]]
     ) -> None:
         """Stream Level Two Options Quotes.
 
@@ -707,9 +692,9 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = 'OPTIONS_BOOK'
-        request['command'] = 'SUBS'
-        request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(new_fields)
+        request["service"] = "OPTIONS_BOOK"
+        request["command"] = "SUBS"
+        request["parameters"]["keys"] = ",".join(symbols)
+        request["parameters"]["fields"] = ",".join(new_fields)
 
-        self.streaming_api_client.data_requests['requests'].append(request)
+        self.streaming_api_client.data_requests["requests"].append(request)
