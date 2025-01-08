@@ -446,6 +446,23 @@ class OrderStatus(Enum):
     PENDING_RECALL = "PENDING_RECALL"
     UNKNOWN = "UNKNOWN"
 
+class QuoteRequest(Enum):
+    """Represents the different fields you can request
+    when querying the `Quote` service.
+
+    ### Usage
+    ----
+        >>> from schwab.enums import QuoteRequest
+        >>> QuoteRequest.QUOTE.Value
+        'quote'
+    """
+
+    ALL = ["quote", "fundamental", "extended", "regular"]
+    QUOTE = "quote"
+    FUNDAMENTAL = "fundamental"
+    REFERENCE = "reference"
+    EXTENDED = "extended"
+    REGULAR = "regular"
 
 class OrderStrategyType(Enum):
     """Represents the different order strategy types

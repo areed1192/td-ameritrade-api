@@ -1,17 +1,16 @@
 """Used to access the `Quotes` Services and metadata."""
 
+from enum import Enum
 from typing import List
 from schwab.session import CharlesSchwabSession
 
 
-class Quotes():
+class Quotes:
 
     """
     ## Overview
     ----
-    Allows the user to query real-time quotes from the TD
-    API if they have an authorization token otherwise it
-    will be delayed by 5 minutes.
+    Allows the user to query real-time quote.
     """
 
     def __init__(self, session: CharlesSchwabSession) -> None:
@@ -26,69 +25,95 @@ class Quotes():
 
         self.session = session
 
-    def get_quote(self, instrument=str) -> dict:
-        """Grabs real-time quotes for an instrument.
-
-        ### Overview
-        ----
-        Serves as the mechanism to make a request to the Get
-        Quote and Get Quotes Endpoint. If one item is provided
-        a Get Quote request will be made and if more than one
-        item is provided then a Get Quotes request will be made.
+    def get_quote(self, symbol_id=str, fields: List[str] | Enum = None) -> dict:
+        """Get quote by a single symbol.
 
         ### Parameters
         ----
-        instruments: str
+        symbol_id: str
             A list of different financial instruments.
+
+        fields: List[str] | Enum, (optional, default=None)
+            Request for subset of data by passing coma separated list of
+            root nodes, possible root nodes are quote, fundamental, extended,
+            reference, regular. Sending quote, fundamental in request
+            will return quote and fundamental data in response.
+            Dont send this attribute for full response.
 
         ### Usage
         ----
             >>> quote_service = client.quotes()
-            >>> quote_service.get_quote(instrument='AAPL')
+            >>> quote_service.get_quote(
+                instrument='AAPL',
+                fields=['quote', 'fundamental']
+            )
         """
 
-        params = {
-            'symbol': instrument
-        }
+        params = {}
+
+        # If fields are provided, join them with a comma.
+        if fields:
+            if isinstance(fields, Enum):
+                fields = fields.value
+                if isinstance(fields, str):
+                    fields = [fields]
+            params["fields"] = ",".join(fields)
 
         content = self.session.make_request(
-            method='get',
-            endpoint='marketdata/quotes',
-            params=params
+            method="get", endpoint=f"{symbol_id}/quotes", params=params
         )
 
         return content
 
-    def get_quotes(self, instruments=List[str]) -> dict:
-        """Grabs real-time quotes for multiple instruments.
-
-        ### Overview
-        ----
-        Serves as the mechanism to make a request to the Get
-        Quote and Get Quotes Endpoint. If one item is provided
-        a Get Quote request will be made and if more than one
-        item is provided then a Get Quotes request will be made.
-        Only 500 symbols can be sent at a single time.
+    def get_quotes(
+        self,
+        instruments=List[str],
+        fields: List[str] | Enum = None,
+        indicative: bool = False,
+    ) -> dict:
+        """Get quote by a list of symbols.
 
         ### Parameters
         ----
-        instruments: str
+        instruments: List[str]
             A list of different financial instruments.
+
+        fields: List[str] | Enum, (optional, default=None)
+            Request for subset of data by passing coma separated list of
+            root nodes, possible root nodes are quote, fundamental, extended,
+            reference, regular. Sending quote, fundamental in request
+            will return quote and fundamental data in response.
+            Dont send this attribute for full response.
+
+        indicative: bool, (optional, default=False)
+            Include indicative symbol quotes for all ETF symbols in request.
+            If ETF symbol ABC is in request and indicative=true API will
+            return quotes for ABC and its corresponding indicative quote
+            for $ABC.IV
 
         ### Usage
         ----
             >>> quote_service = client.quotes()
-            >>> quote_service.get_quotes(instruments=['AAPL','SQ'])
+            >>> quote_service.get_quotes(
+                instruments=['AAPL','SQ']
+            )
         """
 
         params = {
-            'symbol': ','.join(instruments)
+            "symbol": ",".join(instruments),
+            "indicative": indicative,
         }
 
+        # If fields are provided, join them with a comma.
+        if fields:
+            if isinstance(fields, Enum):
+                fields = fields.value
+                if isinstance(fields, str):
+                    fields = [fields]
+            params["fields"] = ",".join(fields)
+
         content = self.session.make_request(
-            method='get',
-            endpoint='marketdata/quotes',
-            params=params
+            method="get", endpoint="quotes", params=params
         )
 
         return content
