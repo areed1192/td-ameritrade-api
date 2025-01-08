@@ -1066,31 +1066,6 @@ class LevelOneForex(Enum):
     MARK = 29
 
 
-class NewsHeadlines(Enum):
-    """Represents the different fields for the News
-    Headline Feed.
-
-    ### Usage
-    ----
-        >>> from schwab.enums import NewsHeadlines
-        >>> NewsHeadlines.ALL.value  # Returns a list of strings 0-10
-        ['0', '1', ..., '10']
-    """
-
-    ALL = [str(item) for item in range(0, 11)]
-    SYMBOL = 0
-    ERROR_CODE = 1
-    STORY_DATETIME = 2
-    HEADLINE_ID = 3
-    STATUS = 4
-    HEADLINE = 5
-    STORY_ID = 6
-    COUNT_FOR_KEYWORD = 7
-    KEYWORD_ARRAY = 8
-    IS_HOT = 9
-    STORY_SOURCE = 10
-
-
 class LevelOneFuturesOptions(Enum):
     """Represents the different fields for the Level
     One Futures Options feed.
@@ -1201,59 +1176,6 @@ class ChartFutures(Enum):
     VOLUME = 6
 
 
-class TimesaleServices(Enum):
-    """Represents the different streaming timesale
-    services.
-
-    ### Usage
-    ----
-        >>> from schwab.enums import TimesaleServices
-        >>> TimesaleServices.TIMESALE_EQUITY.value
-        'TIMESALE_EQUITY'
-    """
-
-    TIMESALE_EQUITY = "TIMESALE_EQUITY"
-    TIMESALE_FOREX = "TIMESALE_FOREX"
-    TIMESALE_FUTURES = "TIMESALE_FUTURES"
-    TIMESALE_OPTIONS = "TIMESALE_OPTIONS"
-
-
-class Timesale(Enum):
-    """Represents the different streaming timesale
-    fields.
-
-    ### Usage
-    ----
-        >>> from schwab.enums import Timesale
-        >>> Timesale.ALL.value
-        ['0', '1', ..., '4']
-    """
-
-    ALL = [str(item) for item in range(0, 5)]
-    SYMBOL = 0
-    TRADE_TIME = 1
-    LAST_PRICE = 2
-    LAST_SIZE = 3
-    LAST_SEQUENCE = 4
-
-
-class ActivesServices(Enum):
-    """Represents the different streaming actives
-    services.
-
-    ### Usage
-    ----
-        >>> from schwab.enums import ActivesServices
-        >>> ActivesServices.ACTIVES_NASDAQ.value
-        'ACTIVES_NASDAQ'
-    """
-
-    ACTIVES_NASDAQ = "ACTIVES_NASDAQ"
-    ACTIVES_NYSE = "ACTIVES_NYSE"
-    ACTIVES_OPTIONS = "ACTIVES_OPTIONS"
-    ACTIVES_OTCBB = "ACTIVES_OTCBB"
-
-
 class ActivesVenues(Enum):
     """Represents the different streaming actives
     venues.
@@ -1274,26 +1196,6 @@ class ActivesVenues(Enum):
     CALLS_DESC = "CALLS-DESC"
     PUTS_DESC = "PUTS-DESC"
     OPTIONS_DESC = "OPTS-DESC"
-
-
-class ActivesDurations(Enum):
-    """Represents the different durations for the
-    Actives Service.
-
-    ### Usage
-    ----
-        >>> from schwab.enums import ActivesDurations
-        >>> ActivesDurations.ALL.value
-        'ALL'
-    """
-
-    ALL = "ALL"
-    SIXTY_SECONDS = "60"
-    THREE_HUNDRED_SECONDS = "300"
-    SIX_HUNDRED_SECONDS = "600"
-    EIGHTEEN_HUNDRED_SECONDS = "1800"
-    THIRTY_SIX_HUNDRED_SECONDS = "3600"  # Fixed spelling
-
 
 class ChartFuturesFrequencies(Enum):
     """Represents the different frequencies for the

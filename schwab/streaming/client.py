@@ -94,12 +94,16 @@ class StreamingApiClient:
                     "service": "ADMIN",
                     "requestid": "0",
                     "command": "LOGIN",
-                    "account": self.user_principal_data["accounts"][0]["accountId"],
-                    "source": self.user_principal_data["streamerInfo"]["appId"],
+                    "SchwabClientCustomerId": self.user_principal_data["accounts"][0][
+                        "accountId"
+                    ],
+                    "SchwabClientCorrelId": self.user_principal_data["streamerInfo"][
+                        "appId"
+                    ],
                     "parameters": {
-                        "credential": urllib.parse.urlencode(self.credentials),
-                        "token": self.user_principal_data["streamerInfo"]["token"],
-                        "version": "1.0",
+                        "Authorization": "",
+                        "SchwabClientChannel": "",
+                        "SchwabClientFunctionId": "",
                     },
                 }
             ]
@@ -400,8 +404,12 @@ class StreamingApiClient:
                     "service": service.upper(),
                     "requestid": service_count,
                     "command": "UNSUBS",
-                    "account": self.user_principal_data["accounts"][0]["accountId"],
-                    "source": self.user_principal_data["streamerInfo"]["appId"],
+                    "SchwabClientCustomerId": self.user_principal_data["accounts"][0][
+                        "accountId"
+                    ],
+                    "SchwabClientCorrelId": self.user_principal_data["streamerInfo"][
+                        "appId"
+                    ],
                 }
             ]
         }

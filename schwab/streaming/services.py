@@ -26,7 +26,7 @@ class StreamingServices:
             The streaming API client that handles sending requests.
         """
 
-        from schwab.streaming.client import ( # pylint: disable=import-outside-toplevel
+        from schwab.streaming.client import (  # pylint: disable=import-outside-toplevel
             StreamingApiClient,
         )
 
@@ -52,49 +52,14 @@ class StreamingServices:
 
         request = {
             "service": None,
-            "requestid": service_count,
             "command": None,
-            "account": self.streaming_api_client.user_principal_data["accounts"][0][
-                "accountId"
-            ],
-            "source": self.streaming_api_client.user_principal_data["streamerInfo"][
-                "appId"
-            ],
+            "requestid": service_count,
+            "SchwabClientCustomerId": "",
+            "SchwabClientCorrelId": "",
             "parameters": {"keys": None, "fields": None},
         }
 
         return request
-
-    def quality_of_service(self, qos_level: Union[str, Enum]) -> None:
-        """Quality of Service Subscription.
-
-        ### Overview
-        ----
-        Allows the user to set the speed at which they recieve
-        messages from the Charles Schwab Server.
-
-        ### Parameters
-        ----
-        qos_level: Union[str, Enum]
-            The Quality of Service level that you wish to set.
-            Ranges from 0 to 5 where 0 is the fastest and 5 is
-            the slowest.
-
-        ### Usage
-        ----
-            >>> streaming_api_service = client.streaming_api_client()
-            >>> streaming_services = streaming_api_service.services()
-            >>> streaming_services.quality_of_service(
-                qos_level='1'
-            )
-        """
-
-        # Build the request
-        request = self._new_request_template()
-        request["service"] = Services.ADMIN.value
-        request["command"] = "QOS"
-        request["parameters"]["qoslevel"] = qos_level
-        self.streaming_api_client.data_requests["requests"].append(request)
 
     def level_one_quotes(
         self, symbols: List[str], fields: Union[List[Enum], List[str], List[int]]
@@ -411,111 +376,6 @@ class StreamingServices:
         request["command"] = "SUBS"
         request["parameters"]["keys"] = ",".join(symbols)
         request["parameters"]["fields"] = ",".join(new_fields)
-        self.streaming_api_client.data_requests["requests"].append(request)
-
-    def timesale(
-        self, service: str, symbols: List[str], fields: Union[List[str], List[int]]
-    ) -> None:
-        """Stream Time & Sales Data.
-
-        ### Parameters
-        ---
-        service: Union[str, Enum]
-            The different timesale services, can be `TIMESALE_EQUITY`,
-            `TIMESALE_OPTIONS`, `TIMESALE_FUTURES`.
-
-        symbols: List[str]
-            A List of symbols you wish to stream quotes for.
-
-        fields: Union[List[Enum], List[str], List[int]]
-            The fields you want returned from the Endpoint, can either
-            be the numeric representation or the key value representation.
-            For more info on fields, refer to the documentation.
-
-        ### Usage
-        ----
-            >>> streaming_api_service = client.streaming_api_client()
-            >>> streaming_services = streaming_api_service.services()
-            >>> streaming_services.timesale(
-                service=TimesaleServices.TimesaleEquity,
-                symbols=['MSFT', 'GOOG', 'AAPL'],
-                fields=Timesale.All
-            )
-        """
-
-        if isinstance(service, Enum):
-            service = service.value
-
-        if isinstance(fields, list):
-            new_fields = []
-            for field in fields:
-                if isinstance(field, int):
-                    field = str(int)
-                elif isinstance(field, Enum):
-                    field = str(field.value)
-                new_fields.append(field)
-
-        if isinstance(fields, Enum):
-            new_fields = fields.value
-
-        # Build the request
-        request = self._new_request_template()
-        request["service"] = service
-        request["command"] = "SUBS"
-        request["parameters"]["keys"] = ",".join(symbols)
-        request["parameters"]["fields"] = ",".join(new_fields)
-
-        self.streaming_api_client.data_requests["requests"].append(request)
-
-    def actives(
-        self,
-        service: Union[str, Enum],
-        venue: Union[str, Enum],
-        duration: Union[str, Enum],
-    ) -> None:
-        """Stream most actively traded stocks for a specific exchange.
-
-        ### Parameters
-        ---
-        service: Union[str, Enum]
-            One of the different actives services. For a full
-            list please refer to the `enums` file.
-
-        service: Union[str, Enum]
-            One of the exchanges. For a full
-            list please refer to the `enums` file.
-
-        duration: Union[str, Enum]
-            Specifies the look back period for collecting most
-            actively traded instrument. For a full list please
-            refer to the `enums` file.
-
-        ### Usage
-        ----
-            >>> streaming_api_service = client.streaming_api_client()
-            >>> streaming_services = streaming_api_service.services()
-            >>> streaming_services.actives(
-                service=ActivesServices.ActivesNasdaq,
-                venue=ActivesVenues.NasdaqExchange,
-                duration=ActivesDurations.All
-            )
-        """
-
-        if isinstance(service, Enum):
-            service = service.value
-
-        if isinstance(venue, Enum):
-            venue = venue.value
-
-        if isinstance(duration, Enum):
-            duration = duration.value
-
-        # Build the request
-        request = self._new_request_template()
-        request["service"] = service
-        request["command"] = "SUBS"
-        request["parameters"]["keys"] = venue + "-" + duration
-        request["parameters"]["fields"] = "1"
         self.streaming_api_client.data_requests["requests"].append(request)
 
     def chart_history_futures(
