@@ -209,6 +209,7 @@ class ExecutionLeg:
             >>> my_execution_leg.to_dict()
 
         """
+
         return _convert_to_dict(self)
 
 
@@ -250,6 +251,7 @@ class OrderActivity:
             >>> my_order_activity.to_dict()
 
         """
+
         return _convert_to_dict(self)
 
 

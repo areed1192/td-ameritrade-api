@@ -79,9 +79,11 @@ Here is a simple example of using the `schwab` library.
 ```python
 from pprint import pprint
 from configparser import ConfigParser
+
 from schwab.credentials import CharlesSchwabCredentials
 from schwab.client import CharlesSchwabClient
 
+from schwab.utils.enums import QuoteRequest
 
 # Initialize the Parser.
 config = ConfigParser()
@@ -112,13 +114,11 @@ client = CharlesSchwabClient(credentials=credentials)
 quote_service = client.quotes()
 
 # Grab a single quote.
-pprint(
-    quote_service.get_quote(instrument='AAPL')
-)
+pprint(quote_service.get_quote(symbol_id="AAPL"))
 
 # Grab multiple quotes.
 pprint(
-    quote_service.get_quotes(instruments=['AAPL', 'SQ'])
+    quote_service.get_quotes(symbol_ids=["AAPL", "SQ"], fields=QuoteRequest.EXTENDED)
 )
 ```
 
