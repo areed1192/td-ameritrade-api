@@ -54,8 +54,8 @@ class StreamingServices:
             "service": None,
             "command": None,
             "requestid": service_count,
-            "SchwabClientCustomerId": "",
-            "SchwabClientCorrelId": "",
+            "SchwabClientCustomerId": self.streaming_api_client.customer_id,
+            "SchwabClientCorrelId": self.streaming_api_client.correl_id,
             "parameters": {"keys": None, "fields": None},
         }
 
@@ -82,7 +82,7 @@ class StreamingServices:
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.level_one_quotes(
                 symbols=['AAPL','SQ'],
-                fields=LevelOneQuotes.All
+                fields=LevelOneQuotes.ALL
             )
         """
 
@@ -128,7 +128,7 @@ class StreamingServices:
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.level_one_options(
                 symbols=['MSFT_043021C120'],
-                fields=LevelOneOptions.All
+                fields=LevelOneOptions.ALL
             )
         """
 
@@ -174,7 +174,7 @@ class StreamingServices:
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.level_one_futures(
                 symbols=['/ES'],
-                fields=LevelOneFutures.All
+                fields=LevelOneFutures.ALL
             )
         """
 
@@ -220,7 +220,7 @@ class StreamingServices:
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.level_one_futures(
                 symbols=['./EW2J20C2675'],
-                fields=LevelOneFutures.All
+                fields=LevelOneFutures.ALL
             )
         """
 
@@ -266,7 +266,7 @@ class StreamingServices:
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.level_one_forex(
                 symbols=['EUR/USD'],
-                fields=LevelOneForex.All
+                fields=LevelOneForex.ALL
             )
         """
 
@@ -303,16 +303,11 @@ class StreamingServices:
         account, and subscribing to ACCT_ACTIVITY to get any updates.
         """
 
-        sub_keys = self.streaming_api_client.user_principal_data[
-            "streamerSubscriptionKeys"
-        ]
-        keys = sub_keys["keys"][0]["key"]
-
         # Build the request
         request = self._new_request_template()
         request["service"] = Services.ACCT_ACTIVITY.value
         request["command"] = "SUBS"
-        request["parameters"]["keys"] = keys
+        request["parameters"]["keys"] = "Account Activity"
         request["parameters"]["fields"] = "0,1,2,3"
 
         self.streaming_api_client.data_requests["requests"].append(request)
@@ -351,7 +346,7 @@ class StreamingServices:
             >>> streaming_services.chart(
                 service=ChartServices.ChartEquity,
                 symbols=['MSFT', 'GOOG', 'AAPL'],
-                fields=ChartEquity.All
+                fields=ChartEquity.ALL
             )
         """
 
@@ -413,8 +408,8 @@ class StreamingServices:
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.chart_history_futures(
                 symbols=['/ES', '/CL'],
-                frequency=ChartFuturesFrequencies.OneMinute,
-                period=ChartFuturesPeriods.OneDay
+                frequency=ChartFuturesFrequencies.ONE_MINUTE,
+                period=ChartFuturesPeriods.ONE_DAY
             )
         """
 
@@ -488,7 +483,7 @@ class StreamingServices:
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.level_two_quotes(
                 symbols=['MSFT', 'PINS'],
-                fields=LevelTwoQuotes.All
+                fields=LevelTwoQuotes.ALL
             )
         """
 
@@ -534,7 +529,7 @@ class StreamingServices:
             >>> streaming_services = streaming_api_service.services()
             >>> streaming_services.level_two_options(
                 symbols=['MSFT_043021C120'],
-                fields=LevelTwoOptions.All
+                fields=LevelTwoOptions.ALL
             )
         """
 

@@ -1,17 +1,16 @@
 """This module contains the main client for the Charles Schwab Streaming API."""
 
 import json
-import urllib
 import pprint
 import asyncio
 import textwrap
 
-from datetime import datetime
 from websockets import client as ws_client
 from websockets import exceptions as ws_exceptions
 
 from schwab.rest.user_info import UserInfo
 from schwab.session import CharlesSchwabSession
+from schwab.credentials import CharlesSchwabCredentials
 from schwab.streaming.services import StreamingServices
 
 
@@ -24,7 +23,9 @@ class StreamingApiClient:
     streams data back to the user.
     """
 
-    def __init__(self, session: CharlesSchwabSession) -> None:
+    def __init__(
+        self, session: CharlesSchwabSession, credentials: CharlesSchwabCredentials
+    ) -> None:
         """Initalizes the Streaming Client.
 
         ### Overview
@@ -37,31 +38,22 @@ class StreamingApiClient:
         ----
             >>> streaming_client = client.streaming_api()
         """
-        self.user_principal_data = UserInfo(session=session).get_user_principals()
 
-        socket_url = self.user_principal_data["streamerInfo"]["streamerSocketUrl"]
-        self.websocket_url = f"wss://{socket_url}/ws"
+        self.credentials = credentials
+        self.user_principal_data = UserInfo(session=session).get_preferences()
+        self.streamer_info = self.user_principal_data["streamerInfo"]
 
-        # Grab the token timestamp.
-        token_timestamp = self.user_principal_data["streamerInfo"]["tokenTimestamp"]
-        token_timestamp = datetime.strptime(token_timestamp, "%Y-%m-%dT%H:%M:%S%z")
-        token_timestamp = int(token_timestamp.timestamp()) * 1000
+        # Define the User Info.
+        self.customer_id = self.streamer_info["schwabClientCustomerId"]
+        self.correl_id = self.streamer_info["schwabClientCorrelId"]
+        self.client_channel = self.streamer_info["schwabClientChannel"]
+        self.client_function_id = self.streamer_info["schwabClientFunctionId"]
 
-        # Define our Credentials Dictionary used for authentication.
-        self.credentials = {
-            "userid": self.user_principal_data["accounts"][0]["accountId"],
-            "token": self.user_principal_data["streamerInfo"]["token"],
-            "company": self.user_principal_data["accounts"][0]["company"],
-            "segment": self.user_principal_data["accounts"][0]["segment"],
-            "cddomain": self.user_principal_data["accounts"][0]["accountCdDomainId"],
-            "usergroup": self.user_principal_data["streamerInfo"]["userGroup"],
-            "accesslevel": self.user_principal_data["streamerInfo"]["accessLevel"],
-            "authorized": "Y",
-            "timestamp": token_timestamp,
-            "appid": self.user_principal_data["streamerInfo"]["appId"],
-            "acl": self.user_principal_data["streamerInfo"]["acl"],
-        }
+        # Grab the socket URL.
+        self._socket_url = self.streamer_info["streamerSocketUrl"]
+        self.websocket_url = f"wss://{self._socket_url}/ws"
 
+        # Define the connection.
         self.connection: ws_client.ClientProtocol = None
         self.data_requests = {"requests": []}
 
@@ -94,16 +86,12 @@ class StreamingApiClient:
                     "service": "ADMIN",
                     "requestid": "0",
                     "command": "LOGIN",
-                    "SchwabClientCustomerId": self.user_principal_data["accounts"][0][
-                        "accountId"
-                    ],
-                    "SchwabClientCorrelId": self.user_principal_data["streamerInfo"][
-                        "appId"
-                    ],
+                    "SchwabClientCustomerId": self.customer_id,
+                    "SchwabClientCorrelId": self.correl_id,
                     "parameters": {
-                        "Authorization": "",
-                        "SchwabClientChannel": "",
-                        "SchwabClientFunctionId": "",
+                        "Authorization": self.credentials.access_token,
+                        "SchwabClientChannel": self.client_channel,
+                        "SchwabClientFunctionId": self.client_function_id,
                     },
                 }
             ]
@@ -404,12 +392,9 @@ class StreamingApiClient:
                     "service": service.upper(),
                     "requestid": service_count,
                     "command": "UNSUBS",
-                    "SchwabClientCustomerId": self.user_principal_data["accounts"][0][
-                        "accountId"
-                    ],
-                    "SchwabClientCorrelId": self.user_principal_data["streamerInfo"][
-                        "appId"
-                    ],
+                    "SchwabClientCustomerId": self.customer_id,
+                    "SchwabClientCorrelId": self.correl_id,
+                    "parameters": {},
                 }
             ]
         }
