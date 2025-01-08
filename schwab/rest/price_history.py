@@ -6,8 +6,7 @@ from datetime import datetime
 from schwab.session import CharlesSchwabSession
 
 
-class PriceHistory():
-
+class PriceHistory:
     """
     ## Overview:
     ----
@@ -38,17 +37,19 @@ class PriceHistory():
         self._end_date = ""
         self._frequency_type = ""
         self._extended_hours_needed = True
+        self._previous_close_needed = False
 
     def get_price_history(
         self,
         symbol: str,
         frequency_type: Union[str, Enum],
         frequency: str,
-        period_type: Union[str, Enum] = 'day',
+        period_type: Union[str, Enum] = "day",
         period: int = None,
         start_date: Union[datetime] = None,
         end_date: Union[datetime] = None,
-        extended_hours_needed: bool = True
+        extended_hours_needed: bool = True,
+        previous_close_needed: bool = False,
     ) -> dict:
         """Gets historical candle data for a financial instrument.
 
@@ -82,6 +83,9 @@ class PriceHistory():
             True to return extended hours data, false for regular
             market hours only.
 
+        previous_close_needed: bool (optional, Default=False)
+            True to return previous close data, false to exclude it.
+
         ### Usage
         ----
             >>> price_history_service = client.price_history()
@@ -91,13 +95,14 @@ class PriceHistory():
                 frequency=1,
                 period_type='day',
                 period=10,
-                extended_hours_needed=False
+                extended_hours_needed=False,
+                previous_close_needed=True
             )
         """
 
         # Fail early, can't have a period with start and end date specified.
-        if (start_date and end_date and period):
-            raise ValueError('Cannot have Period with Start Date and End Date')
+        if start_date and end_date and period:
+            raise ValueError("Cannot have Period with Start Date and End Date")
 
         # Handle datetimes.
         if isinstance(start_date, datetime):
@@ -118,29 +123,23 @@ class PriceHistory():
         if frequency_type:
 
             valid_chart_values = {
-                'minute': {
-                    'day': [1, 2, 3, 4, 5, 10]
+                "minute": {"day": [1, 2, 3, 4, 5, 10]},
+                "daily": {
+                    "month": [1, 2, 3, 6],
+                    "year": [1, 2, 3, 5, 10, 15, 20],
+                    "ytd": [1],
                 },
-                'daily': {
-                    'month': [1, 2, 3, 6],
-                    'year': [1, 2, 3, 5, 10, 15, 20],
-                    'ytd': [1]
+                "weekly": {
+                    "month": [1, 2, 3, 6],
+                    "year": [1, 2, 3, 5, 10, 15, 20],
+                    "ytd": [1],
                 },
-                'weekly': {
-                    'month': [1, 2, 3, 6],
-                    'year': [1, 2, 3, 5, 10, 15, 20],
-                    'ytd': [1]
-                },
-                'monthly': {
-                    'year': [1, 2, 3, 5, 10, 15, 20]
-                }
+                "monthly": {"year": [1, 2, 3, 5, 10, 15, 20]},
             }
 
             # If what was provided is not a valid frequency type then raise an error.
             if frequency_type not in valid_chart_values:
-                raise KeyError(
-                    "The frequency you provided is not a valid frequency."
-                )
+                raise KeyError("The frequency you provided is not a valid frequency.")
 
             # Step 2: Validate the period type BASED ON the frequency type.
             if period_type not in valid_chart_values[frequency_type]:
@@ -149,7 +148,7 @@ class PriceHistory():
                 )
 
             condition_1 = period not in valid_chart_values[frequency_type][period_type]
-            condition_2 = (start_date is None or end_date is None)
+            condition_2 = start_date is None or end_date is None
 
             # Step 3: Finally validate the period, if a start date or end date was not provided.
             # You shouldn't have a period to validate if the start date or end date was provided.
@@ -159,19 +158,19 @@ class PriceHistory():
                 )
 
         params = {
-            'period': period,
-            'periodType': period_type,
-            'startDate': start_date,
-            'endDate': end_date,
-            'frequency': frequency,
-            'frequencyType': frequency_type,
-            'needExtendedHoursData': extended_hours_needed
+            "symbol": symbol,
+            "period": period,
+            "periodType": period_type,
+            "startDate": start_date,
+            "endDate": end_date,
+            "frequency": frequency,
+            "frequencyType": frequency_type,
+            "needExtendedHoursData": extended_hours_needed,
+            "needPreviousClose": previous_close_needed,
         }
 
         content = self.session.make_request(
-            method='get',
-            endpoint=f'marketdata/{symbol}/pricehistory',
-            params=params
+            method="get", endpoint="pricehistory", params=params
         )
 
         return content
