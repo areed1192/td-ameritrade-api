@@ -412,6 +412,20 @@ class OptionType(Enum):
     STANDARD_CONTRACTS = "S"
     NON_STANDARD_CONTRACTS = "NS"
 
+class EntitlementType(Enum):
+    """Represents the different option types
+    when querying the `OptionType` service.
+
+    ### Usage
+    ----
+        >>> from schwab.enums import OptionType
+        >>> OptionType.ALL.Value
+        'ALL'
+    """
+
+    PP_PAYING_PRO = "PP-PayingPro"
+    NP_NON_PRO = "NP-NonPro"
+    PN_NON_PAYING_PRO = "PN-NonPayingPro"
 
 class OrderStatus(Enum):
     """Represents the different order status types

@@ -4,14 +4,11 @@ from schwab.session import CharlesSchwabSession
 from schwab.utils.option_chain import OptionChainQuery
 
 
-class OptionsChain():
-
+class OptionsChain:
     """
     ## Overview
     ----
-    Allows the user to query options chain data from the
-    the TD Ameritrade API along with helping to formulate
-    queries.
+    Allows the user to query options chain data.
     """
 
     def __init__(self, session: CharlesSchwabSession) -> None:
@@ -30,9 +27,10 @@ class OptionsChain():
         self,
         option_chain_query: OptionChainQuery = None,
         option_chain_dict: dict = None,
-        raise_validation_errors: bool = True
+        raise_validation_errors: bool = True,
     ) -> dict:
-        """Get option chain for an optionable Symbol.
+        """Get Option Chain including information on options
+        contracts associated with each expiration.
 
         ### Parameters
         ----
@@ -82,16 +80,35 @@ class OptionsChain():
         """
 
         if option_chain_query:
-            params = option_chain_query.to_dict(
-                raise_errors=raise_validation_errors
-            )
+            params = option_chain_query.to_dict(raise_errors=raise_validation_errors)
         else:
             params = option_chain_dict
 
         content = self.session.make_request(
-            method='get',
-            endpoint='marketdata/chains',
-            params=params
+            method="get", endpoint="chains", params=params
+        )
+
+        return content
+
+    def get_option_expiration_chain(self, symbol: str) -> dict:
+        """Get Option Expiration (Series) information for an optionable symbol.
+        Does not include individual options contracts for the underlying.
+
+        ### Parameters
+        ----
+        symbol: str
+            A valid symbol for the underlying security.
+
+        ### Usage
+        ----
+            >>> options_chain_service = client.options_chain()
+            >>> options_chain_service.get_option_expiration_chain(
+                    symbol='MSFT'
+                )
+        """
+
+        content = self.session.make_request(
+            method="get", endpoint="expirationchain", params={"symbol": symbol}
         )
 
         return content

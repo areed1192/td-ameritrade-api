@@ -93,6 +93,10 @@ class OptionChainQuery():
     option_type: Union[str, Enum] (optional, Default='all')
         Type of contracts to return. Possible values are: [(`s`: Standard contracts),
         (`ns`: Non-standard contracts), (`all`: All contracts)]
+    
+    entitlement: Union[str, Enum] (optional, Default=None)
+        Applicable only if its retail token, entitlement of client.
+        PP-PayingPro, NP-NonPro and PN-NonPayingPro
     """
 
     symbol: str
@@ -111,6 +115,7 @@ class OptionChainQuery():
     days_to_expiration: int = None
     expiration_month: Union[str, Enum] = ExpirationMonth.ALL
     option_type: Union[str, Enum] = OptionType.ALL
+    entitlement: Union[str, Enum] = None
 
     def to_dict(self, raise_errors: bool) -> dict:
         """Generates a dictionary containing all the field
