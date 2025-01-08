@@ -1,6 +1,7 @@
 """Used to access the `MarketHours` Services and metadata."""
 
 from enum import Enum
+from typing import List
 from typing import Union
 from datetime import date as date_type
 from datetime import datetime
@@ -30,17 +31,17 @@ class MarketHours():
 
     def get_multiple_market_hours(
         self,
-        markets: list,
+        markets: List[str] | List[Enum],
         date: Union[str, datetime, date_type]
     ) -> dict:
         """Returns the market hours for all the markets.
 
         ### Parameters
         ----
-        markets: list
+        markets: List[str] | List[Enum]
             A list of market IDs you want to return hours for.
-            Possible values are: `EQUITY`, `OPTION`, `FUTURE`,
-            `BOND`, or `FOREX`.
+            Possible values are: `equity`, `option`, `future`,
+            `bond`, or `forex`.
 
         date: Union[str, datetime, date]
             The date you wish to recieve market hours for.
@@ -52,7 +53,7 @@ class MarketHours():
             >>> from schwab.enums import Markets
             >>> market_hours_service = client.market_hours()
             >>> market_hours_service.get_multiple_market_hours(
-                markets=['EQUITY', Markets.Bond],
+                markets=['equity', Markets.BOND],
                 date='2021-12-31'
             )
         """
@@ -71,7 +72,7 @@ class MarketHours():
 
         content = self.session.make_request(
             method='get',
-            endpoint='marketdata/hours',
+            endpoint='markets',
             params=params
         )
 
@@ -88,8 +89,8 @@ class MarketHours():
         ----
         market: Union[str, Enum]
             A list of market IDs you want to return hours for.
-            Possible values are: `EQUITY`, `OPTION`, `FUTURE`,
-            `BOND`, or `FOREX`.
+            Possible values are: `equity`, `option`, `future`,
+            `bond`, or `forex`.
 
         date: Union[str, datetime, date]
             The date you wish to recieve market hours for.
@@ -101,7 +102,7 @@ class MarketHours():
             >>> from schwab.enums import Markets
             >>> market_hours_service = client.market_hours()
             >>> market_hours_service.get_market_hours(
-                markets='EQUITY',
+                markets='equity',
                 date='2021-12-31'
             )
         """
@@ -118,7 +119,7 @@ class MarketHours():
 
         content = self.session.make_request(
             method='get',
-            endpoint=f'marketdata/{market}/hours',
+            endpoint=f'markets/{market}',
             params=params
         )
 

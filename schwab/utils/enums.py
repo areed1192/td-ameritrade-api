@@ -76,14 +76,14 @@ class Markets(Enum):
     ----
         >>> from schwab.enums import Markets
         >>> Markets.BOND.Value
+        'bond
     """
 
-    BOND = "BOND"
-    EQUITY = "EQUITY"
-    OPTION = "OPTION"
-    FOREX = "FOREX"
-    FUTURES = "FUTURES"
-
+    BOND = "bond"
+    EQUITY = "equity"
+    OPTION = "option"
+    FOREX = "forex"
+    FUTURES = "future"
 
 class Projections(Enum):
     """Represents the different search types you can use for
