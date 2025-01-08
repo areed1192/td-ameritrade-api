@@ -29,7 +29,7 @@ class CharlesSchwabSession():
             >>> session = CharlesSchwabSession()
         """
 
-        from schwab.client import CharlesSchwabClient
+        from schwab.client import CharlesSchwabClient #pylint: disable=import-outside-toplevel
 
         # We can also add custom formatting to our log messages.
         log_format = '%(asctime)-15s|%(filename)s|%(message)s'

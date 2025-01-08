@@ -273,18 +273,28 @@ class CharlesSchwabCredentials():
         auth_url = f"{self._authorization_endpoint}?{url_params}"
 
         # Open browser for user to log in.
-        print(f"Open the URL (if it doesn't open automatically):\n{auth_url}\n")
-        webbrowser.open(url=auth_url)
+        try:
+            print(f"Open the URL (if it doesn't open automatically):\n{auth_url}\n")
+            webbrowser.open(url=auth_url)
 
-        # Ask the user to paste back the final URL which contains '?code=...'
-        code_url = input("Paste the full callback URL here: ")
+            # Ask the user to paste back the final URL which contains '?code=...'
+            code_url = input("Paste the full callback URL here: ")
 
-        # Parse out the 'code' from the callback URL.
-        parsed_url = urlparse(code_url)
+            # Parse out the 'code' from the callback URL.
+            parsed_url = urlparse(code_url)
 
-        # Typically, the code is in the query string as "code=<value>"
-        query_data = parse_qs(parsed_url.query)
-        self.authorization_code = query_data['code'][0]
+            # Typically, the code is in the query string as "code=<value>"
+            query_data = parse_qs(parsed_url.query)
+            self.authorization_code = query_data['code'][0]
+
+        except KeyError as e:
+            raise ValueError(
+                "Error: Could not find 'code' in the URL. Please try again."
+            ) from e
+
+        except Exception as e: # pylint: disable=broad-exception-caught
+            print(f"Error parsing the URL: {e}")
+
 
     def exchange_code_for_token(self) -> dict:
         """

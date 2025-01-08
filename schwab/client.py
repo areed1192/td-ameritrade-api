@@ -39,7 +39,9 @@ class CharlesSchwabClient():
         self.session = CharlesSchwabSession(client=self)
 
     def __repr__(self):
-        pass
+        """Returns the string representation of the `CharlesSchwabClient` object."""
+
+        return f"<CharlesSchwabClient, session: {self.session}>"
 
     def quotes(self) -> Quotes:
         """Used to access the `Quotes` Services and metadata.

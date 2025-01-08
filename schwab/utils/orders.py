@@ -4,62 +4,60 @@ from dataclasses import fields
 from dataclasses import dataclass
 from dataclasses import is_dataclass
 
+from typing import Any
 from typing import Union
 from typing import List
 from enum import Enum
 
 
-def _to_dict(data_class_obj: Union[dataclass, dict]) -> dict:
+def _snake_to_camel(snake_str: str) -> str:
+    """Convert a snake_case string to camelCase."""
 
-    class_dict = {}
+    parts = snake_str.split("_")
+    return parts[0] + "".join(word.capitalize() for word in parts[1:])
 
-    if is_dataclass(data_class_obj):
 
-        # Loop through each field and grab the value and key.
-        for field in fields(data_class_obj):
+def _convert_to_dict(obj: Any) -> Any:
+    """
+    ### Overview
+    ----
+    Recursively convert a dataclass or dictionary (which can contain
+    more dataclasses, dictionaries, lists, or Enums) into a dictionary
+    with camelCase keys and primitive values.
 
-            key = field.name
-            value = getattr(data_class_obj, field.name)
+    ### Parameters
+    ----
+    obj : Any
+        The object to convert. Can be a dataclass, dictionary
+        list, or Enum.
+    """
+    # If it's an Enum, return its value (e.g., the string or int it holds).
+    if isinstance(obj, Enum):
+        return obj.value
 
-            # Handle values that could be Enums.
-            if isinstance(value, Enum):
-                value = value.value
+    # If it's a dataclass, convert its fields into a dict.
+    if is_dataclass(obj):
+        result = {}
+        for f in fields(obj):
+            value = getattr(obj, f.name)
+            if value is not None:  # Skip fields that are None
+                result[_snake_to_camel(f.name)] = _convert_to_dict(value)
+        return result
 
-            if isinstance(value, dict):
-                value = _to_dict(data_class_obj=value)
+    # If it's a dictionary, convert each key and value.
+    if isinstance(obj, dict):
+        result = {}
+        for key, value in obj.items():
+            if value is not None:  # Skip keys with None values
+                result[_snake_to_camel(key)] = _convert_to_dict(value)
+        return result
 
-            if isinstance(value, list):
-                value = [_to_dict(data_class_obj=item) for item in value]
+    # If it's a list, convert each element in the list.
+    if isinstance(obj, list):
+        return [_convert_to_dict(item) for item in obj]
 
-            # Generate the API Key.
-            key_parts = key.split("_")
-            key = "".join([key_parts[0]] + [key.capitalize() for key in key_parts[1:]])
-
-            if value is not None:
-                class_dict[key] = value
-
-    elif isinstance(data_class_obj, dict):
-
-        for key, value in data_class_obj.items():
-
-            # Handle values that could be Enums.
-            if isinstance(value, Enum):
-                value = value.value
-
-            if isinstance(value, dict):
-                value = _to_dict(data_class_obj=value)
-
-            if isinstance(value, list):
-                value = [_to_dict(data_class_obj=item) for item in value]
-
-            # Generate the API Key.
-            key_parts = key.split("_")
-            key = "".join([key_parts[0]] + [key.capitalize() for key in key_parts[1:]])
-
-            if value is not None:
-                class_dict[key] = value
-
-    return class_dict
+    # Otherwise, return it as-is (e.g., string, int, float).
+    return obj
 
 
 @dataclass
@@ -94,7 +92,7 @@ class OrderLegInstrument:
             >>> my_order_leg_instrument.to_dict()
         """
 
-        return _to_dict(data_class_obj=self)
+        return _convert_to_dict(self)
 
 
 @dataclass
@@ -137,7 +135,7 @@ class OrderLeg:
             >>> my_order_leg.to_dict()
         """
 
-        return _to_dict(data_class_obj=self)
+        return _convert_to_dict(self)
 
 
 @dataclass
@@ -188,4 +186,4 @@ class Order:
             >>> my_order_leg.to_dict()
         """
 
-        return _to_dict(data_class_obj=self)
+        return _convert_to_dict(self)
