@@ -1216,3 +1216,47 @@ class LevelTwoOptions(Enum):
     KEY = 0
     TIME = 1
     DATA = 2
+
+
+class StreamingServices(Enum):
+    """Represents the different streaming services.
+
+    ### Usage
+    ----
+        >>> from schwab.enums import StreamingServices
+        >>> StreamingServices.OPTION.value
+        'OPTION'
+    """
+
+    ADMIN = "ADMIN"
+    LEVELONE_EQUITIES = "LEVELONE_EQUITIES"
+    LEVELONE_OPTIONS = "LEVELONE_OPTIONS"
+    LEVELONE_FUTURES = "LEVELONE_FUTURES"
+    LEVELONE_FUTURES_OPTIONS = "LEVELONE_FUTURES_OPTIONS"
+    LEVELONE_FOREX = "LEVELONE_FOREX"
+    NYSE_BOOK = "NYSE_BOOK"
+    NASDAQ_BOOK = "NASDAQ_BOOK"
+    OPTIONS_BOOK = "OPTIONS_BOOK"
+    CHART_EQUITY = "CHART_EQUITY"
+    CHART_FUTURES = "CHART_FUTURES"
+    SCREENER_EQUITY = "SCREENER_EQUITY"
+    SCREENER_OPTION = "SCREENER_OPTION"
+    ACCT_ACTIVITY = "ACCT_ACTIVITY"
+
+class StreamingServiceCommands(Enum):
+    """Represents the different commands for the streaming
+    services.
+
+    ### Usage
+    ----
+        >>> from schwab.enums import StreamingServiceCommands
+        >>> StreamingServiceCommands.LOGIN.value
+        'LOGIN'
+    """
+
+    LOGIN = "LOGIN"
+    SUBS = "SUBS"
+    ADD = "ADD"
+    UNSUBS = "UNSUBS"
+    VIEW = "VIEW"
+    LOGOUT = "LOGOUT"

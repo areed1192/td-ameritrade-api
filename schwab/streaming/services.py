@@ -5,6 +5,8 @@ from typing import Union
 from typing import List
 from datetime import datetime
 
+from schwab.utils.enums import StreamingServices as Services
+
 
 class StreamingServices():
 
@@ -24,7 +26,7 @@ class StreamingServices():
             The streaming API client that handles sending requests.
         """
 
-        from schwab.streaming.client import StreamingApiClient
+        from schwab.streaming.client import StreamingApiClient  #pylint: disable=import-outside-toplevel
 
         self.streaming_api_client: StreamingApiClient = streaming_api_client
 
@@ -88,7 +90,7 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = 'ADMIN'
+        request['service'] = Services.ADMIN.value
         request['command'] = 'QOS'
         request['parameters']['qoslevel'] = qos_level
         self.streaming_api_client.data_requests['requests'].append(request)
@@ -134,7 +136,7 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = 'QUOTE'
+        request['service'] = Services.LEVELONE_EQUITIES.value
         request['command'] = 'SUBS'
         request['parameters']['keys'] = ','.join(symbols)
         request['parameters']['fields'] = ','.join(new_fields)
@@ -182,7 +184,7 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = 'OPTION'
+        request['service'] = Services.LEVELONE_OPTIONS.value
         request['command'] = 'SUBS'
         request['parameters']['keys'] = ','.join(symbols)
         request['parameters']['fields'] = ','.join(new_fields)
@@ -230,7 +232,7 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = 'LEVELONE_FUTURES'
+        request['service'] = Services.LEVELONE_FUTURES.value
         request['command'] = 'SUBS'
         request['parameters']['keys'] = ','.join(symbols)
         request['parameters']['fields'] = ','.join(new_fields)
@@ -279,7 +281,7 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = 'LEVELONE_FUTURES_OPTIONS'
+        request['service'] = Services.LEVELONE_FUTURES_OPTIONS.value
         request['command'] = 'SUBS'
         request['parameters']['keys'] = ','.join(symbols)
         request['parameters']['fields'] = ','.join(new_fields)
@@ -327,7 +329,7 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = 'LEVELONE_FOREX'
+        request['service'] = Services.LEVELONE_FOREX.value
         request['command'] = 'SUBS'
         request['parameters']['keys'] = ','.join(symbols)
         request['parameters']['fields'] = ','.join(new_fields)
@@ -351,58 +353,10 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = 'ACCT_ACTIVITY'
+        request['service'] = Services.ACCT_ACTIVITY.value
         request['command'] = 'SUBS'
         request['parameters']['keys'] = keys
         request['parameters']['fields'] = '0,1,2,3'
-
-        self.streaming_api_client.data_requests['requests'].append(request)
-
-    def news_headline(
-        self,
-        symbols: List[str],
-        fields: Union[List[str], List[int]]
-    ) -> None:
-        """Provides access to streaming News Articles.
-
-        ### Parameters
-        ----
-        symbols: List[str]
-            A List of symbols you wish to stream quotes for.
-
-        fields: Union[List[Enum], List[str], List[int]]
-            The fields you want returned from the Endpoint, can either
-            be the numeric representation or the key value representation.
-            For more info on fields, refer to the documentation.
-
-        ### Usage
-        ----
-            >>> streaming_api_service = client.streaming_api_client()
-            >>> streaming_services = streaming_api_service.services()
-            >>> streaming_services.news_headline(
-                symbols=['MSFT', 'GOOG', 'AAPL'],
-                fields=NewsHeadlines.All
-            )
-        """
-
-        if isinstance(fields, list):
-            new_fields = []
-            for field in fields:
-                if isinstance(field, int):
-                    field = str(int)
-                elif isinstance(field, Enum):
-                    field = str(field.value)
-                new_fields.append(field)
-
-        if isinstance(fields, Enum):
-            new_fields = fields.value
-
-        # Build the request
-        request = self._new_request_template()
-        request['service'] = 'NEWS_HEADLINE'
-        request['command'] = 'SUBS'
-        request['parameters']['keys'] = ','.join(symbols)
-        request['parameters']['fields'] = ','.join(new_fields)
 
         self.streaming_api_client.data_requests['requests'].append(request)
 
@@ -646,7 +600,7 @@ class StreamingServices():
 
         # Build the request
         request = self._new_request_template()
-        request['service'] = 'CHART_HISTORY_FUTURES'
+        request['service'] = Services.CHART_FUTURES.value
         request['command'] = 'GET'
         request['parameters']['symbol'] = ','.join(symbols)
         request['parameters']['frequency'] = frequency
