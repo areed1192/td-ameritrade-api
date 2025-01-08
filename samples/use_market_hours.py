@@ -37,9 +37,9 @@ market_hours_service = client.market_hours()
 # Grab the market hours
 pprint(
     market_hours_service.get_multiple_market_hours(
-        markets=["EQUITY", Markets.BOND], date=datetime.now()
+        markets=["equity", Markets.BOND], date=datetime.now()
     )
 )
 
 # Grab the hours for a specific market.
-pprint(market_hours_service.get_market_hours(market="EQUITY", date=datetime.now()))
+pprint(market_hours_service.get_market_hours(market="equity", date=datetime.now()))

@@ -35,11 +35,7 @@ client = CharlesSchwabClient(credentials=credentials)
 orders_service = client.orders()
 
 # Query all our orders for a specific account.
-pprint(
-    orders_service.get_orders_by_path(
-        account_id=account_number, order_status=OrderStatus.FILLED
-    )
-)
+pprint(orders_service.get_orders(order_status=OrderStatus.FILLED))
 
-# Query all our orders.
-pprint(orders_service.get_orders_by_query())
+# Query all our orders for a specific account.
+pprint(orders_service.get_order(account_id=account_number, order_id="1234567890"))

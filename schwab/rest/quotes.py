@@ -67,7 +67,7 @@ class Quotes:
 
     def get_quotes(
         self,
-        instruments=List[str],
+        symbol_ids=List[str],
         fields: List[str] | Enum = None,
         indicative: bool = False,
     ) -> dict:
@@ -75,7 +75,7 @@ class Quotes:
 
         ### Parameters
         ----
-        instruments: List[str]
+        symbol_ids: List[str]
             A list of different financial instruments.
 
         fields: List[str] | Enum, (optional, default=None)
@@ -95,12 +95,12 @@ class Quotes:
         ----
             >>> quote_service = client.quotes()
             >>> quote_service.get_quotes(
-                instruments=['AAPL','SQ']
+                symbol_ids=['AAPL','SQ']
             )
         """
 
         params = {
-            "symbol": ",".join(instruments),
+            "symbol": ",".join(symbol_ids),
             "indicative": indicative,
         }
 

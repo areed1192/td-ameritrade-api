@@ -68,5 +68,6 @@ price_history = price_history_service.get_price_history(
     start_date=1628260200000,
     end_date=1628260220000,
     extended_hours_needed=False,
+    previous_close_needed=False,
 )
 print(price_history["candles"])

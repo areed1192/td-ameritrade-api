@@ -6,6 +6,10 @@ from configparser import ConfigParser
 from schwab.client import CharlesSchwabClient
 from schwab.credentials import CharlesSchwabCredentials
 
+from schwab.utils.enums import IndexSymbol
+from schwab.utils.enums import Sort
+from schwab.utils.enums import Frequency
+
 # Initialize the Parser.
 config = ConfigParser()
 
@@ -31,5 +35,18 @@ client = CharlesSchwabClient(credentials=credentials)
 # Initialize the `Movers` service.
 movers_service = client.movers()
 
-# Grab the top 10 percentage up movers.
-pprint(movers_service.get_movers(index="$DJI", direction="up", change="percent"))
+# Grab the 30 minute movers for the Dow Jones.
+pprint(
+    movers_service.get_movers(
+        symbol_id="$DJI", sort=Sort.PERCENT_CHANGE_UP, frequency=Frequency.THIRTY
+    )
+)
+
+# Grab the 30 minute movers for the Dow Jones.
+pprint(
+    movers_service.get_movers(
+        symbol_id=IndexSymbol.DJI,
+        sort=Sort.PERCENT_CHANGE_UP,
+        frequency=Frequency.THIRTY,
+    )
+)

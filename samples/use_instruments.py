@@ -41,28 +41,28 @@ pprint(
 # Search for fundamental data.
 pprint(
     instruments_service.search_instruments(
-        symbol="MSFT", projection=Projections.Fundamental
+        symbol="MSFT", projection=Projections.FUNDAMENTAL
     )
 )
 
 # Search for a symbol using regular expression.
 pprint(
     instruments_service.search_instruments(
-        symbol="MS*", projection=Projections.SymbolRegex
+        symbol="MS*", projection=Projections.SYMBOL_REGEX
     )
 )
 
 # Search for companies using description key words.
 pprint(
     instruments_service.search_instruments(
-        symbol="Technology", projection=Projections.DescriptionSearch
+        symbol="Technology", projection=Projections.DESCRIPTION_SEARCH
     )
 )
 
 # Search for companies using description regular expression.
 pprint(
     instruments_service.search_instruments(
-        symbol="[Quantum Computing]", projection=Projections.DescriptionRegex
+        symbol="[Quantum Computing]", projection=Projections.DESCRIPTION_REGEX
     )
 )
 
