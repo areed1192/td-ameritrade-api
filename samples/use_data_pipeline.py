@@ -39,10 +39,10 @@ streaming_api_service = client.streaming_api_client()
 streaming_services = streaming_api_service.services()
 
 # Grab level one quotes.
-streaming_services.level_one_quotes(symbols=["MSFT"], fields=LevelOneQuotes.All)
+streaming_services.level_one_quotes(symbols=["MSFT"], fields=LevelOneQuotes.ALL)
 
 # Stream Level Two Quotes.
-streaming_services.level_two_quotes(symbols=["MSFT", "PINS"], fields=LevelTwoQuotes.All)
+streaming_services.level_two_quotes(symbols=["MSFT", "PINS"], fields=LevelTwoQuotes.ALL)
 
 
 async def data_pipeline():
@@ -90,7 +90,7 @@ async def data_pipeline():
 
             # Here I can grab data as it comes in and do something with it.
             if "key" in data_content[0]:
-                print("Here is my key: {}".format(data_content[0]["key"]))
+                print(f"Here is my key: {data_content[0]["key"]}")
 
             print("-" * 80)
             data_response_count += 1

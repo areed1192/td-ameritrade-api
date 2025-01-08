@@ -5,7 +5,6 @@ from configparser import ConfigParser
 from schwab.client import CharlesSchwabClient
 from schwab.credentials import CharlesSchwabCredentials
 
-
 from schwab.utils.enums import LevelOneQuotes
 from schwab.utils.enums import LevelOneOptions
 from schwab.utils.enums import LevelOneFutures
@@ -13,11 +12,6 @@ from schwab.utils.enums import LevelOneForex
 from schwab.utils.enums import LevelOneFuturesOptions
 from schwab.utils.enums import ChartServices
 from schwab.utils.enums import ChartEquity
-from schwab.utils.enums import TimesaleServices
-from schwab.utils.enums import Timesale
-from schwab.utils.enums import ActivesServices
-from schwab.utils.enums import ActivesVenues
-from schwab.utils.enums import ActivesDurations
 from schwab.utils.enums import ChartFuturesFrequencies
 from schwab.utils.enums import ChartFuturesPeriods
 from schwab.utils.enums import LevelTwoQuotes
@@ -57,9 +51,6 @@ streaming_api_service = client.streaming_api_client()
 # Let's see what services we have access to.
 streaming_services = streaming_api_service.services()
 
-# Set the Quality of Service.
-streaming_services.quality_of_service(qos_level="1")
-
 # Grab level one quotes.
 streaming_services.level_one_quotes(symbols=["MSFT"], fields=LevelOneQuotes.ALL)
 
@@ -86,20 +77,6 @@ streaming_services.chart(
     service=ChartServices.CHART_EQUITY,
     symbols=["MSFT", "GOOG", "AAPL"],
     fields=ChartEquity.ALL,
-)
-
-# Stream Time & Sales data.
-streaming_services.timesale(
-    service=TimesaleServices.TIMESALE_EQUITY,
-    symbols=["MSFT", "GOOG", "AAPL"],
-    fields=Timesale.ALL,
-)
-
-# Stream the Actives.
-streaming_services.actives(
-    service=ActivesServices.ACTIVES_NASDAQ,
-    venue=ActivesVenues.NASDAQ_EXCHANGE,
-    duration=ActivesDurations.ALL,
 )
 
 # Stream Historical Futures Prices.
