@@ -15,9 +15,7 @@ from schwab.rest.instruments import Instruments
 from schwab.rest.user_info import UserInfo
 from schwab.rest.price_history import PriceHistory
 from schwab.rest.options_chain import OptionsChain
-from schwab.rest.watchlists import Watchlists
 from schwab.rest.orders import Orders
-from schwab.rest.saved_orders import SavedOrders
 
 
 class TestClient(TestCase):
@@ -94,20 +92,10 @@ class TestClient(TestCase):
 
         self.assertIsInstance(self.client.options_chain(), OptionsChain)
 
-    def test_creates_instance_of_watchlists(self):
-        """Create an instance and make sure it's a `Watchlists` object."""
-
-        self.assertIsInstance(self.client.watchlists(), Watchlists)
-
     def test_creates_instance_of_orders(self):
         """Create an instance and make sure it's a `Orders` object."""
 
         self.assertIsInstance(self.client.orders(), Orders)
-
-    def test_creates_instance_of_saved_orders(self):
-        """Create an instance and make sure it's a `SavedOrders` object."""
-
-        self.assertIsInstance(self.client.saved_orders(), SavedOrders)
 
     def tearDown(self) -> None:
         """Teardown the `CharlesSchwabClient` Client."""

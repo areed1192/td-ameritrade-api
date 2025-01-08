@@ -61,13 +61,13 @@ class TestMarketHourService(TestCase):
         """Test grabbing market hours for a single market."""
 
         # Grab the market hours for the equity Markets.
-        response = self.service.get_market_hours(market="EQUITY", date=datetime.now())
+        response = self.service.get_market_hours(market="equity", date=datetime.now())
 
         self.assertEqual("equity", list(response.keys())[0])
 
         # Grab the market hours for the equity Markets, using Enums.
         response = self.service.get_market_hours(
-            market=Markets.Equity, date=datetime.now()
+            market=Markets.EQUITY, date=datetime.now()
         )
 
         self.assertEqual("equity", list(response.keys())[0])
@@ -77,14 +77,14 @@ class TestMarketHourService(TestCase):
 
         # Grab the market hours for the equity Markets.
         response = self.service.get_multiple_market_hours(
-            markets=["EQUITY", "BOND"], date=datetime.now()
+            markets=["equity", "bond"], date=datetime.now()
         )
 
         self.assertEqual("equity", list(response.keys())[0])
 
         # Grab the market hours for the equity Markets, using Enums.
         response = self.service.get_multiple_market_hours(
-            markets=[Markets.Equity, Markets.Bond], date=datetime.now()
+            markets=[Markets.EQUITY, Markets.BOND], date=datetime.now()
         )
 
         self.assertEqual("equity", list(response.keys())[0])

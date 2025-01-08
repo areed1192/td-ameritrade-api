@@ -54,13 +54,13 @@ class TestQuotesService(TestCase):
     def test_get_quote(self):
         """Test grabbing a single quote."""
 
-        response = self.service.get_quote(instrument="AAPL")
+        response = self.service.get_quote(symbol_id="AAPL")
         self.assertEqual("AAPL", list(response.keys())[0])
 
     def test_get_quotes(self):
         """Test grabbing multiple quotes."""
 
-        response = self.service.get_quotes(instruments=["AAPL", "SQ"])
+        response = self.service.get_quotes(symbol_ids=["AAPL", "SQ"])
         self.assertListEqual(["AAPL", "SQ"], list(response.keys()))
 
     def tearDown(self) -> None:

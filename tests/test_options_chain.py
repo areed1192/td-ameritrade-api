@@ -7,7 +7,7 @@ from configparser import ConfigParser
 from schwab.client import CharlesSchwabClient
 from schwab.credentials import CharlesSchwabCredentials
 
-from schwab.utils.enums import OptionaRange
+from schwab.utils.enums import OptionRange
 from schwab.utils.enums import OptionType
 from schwab.utils.enums import ContractType
 from schwab.utils.enums import ExpirationMonth
@@ -63,10 +63,10 @@ class TestOptionsChainService(TestCase):
         # Build a Query.
         option_chain_query = OptionChainQuery(
             symbol="MSFT",
-            contract_type=ContractType.Call,
-            expiration_month=ExpirationMonth.June,
-            option_type=OptionType.StandardContracts,
-            option_range=OptionaRange.InTheMoney,
+            contract_type=ContractType.CALL,
+            expiration_month=ExpirationMonth.JUNE,
+            option_type=OptionType.STANDARD_CONTRACTS,
+            option_range=OptionRange.IN_THE_MONEY,
             include_quotes=True,
         )
 
@@ -78,10 +78,10 @@ class TestOptionsChainService(TestCase):
         # Build a Query.
         option_chain_query = OptionChainQuery(
             symbol="MSFT",
-            contract_type=ContractType.Call,
-            expiration_month=ExpirationMonth.June,
-            option_type=OptionType.StandardContracts,
-            option_range=OptionaRange.InTheMoney,
+            contract_type=ContractType.CALL,
+            expiration_month=ExpirationMonth.JUNE,
+            option_type=OptionType.STANDARD_CONTRACTS,
+            option_range=OptionRange.IN_THE_MONEY,
             include_quotes=True,
         )
 

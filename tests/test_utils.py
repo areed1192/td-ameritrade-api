@@ -34,7 +34,7 @@ class TestOrderUtils(TestCase):
         self.assertDictEqual(d1=my_order_leg_instrument, d2=correct)
 
         my_order_leg_instrument = {
-            "asset_type": AssetType.Equity,
+            "asset_type": AssetType.EQUITY,
             "symbol": "SQ",
         }
 
@@ -67,8 +67,8 @@ class TestOrderUtils(TestCase):
         self.assertDictEqual(d1=my_order_leg, d2=correct)
 
         my_order_leg = {
-            "instruction": OrderInstructions.Buy,
-            "instrument": {"asset_type": AssetType.Equity, "symbol": "SQ"},
+            "instruction": OrderInstructions.BUY,
+            "instrument": {"asset_type": AssetType.EQUITY, "symbol": "SQ"},
             "quantity": 2,
         }
 
@@ -157,25 +157,25 @@ class TestOrderUtils(TestCase):
             "order_strategy_type": "TRIGGER",
             "order_leg_collection": [
                 {
-                    "instruction": OrderInstructions.Buy,
+                    "instruction": OrderInstructions.BUY,
                     "quantity": 10,
                     "instrument": {"symbol": "XYZ", "asset_type": "EQUITY"},
                 }
             ],
             "child_order_strategies": [
                 {
-                    "order_type": OrderType.Limit,
+                    "order_type": OrderType.LIMIT,
                     "session": "NORMAL",
                     "price": "42.03",
-                    "duration": DefaultOrderDuration.Day,
-                    "order_strategy_type": OrderStrategyType.Single,
+                    "duration": DefaultOrderDuration.DAY,
+                    "order_strategy_type": OrderStrategyType.SINGLE,
                     "order_leg_collection": [
                         {
-                            "instruction": OrderInstructions.Sell,
+                            "instruction": OrderInstructions.SELL,
                             "quantity": 10,
                             "instrument": {
                                 "symbol": "XYZ",
-                                "asset_type": AssetType.Equity,
+                                "asset_type": AssetType.EQUITY,
                             },
                         }
                     ],
