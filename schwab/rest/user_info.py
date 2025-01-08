@@ -1,13 +1,10 @@
 """Used to access the `UserInfo` Services and metadata."""
 
 from typing import List
-from typing import Union
 from schwab.session import CharlesSchwabSession
-from schwab.utils.user_preferences import UserPreferences
 
 
-class UserInfo():
-
+class UserInfo:
     """
     ## Overview
     ----
@@ -50,8 +47,8 @@ class UserInfo():
         """
 
         content = self.session.make_request(
-            method='get',
-            endpoint=f'accounts/{account_id}/preferences',
+            method="get",
+            endpoint=f"accounts/{account_id}/preferences",
         )
 
         return content
@@ -72,14 +69,12 @@ class UserInfo():
             )
         """
 
-        params = {
-            'accountIds': ','.join(account_ids)
-        }
+        params = {"accountIds": ",".join(account_ids)}
 
         content = self.session.make_request(
-            method='get',
-            endpoint='userprincipals/streamersubscriptionkeys',
-            params=params
+            method="get",
+            endpoint="userprincipals/streamersubscriptionkeys",
+            params=params,
         )
 
         return content
@@ -94,47 +89,11 @@ class UserInfo():
         """
 
         params = {
-            'fields': 'streamerSubscriptionKeys,streamerConnectionInfo,preferences,surrogateIds'
+            "fields": "streamerSubscriptionKeys,streamerConnectionInfo,preferences,surrogateIds"
         }
 
         content = self.session.make_request(
-            method='get',
-            endpoint='userprincipals',
-            params=params
-        )
-
-        return content
-
-    def update_user_preferences(
-        self,
-        account_id: str,
-        preferences: Union[dict, UserPreferences]
-    ) -> dict:
-        """Update preferences for a specific account.
-
-        ### Parameters
-        ----
-        account_id: str
-            The User's TD Ameritrade account ID.
-
-        preferences: Union[dict, UserPreferences]
-            The preferences you want changed, either as a python
-            dict or a `UserPreferences` object.
-
-        ### Usage
-        ----
-            >>> user_service = client.user_service()
-            >>> user_info_service.update_user_preferences(
-                preferences={
-                    'authTokenTimeout': 'EIGHT_HOURS'
-                }
-            )
-        """
-
-        content = self.session.make_request(
-            method='put',
-            endpoint=f'accounts/{account_id}/preferences',
-            json_payload=preferences
+            method="get", endpoint="userprincipals", params=params
         )
 
         return content

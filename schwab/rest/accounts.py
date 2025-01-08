@@ -26,13 +26,36 @@ class Accounts():
 
         self.session = session
 
+    def get_account_numbers(self) -> list:
+        """Gets a list of account numbers and their encrypted
+        values for a user.
+
+        ### Returns
+        ----
+        list :
+            A list of account numbers and their encrypted values
+            for a user.
+
+        ### Usage
+        ----
+            >>> account_services = client.accounts()
+            >>> account_services.get_account_numbers()
+        """
+
+        content = self.session.make_request(
+            method='get',
+            endpoint='accounts/accountNumbers'
+        )
+
+        return content
+
     def get_accounts(
         self,
         account_id: str = None,
-        include_orders: bool = True,
         include_positions: bool = True
     ) -> dict:
-        """Queries accounts for a user.
+        """Get linked account(s) balances and positions for the
+        logged in user.
 
         ### Overview
         ----
@@ -49,11 +72,6 @@ class Accounts():
             If no account ID is provided then all accounts will
             be queried.
 
-        include_orders: bool (optional, default=True)
-            If set to `True` then account orders will be returned
-            from the API. If set to `False` no orders will be
-            returned.
-
         include_positions: bool (optional, default=True)
             If set to `True` then account positions will be returned
             from the API. If set to `False` no positions will be
@@ -64,7 +82,6 @@ class Accounts():
             >>> account_services = client.accounts()
             >>> account_services.get_accounts(
                 account_id='123456789',
-                include_orders=True,
                 include_positions=True
             )
         """
@@ -75,9 +92,6 @@ class Accounts():
             endpoint = 'accounts'
         else:
             endpoint = f'accounts/{account_id}'
-
-        if include_orders is True:
-            fields.append('orders')
 
         if include_positions is True:
             fields.append('positions')
@@ -96,27 +110,17 @@ class Accounts():
     def get_transactions(
         self,
         account_id: str,
-        transaction_type: Union[str, Enum] = None,
-        symbol: str = None,
         start_date: Union[str, datetime] = None,
-        end_date: Union[str, datetime] = None
+        end_date: Union[str, datetime] = None,
+        symbol: str = None,
+        transaction_type: Union[str, Enum] = None
     ) -> dict:
         """Queries the transactions for an account.
 
         ### Parameters
         ----
         account_id: str
-            The account number you want to query transactions
-            for.
-
-        transaction_type: Union[str, Enum] (optional, default=None)
-            The type of transaction you want to query. For more info,
-            review the documentation for a full list of transaction
-            types, or review the `schwab.enums` file.
-
-        symbol: str (optional, default=None)
-            Filters the transaction to the ones that only include
-            the symbol provided.
+            The encrypted ID of the account.
 
         start_date: Union[str, datetime] (optional, default=None)
             Only transactions after the start date will be returned.
@@ -127,6 +131,16 @@ class Accounts():
             Only transactions before the end date will be returned.
             Note: The maximum date range is one year. Valid ISO-8601
             formats are: yyyy-MM-dd.
+
+        symbol: str (optional, default=None)
+            Filters the transaction to the ones that only include
+            the symbol provided. If there is any special character
+            in the symbol, please send th encoded value.
+
+        transaction_type: Union[str, Enum] (optional, default=None)
+            The type of transaction you want to query. For more info,
+            review the documentation for a full list of transaction
+            types, or review the `schwab.enums` file.
 
         ### Usage
         ----
@@ -145,6 +159,10 @@ class Accounts():
 
         if isinstance(end_date, datetime):
             end_date = end_date.date().isoformat()
+
+        # Check if symbol has special characters and encode them.
+        if symbol is not None:
+            symbol = symbol.encode('utf-8').decode('unicode_escape')
 
         params = {
             'type': transaction_type,
@@ -173,8 +191,7 @@ class Accounts():
         ### Parameters
         ----
         account_id: str
-            The account number you want to query transactions
-            for.
+            The encrypted ID of the account.
 
         transaction_id: str
             If set to `True` then account orders will be returned
