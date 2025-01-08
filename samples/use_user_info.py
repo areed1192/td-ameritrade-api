@@ -73,16 +73,16 @@ user_info_service.update_user_preferences(
 
 # Method 2, Update the User Preferences.
 my_preferences = {
-    "default_equity_order_leg_instruction": DefaultOrderLegInstruction.Buy,
-    "default_equity_order_type": DefaultOrderType.Market,
-    "default_equity_order_price_link_type": DefaultOrderPriceLinkType.Percent,
-    "default_equity_order_duration": DefaultOrderDuration.NoneSpecified,
-    "default_equity_order_market_session": DefaultOrderMarketSession.Normal,
-    "mutual_fund_tax_lot_method": TaxLotMethod.Fifo,
-    "option_tax_lot_method": TaxLotMethod.Fifo,
-    "equity_tax_lot_method": TaxLotMethod.Fifo,
-    "default_advanced_tool_launch": DefaultAdvancedToolLaunch.Ta,
-    "auth_token_timeout": AuthTokenTimeout.EightHours,
+    "default_equity_order_leg_instruction": DefaultOrderLegInstruction.BUY,
+    "default_equity_order_type": DefaultOrderType.MARKET,
+    "default_equity_order_price_link_type": DefaultOrderPriceLinkType.PERCENT,
+    "default_equity_order_duration": DefaultOrderDuration.NONE_SPECIFIED,
+    "default_equity_order_market_session": DefaultOrderMarketSession.NORMAL,
+    "mutual_fund_tax_lot_method": TaxLotMethod.FIFO,
+    "option_tax_lot_method": TaxLotMethod.FIFO,
+    "equity_tax_lot_method": TaxLotMethod.FIFO,
+    "default_advanced_tool_launch": DefaultAdvancedToolLaunch.TA,
+    "auth_token_timeout": AuthTokenTimeout.EIGHT_HOURS,
 }
 
 # Define a new data class that will store our preferences.

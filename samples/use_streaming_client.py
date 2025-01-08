@@ -11,7 +11,6 @@ from schwab.utils.enums import LevelOneOptions
 from schwab.utils.enums import LevelOneFutures
 from schwab.utils.enums import LevelOneForex
 from schwab.utils.enums import LevelOneFuturesOptions
-from schwab.utils.enums import NewsHeadlines
 from schwab.utils.enums import ChartServices
 from schwab.utils.enums import ChartEquity
 from schwab.utils.enums import TimesaleServices
@@ -62,65 +61,60 @@ streaming_services = streaming_api_service.services()
 streaming_services.quality_of_service(qos_level="1")
 
 # Grab level one quotes.
-streaming_services.level_one_quotes(symbols=["MSFT"], fields=LevelOneQuotes.All)
+streaming_services.level_one_quotes(symbols=["MSFT"], fields=LevelOneQuotes.ALL)
 
 # Grab level one options quotes.
 streaming_services.level_one_options(
-    symbols=["MSFT_043021C120"], fields=LevelOneOptions.All
+    symbols=["MSFT_043021C120"], fields=LevelOneOptions.ALL
 )
 
 # Grab level one futures quotes.
 streaming_services.level_one_futures(
-    symbols=["/ESM4", "/ES"], fields=LevelOneFutures.All
+    symbols=["/ESM4", "/ES"], fields=LevelOneFutures.ALL
 )
 
 # Grab level one forex quotes.
-streaming_services.level_one_forex(symbols=["EUR/USD"], fields=LevelOneForex.All)
-
-# Stream News Headlines.
-streaming_services.news_headline(
-    symbols=["MSFT", "GOOG", "AAPL"], fields=NewsHeadlines.All
-)
+streaming_services.level_one_forex(symbols=["EUR/USD"], fields=LevelOneForex.ALL)
 
 # Stream Level One Futures Options.
 streaming_services.level_one_futures_options(
-    symbols=["./CLM21P625"], fields=LevelOneFuturesOptions.All
+    symbols=["./CLM21P625"], fields=LevelOneFuturesOptions.ALL
 )
 
 # Stream equity bars.
 streaming_services.chart(
-    service=ChartServices.ChartEquity,
+    service=ChartServices.CHART_EQUITY,
     symbols=["MSFT", "GOOG", "AAPL"],
-    fields=ChartEquity.All,
+    fields=ChartEquity.ALL,
 )
 
 # Stream Time & Sales data.
 streaming_services.timesale(
-    service=TimesaleServices.TimesaleEquity,
+    service=TimesaleServices.TIMESALE_EQUITY,
     symbols=["MSFT", "GOOG", "AAPL"],
-    fields=Timesale.All,
+    fields=Timesale.ALL,
 )
 
 # Stream the Actives.
 streaming_services.actives(
-    service=ActivesServices.ActivesNasdaq,
-    venue=ActivesVenues.NasdaqExchange,
-    duration=ActivesDurations.All,
+    service=ActivesServices.ACTIVES_NASDAQ,
+    venue=ActivesVenues.NASDAQ_EXCHANGE,
+    duration=ActivesDurations.ALL,
 )
 
 # Stream Historical Futures Prices.
 streaming_services.chart_history_futures(
     symbols=["/ES", "/CL"],
-    frequency=ChartFuturesFrequencies.OneMinute,
-    period=ChartFuturesPeriods.OneDay,
+    frequency=ChartFuturesFrequencies.ONE_MINUTE,
+    period=ChartFuturesPeriods.ONE_DAY,
 )
 
 # Stream Level Two Quotes.
-streaming_services.level_two_quotes(symbols=["MSFT", "PINS"], fields=LevelTwoQuotes.All)
+streaming_services.level_two_quotes(symbols=["MSFT", "PINS"], fields=LevelTwoQuotes.ALL)
 
 # Stream Level Two Quotes.
 streaming_services.level_two_options(
-    symbols=["MSFT_043021C120"], fields=LevelTwoOptions.All
+    symbols=["MSFT_043021C120"], fields=LevelTwoOptions.ALL
 )
 
 # Start Streaming.

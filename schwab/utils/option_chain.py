@@ -1,3 +1,5 @@
+"""Utility functions for the Option Chain service."""
+
 from dataclasses import dataclass
 from dataclasses import fields
 from typing import Union

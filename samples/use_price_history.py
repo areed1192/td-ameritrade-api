@@ -38,9 +38,9 @@ price_history_service = client.price_history()
 # Grab the Price History, with enums.
 price_history = price_history_service.get_price_history(
     symbol="MSFT",
-    frequency_type=FrequencyType.Minute,
+    frequency_type=FrequencyType.MINUTE,
     frequency=1,
-    period_type=PeriodType.Day,
+    period_type=PeriodType.DAY,
     period=10,
     extended_hours_needed=False,
 )
@@ -63,7 +63,7 @@ start_date = datetime.now() - timedelta(seconds=60)
 # Grab the Price History, custom time frame.
 price_history = price_history_service.get_price_history(
     symbol="MSFT",
-    frequency_type=FrequencyType.Minute,
+    frequency_type=FrequencyType.MINUTE,
     frequency=1,
     start_date=1628260200000,
     end_date=1628260220000,

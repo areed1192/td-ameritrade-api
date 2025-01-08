@@ -47,7 +47,7 @@ pprint(accounts_service.get_accounts(include_orders=True, include_positions=True
 # Grab all the transactions for a specific account.
 pprint(
     accounts_service.get_transactions(
-        account_id=account_number, transaction_type=TransactionTypes.All
+        account_id=account_number, transaction_type=TransactionTypes.ALL
     )
 )
 

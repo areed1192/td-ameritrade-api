@@ -37,7 +37,7 @@ orders_service = client.orders()
 # Query all our orders for a specific account.
 pprint(
     orders_service.get_orders_by_path(
-        account_id=account_number, order_status=OrderStatus.Filled
+        account_id=account_number, order_status=OrderStatus.FILLED
     )
 )
 
