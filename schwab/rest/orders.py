@@ -9,8 +9,7 @@ from schwab.session import CharlesSchwabSession
 from schwab.utils.orders import Order
 
 
-class Orders():
-
+class Orders:
     """
     ## Overview
     ----
@@ -30,24 +29,93 @@ class Orders():
 
         self.session = session
 
-    def get_orders_by_path(
+    def get_orders(
         self,
-        account_id: str,
-        max_results: int = None,
+        max_results: int = 3000,
         from_entered_time: Union[datetime, str] = None,
         to_entered_time: Union[datetime, str] = None,
-        order_status: Union[Enum, str] = None
+        order_status: Union[Enum, str] = None,
+    ) -> dict:
+        """Get all orders for all accounts
+
+        ### Parameters
+        ----
+        max_results: int (optional, Default=3000)
+            The max number of orders to retrieve. Default is 3000.
+
+        from_entered_time: Union[datetime, str] (optional, Default=None)
+            Specifies that no orders entered before this time should be
+            returned. Valid ISO-8601 format yyyy-MM-dd Date must be within
+            60 days from today's date. If argument set then 'to_entered_time'
+            must also be set.
+
+        to_entered_time: Union[datetime, str] (optional, Default=None)
+            Specifies that no orders entered after this time should be
+            returned. Valid ISO-8601 format yyyy-MM-dd Date must be within
+            60 days from today's date. If argument set then 'from_entered_time'
+            must also be set.
+
+        status: Union[datetime, Enum] (optional, Default=None)
+            Specifies that only orders of this status should be returned.
+
+        ### Usage
+        ----
+            >>> orders_service = client.orders()
+            >>> orders_service.get_orders(
+                order_status=OrderStatus.FILLED
+            )
+        """
+
+        # Grab the From Entered Time.
+        if isinstance(from_entered_time, datetime):
+            from_entered_time = from_entered_time.date().isoformat()
+        elif isinstance(from_entered_time, date):
+            from_entered_time = from_entered_time.isoformat()
+
+        # Grab the To Entered Time.
+        if isinstance(to_entered_time, datetime):
+            to_entered_time = to_entered_time.date().isoformat()
+        elif isinstance(to_entered_time, date):
+            to_entered_time = to_entered_time.isoformat()
+
+        # Grab the Order Status.
+        if isinstance(order_status, Enum):
+            order_status = order_status.value
+
+        # Define the payload.
+        params = {
+            "maxResults": max_results,
+            "fromEnteredTime": from_entered_time,
+            "toEnteredTime": to_entered_time,
+            "status": order_status,
+        }
+
+        # Define the endpoint.
+        endpoint = "orders"
+
+        content = self.session.make_request(
+            method="get", endpoint=endpoint, params=params
+        )
+
+        return content
+
+    def get_orders_by_account(
+        self,
+        account_id: str,
+        max_results: int = 3000,
+        from_entered_time: Union[datetime, str] = None,
+        to_entered_time: Union[datetime, str] = None,
+        order_status: Union[Enum, str] = None,
     ) -> dict:
         """Returns the orders for a specific account.
 
         ### Parameters
         ----
         account_id: str
-            The account number that you want to
-            query for orders.
+            The encrypted ID of the account.
 
-        max_results: int (optional, Default=None)
-            The maximum number of orders to retrieve.
+        max_results: int (optional, Default=3000)
+            The max number of orders to retrieve. Default is 3000.
 
         from_entered_time: Union[datetime, str] (optional, Default=None)
             Specifies that no orders entered before this time should be
@@ -69,7 +137,7 @@ class Orders():
             >>> orders_service = client.orders()
             >>> orders_service.get_orders_by_path(
                 account_id=account_number,
-                order_status=OrderStatus.Filled
+                order_status=OrderStatus.FILLED
             )
         """
 
@@ -94,32 +162,25 @@ class Orders():
             "maxResults": max_results,
             "fromEnteredTime": from_entered_time,
             "toEnteredTime": to_entered_time,
-            "status": order_status
+            "status": order_status,
         }
 
         # Define the endpoint.
-        endpoint = f'accounts/{account_id}/orders'
+        endpoint = f"accounts/{account_id}/orders"
 
         content = self.session.make_request(
-            method='get',
-            endpoint=endpoint,
-            params=params
+            method="get", endpoint=endpoint, params=params
         )
 
         return content
 
-    def get_order(
-        self,
-        account_id: str,
-        order_id: str
-    ) -> dict:
-        """Get a specific order for a specific account.
+    def get_order(self, account_id: str, order_id: str) -> dict:
+        """Get a specific order by it's id, for a specific account.
 
         ### Parameters
         ----
         account_id: str
-            The account number that you want to
-            query for orders.
+            The encrypted ID of the account.
 
         order_id: str
             The order ID you want to query.
@@ -128,115 +189,31 @@ class Orders():
         ----
             >>> orders_service = client.orders()
             >>> orders_service.get_order(
-                account_id=account_number,
+                account_id='123456789',
                 order_id='12345678;
             )
         """
 
         # Define the endpoint.
-        endpoint = f'accounts/{account_id}/orders/{order_id}'
+        endpoint = f"accounts/{account_id}/orders/{order_id}"
 
-        content = self.session.make_request(
-            method='get',
-            endpoint=endpoint
-        )
-
-        return content
-
-    def get_orders_by_query(
-        self,
-        account_id: str = None,
-        max_results: int = None,
-        from_entered_time: Union[datetime, str] = None,
-        to_entered_time: Union[datetime, str] = None,
-        order_status: Union[Enum, str] = None
-    ) -> dict:
-        """Returns the orders for a specific account.
-
-        ### Parameters
-        ----
-        account_id: str (optional, Default=None)
-            The account number that you want to
-            query for orders.
-
-        max_results: int (optional, Default=None)
-            The maximum number of orders to retrieve.
-
-        from_entered_time: Union[datetime, str] (optional, Default=None)
-            Specifies that no orders entered before this time should be
-            returned. Valid ISO-8601 format yyyy-MM-dd Date must be within
-            60 days from today's date. If argument set then 'to_entered_time'
-            must also be set.
-
-        to_entered_time: Union[datetime, str] (optional, Default=None)
-            Specifies that no orders entered after this time should be
-            returned. Valid ISO-8601 format yyyy-MM-dd Date must be within
-            60 days from today's date. If argument set then 'from_entered_time'
-            must also be set.
-
-        status: Union[datetime, Enum] (optional, Default=None)
-            Specifies that only orders of this status should be returned.
-
-        ### Usage
-        ----
-            >>> orders_service = client.orders()
-            >>> orders_service.get_orders_by_query()
-        """
-
-        # Grab the From Entered Time.
-        if isinstance(from_entered_time, datetime):
-            from_entered_time = from_entered_time.date().isoformat()
-        elif isinstance(from_entered_time, date):
-            from_entered_time = from_entered_time.isoformat()
-
-        # Grab the To Entered Time.
-        if isinstance(to_entered_time, datetime):
-            to_entered_time = to_entered_time.date().isoformat()
-        elif isinstance(to_entered_time, date):
-            to_entered_time = to_entered_time.isoformat()
-
-        # Grab the Order Status.
-        if isinstance(order_status, Enum):
-            order_status = order_status.value
-
-        # Define the payload.
-        params = {
-            "accountId": account_id,
-            "maxResults": max_results,
-            "fromEnteredTime": from_entered_time,
-            "toEnteredTime": to_entered_time,
-            "status": order_status
-        }
-
-        # Define the endpoint.
-        endpoint = 'orders'
-
-        content = self.session.make_request(
-            method='get',
-            endpoint=endpoint,
-            params=params
-        )
+        content = self.session.make_request(method="get", endpoint=endpoint)
 
         return content
 
     def place_order(
-        self,
-        account_id: str,
-        order_object: Order = None,
-        order_dict: dict = None
+        self, account_id: str, order_object: Order = None, order_dict: dict = None
     ) -> dict:
-        """Place an order for a specific account. Order throttle
-        limits may apply.
+        """Place an order for a specific account.
 
         ### Parameters
         ----
-        account_id: str (optional, Default=None)
-            The account number that you want to
-            place the order for.
+        account_id: str
+            The encrypted ID of the account.
 
         order_object: Order (optional, Default=None)
             Represents an `Order` object that can be used to
-            submit a new order to the TD Ameritrade API. This
+            submit a new order to the Charles Schwab API. This
             is the preferred method as additional checks are
             done to make sure the order is valid.
 
@@ -256,7 +233,7 @@ class Orders():
 
         if not order_object and not order_dict:
             raise ValueError(
-                'You must provide either an Order object or dictionary to place orders.'
+                "You must provide either an Order object or dictionary to place orders."
             )
 
         if order_object:
@@ -265,12 +242,10 @@ class Orders():
             order = order_dict
 
         # Define the endpoint.
-        endpoint = f'accounts/{account_id}/orders'
+        endpoint = f"accounts/{account_id}/orders"
 
         content = self.session.make_request(
-            method='post',
-            endpoint=endpoint,
-            json_payload=order
+            method="post", endpoint=endpoint, json_payload=order
         )
 
         return content
@@ -280,7 +255,7 @@ class Orders():
         account_id: str,
         order_id: str,
         order_object: Order = None,
-        order_dict: dict = None
+        order_dict: dict = None,
     ) -> dict:
         """Replace an existing order for an account.
 
@@ -288,20 +263,19 @@ class Orders():
         ----
         The existing order will be replaced by the new order. Once
         replaced, the old order will be canceled and a new order
-        will be created. Order throttle limits may apply.
+        will be created.
 
         ### Parameters
         ----
-        account_id: str (optional, Default=None)
-            The account number that you want to
-            place the order for.
+        account_id: str
+            The encrypted ID of the account
 
-        order_id: str (optional, Default=None)
-            The order you want to be replaced.
+        order_id: str
+            The ID of the order being replaced.
 
         order_object: Order (optional, Default=None)
             Represents an `Order` object that can be used to
-            submit a replacing order to the TD Ameritrade API.
+            submit a replacing order to the Charles Schwab API.
             This is the preferred method as additional checks
             are done to make sure the order is valid.
 
@@ -322,7 +296,7 @@ class Orders():
 
         if not order_object and not order_dict:
             raise ValueError(
-                'You must provide either an Order object or dictionary to replace orders.'
+                "You must provide either an Order object or dictionary to replace orders."
             )
 
         if order_object:
@@ -331,32 +305,24 @@ class Orders():
             order = order_dict
 
         # Define the endpoint.
-        endpoint = f'accounts/{account_id}/orders/{order_id}'
+        endpoint = f"accounts/{account_id}/orders/{order_id}"
 
         content = self.session.make_request(
-            method='put',
-            endpoint=endpoint,
-            json_payload=order
+            method="put", endpoint=endpoint, json_payload=order
         )
 
         return content
 
-    def cancel_order(
-        self,
-        account_id: str,
-        order_id: str
-    ) -> dict:
-        """Cancels an order for a specific account. Order throttle
-        limits may apply.
+    def cancel_order(self, account_id: str, order_id: str) -> dict:
+        """Cancels a specific order for a specific account.
 
         ### Parameters
         ----
-        account_id: str (optional, Default=None)
-            The account number that contains the order
-            you want to cancel
+        account_id: str
+            The encrypted ID of the account.
 
-        order_id: str (optional, Default=None)
-            The order ID of the order you want to cancel.
+        order_id: str
+            The ID of the order being cancelled.
 
         ### Usage
         ----
@@ -368,11 +334,8 @@ class Orders():
         """
 
         # Define the endpoint.
-        endpoint = f'accounts/{account_id}/orders/{order_id}'
+        endpoint = f"accounts/{account_id}/orders/{order_id}"
 
-        content = self.session.make_request(
-            method='delete',
-            endpoint=endpoint
-        )
+        content = self.session.make_request(method="delete", endpoint=endpoint)
 
         return content

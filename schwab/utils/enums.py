@@ -58,6 +58,7 @@ class TransactionTypes(Enum):
     MONEY_MARKET = "MONEY_MARKET"
     SMA_ADJUSTMENT = "SMA_ADJUSTMENT"
 
+
 class Markets(Enum):
     """Represents the different markets you can request
     hours for the `MarketHours` service.
@@ -161,7 +162,11 @@ class DefaultOrderDuration(Enum):
     DAY = "DAY"
     GOOD_TILL_CANCEL = "GOOD_TILL_CANCEL"
     FILL_OR_KILL = "FILL_OR_KILL"
-    NONE_SPECIFIED = "NONE"
+    IMMEDIATE_OR_CANCEL = "IMMEDIATE_OR_CANCEL"
+    END_OF_WEEK = "END_OF_WEEK"
+    END_OF_MONTH = "END_OF_MONTH"
+    NEXT_END_OF_MONTH = "NEXT_END_OF_MONTH"
+    UNKNOWN = "UNKNOWN"
 
 
 class DefaultOrderMarketSession(Enum):
@@ -179,7 +184,6 @@ class DefaultOrderMarketSession(Enum):
     PM = "PM"
     NORMAL = "NORMAL"
     SEAMLESS = "SEAMLESS"
-    NONE_SPECIFIED = "NONE"
 
 
 class TaxLotMethod(Enum):
@@ -359,6 +363,40 @@ class ContractType(Enum):
     PUT = "PUT"
 
 
+class SettlementType(Enum):
+    """Represents the different option settlement types
+    when querying the `SettlementType` service.
+
+    ### Usage
+    ----
+        >>> from schwab.enums import SettlementType
+        >>> SettlementType.CASH.Value
+        'CASH'
+    """
+
+    REGULAR = "REGULAR"
+    NEXT_DAY = "NEXT_DAY"
+    UNKNOWN = "UNKNOWN"
+    CASH = "CASH"
+
+
+class ApiRuleAction(Enum):
+    """Represents the different API rule actions.
+
+    ### Usage
+    ----
+        >>> from schwab.enums import ApiRuleAction
+        >>> ApiRuleAction.ACCEPT.Value
+        'ACCEPT'
+    """
+
+    ACCEPT = "ACCEPT"
+    ALERT = "ALERT"
+    REJECT = "REJECT"
+    REVIEW = "REVIEW"
+    UNKNOWN = "UNKNOWN"
+
+
 class OptionType(Enum):
     """Represents the different option types
     when querying the `OptionType` service.
@@ -388,6 +426,7 @@ class OrderStatus(Enum):
 
     AWAITING_PARENT_ORDER = "AWAITING_PARENT_ORDER"
     AWAITING_CONDITION = "AWAITING_CONDITION"
+    AWAITING_STOP_CONDITION = "AWAITING_STOP_CONDITION"
     AWAITING_MANUAL_REVIEW = "AWAITING_MANUAL_REVIEW"
     ACCEPTED = "ACCEPTED"
     AWAITING_UR_OUT = "AWAITING_UR_OUT"
@@ -401,6 +440,11 @@ class OrderStatus(Enum):
     REPLACED = "REPLACED"
     FILLED = "FILLED"
     EXPIRED = "EXPIRED"
+    NEW = "NEW"
+    AWAITING_RELASE_TIME = "AWAITING_RELEASE_TIME"
+    PENDING_ACKNOWLEDGEMENT = "PENDING_ACKNOWLEDGEMENT"
+    PENDING_RECALL = "PENDING_RECALL"
+    UNKNOWN = "UNKNOWN"
 
 
 class OrderStrategyType(Enum):
@@ -415,6 +459,12 @@ class OrderStrategyType(Enum):
     """
 
     SINGLE = "SINGLE"
+    CANCEL = "CANCEL"
+    RECALL = "RECALL"
+    PAIR = "PAIR"
+    FLATTEN = "FLATTEN"
+    TWO_DAY_SWAP = "TWO_DAY_SWAP"
+    BLAST_ALL = "BLAST_ALL"
     OCO = "OCO"
     TRIGGER = "TRIGGER"
 
@@ -433,6 +483,8 @@ class QuantityType(Enum):
     ALL_SHARES = "ALL_SHARES"
     DOLLARS = "DOLLARS"
     SHARES = "SHARES"
+    PERCENTAGE = "PERCENTAGE"
+    UNKNOWN = "UNKNOWN"
 
 
 class AssetType(Enum):
@@ -449,10 +501,14 @@ class AssetType(Enum):
     EQUITY = "EQUITY"
     OPTION = "OPTION"
     INDEX = "INDEX"
+    FUTURE = "FUTURE"
+    FOREX = "FOREX"
     MUTUAL_FUND = "MUTUAL_FUND"
     CASH_EQUIVALENT = "CASH_EQUIVALENT"
     FIXED_INCOME = "FIXED_INCOME"
+    PRODUCT = "PRODUCT"
     CURRENCY = "CURRENCY"
+    COLLECTIVE_INVESTMENT = "COLLECTIVE_INVESTMENT"
 
 
 class ComplexOrderStrategyType(Enum):
@@ -485,6 +541,7 @@ class ComplexOrderStrategyType(Enum):
     UNBALANCED_CONDOR = "UNBALANCED_CONDOR"
     UNBALANCED_IRON_CONDOR = "UNBALANCED_IRON_CONDOR"
     UNBALANCED_VERTICAL_ROLL = "UNBALANCED_VERTICAL_ROLL"
+    MUTUAL_FUND_SWAP = "MUTUAL_FUND_SWAP"
     CUSTOM = "CUSTOM"
 
 
@@ -508,6 +565,7 @@ class OrderInstructions(Enum):
     SELL_TO_OPEN = "SELL_TO_OPEN"
     SELL_TO_CLOSE = "SELL_TO_CLOSE"
     EXCHANGE = "EXCHANGE"
+    SELL_SHORT_EXEMPT = "SELL_SHORT_EXEMPT"
 
 
 class RequestedDestination(Enum):
@@ -645,12 +703,16 @@ class OrderType(Enum):
     STOP = "STOP"
     STOP_LIMIT = "STOP_LIMIT"
     TRAILING_STOP = "TRAILING_STOP"
+    CABINET = "CABINET"
+    NON_MARKETABLE = "NON_MARKETABLE"
     MARKET_ON_CLOSE = "MARKET_ON_CLOSE"
     EXERCISE = "EXERCISE"
     TRAILING_STOP_LIMIT = "TRAILING_STOP_LIMIT"
     NET_DEBIT = "NET_DEBIT"
     NET_CREDIT = "NET_CREDIT"
     NET_ZERO = "NET_ZERO"
+    LIMIT_ON_CLOSE = "LIMIT_ON_CLOSE"
+    UNKNOWN = "UNKNOWN"
 
 
 class PositionEffect(Enum):
@@ -686,6 +748,7 @@ class OrderTaxLotMethod(Enum):
     LOW_COST = "LOW_COST"
     AVERAGE_COST = "AVERAGE_COST"
     SPECIFIC_LOT = "SPECIFIC_LOT"
+    LOSS_HARVESTER = "LOSS_HARVESTER"
 
 
 class SpecialInstructions(Enum):
@@ -702,6 +765,44 @@ class SpecialInstructions(Enum):
     ALL_OR_NONE = "ALL_OR_NONE"
     DO_NOT_REDUCE = "DO_NOT_REDUCE"
     ALL_OR_NONE_DO_NOT_REDUCE = "ALL_OR_NONE_DO_NOT_REDUCE"
+
+
+class FeeType(Enum):
+    """Represents the different fee types
+    when constructing an `Order` object.
+
+    ### Usage
+    ----
+        >>> from schwab.enums import FeeType
+        >>> FeeType.COMMISSION.value
+        'COMMISSION'
+    """
+
+    COMMISSION = "COMMISSION"
+    SEC_FEE = "SEC_FEE"
+    STR_FEE = "STR_FEE"
+    R_FEE = "R_FEE"
+    CDSC_FEE = "CDSC_FEE"
+    OPT_REG_FEE = "OPT_REG_FEE"
+    ADDITIONAL_FEE = "ADDITIONAL_FEE"
+    MISCELLANEOUS_FEE = "MISCELLANEOUS_FEE"
+    FTT = "FTT"
+    FUTURES_CLEARING_FEE = "FUTURES_CLEARING_FEE"
+    FUTURES_DESK_OFFICE_FEE = "FUTURES_DESK_OFFICE_FEE"
+    FUTURES_EXCHANGE_FEE = "FUTURES_EXCHANGE_FEE"
+    FUTURES_GLOBEX_FEE = "FUTURES_GLOBEX_FEE"
+    FUTURES_NFA_FEE = "FUTURES_NFA_FEE"
+    FUTURES_PIT_BROKERAGE_FEE = "FUTURES_PIT_BROKERAGE_FEE"
+    FUTURES_TRANSACTION_FEE = "FUTURES_TRANSACTION_FEE"
+    LOW_PROCEEDS_COMMISSION = "LOW_PROCEEDS_COMMISSION"
+    BASE_CHARGE = "BASE_CHARGE"
+    GENERAL_CHARGE = "GENERAL_CHARGE"
+    GST_FEE = "GST_FEE"
+    TAF_FEE = "TAF_FEE"
+    INDEX_OPTION_FEE = "INDEX_OPTION_FEE"
+    TEFRA_TAX = "TEFRA_TAX"
+    STATE_TAX = "STATE_TAX"
+    UNKNOWN = "UNKNOWN"
 
 
 class LevelOneQuotes(Enum):
@@ -1246,6 +1347,7 @@ class StreamingServices(Enum):
     SCREENER_EQUITY = "SCREENER_EQUITY"
     SCREENER_OPTION = "SCREENER_OPTION"
     ACCT_ACTIVITY = "ACCT_ACTIVITY"
+
 
 class StreamingServiceCommands(Enum):
     """Represents the different commands for the streaming
