@@ -199,4 +199,4 @@ class CharlesSchwabClient():
             >>> streaming_api_service = client.streaming_api_client()
         """
 
-        return StreamingApiClient(session=self.session)
+        return StreamingApiClient(session=self.session, credentials=self.credentials)

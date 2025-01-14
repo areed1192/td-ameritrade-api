@@ -2,17 +2,17 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python: Run TD OAuth",
+      "name": "Python: Run Schwab OAuth",
       "type": "debugpy",
       "request": "launch",
-      "program": "${cwd}/samples/use_quotes.py",
+      "program": "${cwd}/samples/use_oauth.py",
       "console": "integratedTerminal",
       "autoReload": {
         "enable": true
       }
     },
     {
-      "name": "Python: Run TD Saved Orders",
+      "name": "Python: Run Schwab Saved Orders",
       "type": "debugpy",
       "request": "launch",
       "program": "${cwd}/samples/use_saved_orders.py",

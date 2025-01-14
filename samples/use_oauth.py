@@ -28,3 +28,14 @@ credentials = CharlesSchwabCredentials(
 print(credentials.client_id)
 print(credentials.client_secret)
 print(credentials.redirect_uri)
+
+# Initialize our `CharlesSchwabClient` object.
+client = CharlesSchwabClient(credentials)
+
+accounts_service = client.accounts()
+
+# Get the accounts.
+accounts = accounts_service.get_accounts(include_positions=False)
+
+# Print the accounts.
+pprint(accounts)

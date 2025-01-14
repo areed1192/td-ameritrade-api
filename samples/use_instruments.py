@@ -28,10 +28,10 @@ credentials = CharlesSchwabCredentials(
 )
 
 # Initalize the `CharlesSchwabClient`
-td_client = CharlesSchwabClient(credentials=credentials)
+client = CharlesSchwabClient(credentials=credentials)
 
 # Initialize the `Instruments` service.
-instruments_service = td_client.instruments()
+instruments_service = client.instruments()
 
 # Search for a symbol.
 pprint(

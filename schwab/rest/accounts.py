@@ -95,9 +95,11 @@ class Accounts():
 
         if include_positions is True:
             fields.append('positions')
-        params = {
-            'fields': ','.join(fields),
-        }
+            params = {
+                'fields': ','.join(fields),
+            }
+        else:
+            params = None
 
         content = self.session.make_request(
             method='get',

@@ -14,8 +14,7 @@ from base64 import b64encode
 import requests
 
 
-class CharlesSchwabCredentials():
-
+class CharlesSchwabCredentials:
     """
     ### Overview
     ----
@@ -30,7 +29,7 @@ class CharlesSchwabCredentials():
         client_secret: str,
         redirect_uri: str,
         credential_dict: dict = None,
-        credential_file: Union[str, pathlib.Path] = None
+        credential_file: Union[str, pathlib.Path] = None,
     ) -> None:
         """
         Initializes the `CharlesSchwabCredentials` object.
@@ -54,10 +53,10 @@ class CharlesSchwabCredentials():
             Optional. A path to a JSON file containing saved tokens.
         """
 
-        self._access_token = ''
-        self._refresh_token = ''
+        self._access_token = ""
+        self._refresh_token = ""
         self._scope = []
-        self._token_type = ''
+        self._token_type = ""
         self._expires_in = 0
         self._refresh_token_expires_in = 0
         self._is_expired = True
@@ -88,12 +87,14 @@ class CharlesSchwabCredentials():
             self.to_credential_file(file_path=credential_file)
         elif credential_dict:
             self.from_credential_dict(token_dict=credential_dict)
+        # If a file path is provided but the file doesn't exist.
         elif credential_file and not credential_file.exists():
-            # If a file path is provided but the file doesn't exist.
             self.from_workflow()
+            self._loaded_from_file = True
+            self._file_path = credential_file
             self.to_credential_file(file_path=credential_file)
+        # If no credentials supplied, run the OAuth 2 flow.
         else:
-            # If no credentials supplied, run the OAuth 2 flow.
             self.from_workflow()
 
     @property
@@ -129,88 +130,9 @@ class CharlesSchwabCredentials():
     @property
     def is_refresh_token_expired(self) -> bool:
         """Checks if the refresh token has expired."""
-        exp_time = self.refresh_token_expiration_time.timestamp() - 20
+        exp_time = self.refresh_token_expiration_time - 20
         now = datetime.now().timestamp()
         return bool(exp_time < now)
-
-    def from_token_dict(self, token_dict: dict) -> None:
-        """Loads token information from a dictionary."""
-        self._access_token = token_dict.get('access_token', '')
-        self._refresh_token = token_dict.get('refresh_token', '')
-        self._scope = token_dict.get('scope', [])
-        self._token_type = token_dict.get('token_type', '')
-        self._expires_in = token_dict.get('expires_in', 0)
-
-        self._refresh_token_expires_in = token_dict.get(
-            'refresh_token_expires_in',
-            0
-        )
-        self._refresh_token_expiration_time = token_dict.get(
-            'refresh_token_expiration_time', 0
-        )
-        self._access_token_expiration_time = token_dict.get(
-            'access_token_expiration_time', 0
-        )
-
-        # Calculate the refresh token expiration time.
-        if isinstance(self._refresh_token_expiration_time, str):
-            self._refresh_token_expiration_time = datetime.fromisoformat(
-                self._refresh_token_expiration_time
-            )
-        elif isinstance(self._refresh_token_expiration_time, float):
-            self._refresh_token_expiration_time = datetime.fromtimestamp(
-                self._refresh_token_expiration_time
-            )
-        else:
-            self._calculate_refresh_token_expiration(
-                expiration_secs=self._refresh_token_expires_in
-            )
-
-        # Calculate the access token expiration time.
-        if isinstance(self._access_token_expiration_time, str):
-            self._access_token_expiration_time = datetime.fromisoformat(
-                self._access_token_expiration_time
-            )
-        elif isinstance(self._access_token_expiration_time, float):
-            self._access_token_expiration_time = datetime.fromtimestamp(
-                self._access_token_expiration_time
-            )
-        else:
-            self._calculate_access_token_expiration(
-                expiration_secs=self._expires_in
-            )
-
-        self.validate_token()
-
-    def to_token_dict(self) -> dict:
-        """Converts the credential data to a dictionary."""
-        token_dict = {
-            'access_token': self._access_token,
-            'refresh_token': self._refresh_token,
-            'scope': self._scope,
-            'expires_in': self._expires_in,
-            'refresh_token_expires_in': self._refresh_token_expires_in,
-            'token_type': self._token_type,
-            'refresh_token_expiration_time':
-                self.refresh_token_expiration_time.isoformat(),
-            'access_token_expiration_time':
-                self.access_token_expiration_time.isoformat(),
-        }
-        return token_dict
-
-    def _calculate_refresh_token_expiration(self, expiration_secs: int) -> None:
-        """Calculates refresh token expiration time."""
-        expiration_time = datetime.now().timestamp() + expiration_secs
-        self._refresh_token_expiration_time = datetime.fromtimestamp(
-            expiration_time
-        )
-
-    def _calculate_access_token_expiration(self, expiration_secs: int) -> None:
-        """Calculates access token expiration time."""
-        expiration_time = datetime.now().timestamp() + expiration_secs
-        self._access_token_expiration_time = datetime.fromtimestamp(
-            expiration_time
-        )
 
     @property
     def access_token_expiration_time(self) -> datetime:
@@ -220,9 +142,57 @@ class CharlesSchwabCredentials():
     @property
     def is_access_token_expired(self) -> bool:
         """Checks if the access token has expired."""
-        exp_time = self.access_token_expiration_time.timestamp() - 20
+        exp_time = self.access_token_expiration_time - 20
         now = datetime.now().timestamp()
         return bool(exp_time < now)
+
+    def from_token_dict(self, token_dict: dict) -> None:
+        """Loads token information from a dictionary."""
+
+        self._access_token = token_dict.get("access_token", "")
+        self._refresh_token = token_dict.get("refresh_token", "")
+        self._scope = token_dict.get("scope", [])
+
+        self._token_type = token_dict.get("token_type", "")
+        self._expires_in = token_dict.get("expires_in", 0)
+
+        if "refresh_token_expiration_time" in token_dict:
+            self._refresh_token_expiration_time = datetime.fromisoformat(
+                token_dict["refresh_token_expiration_time"]
+            ).timestamp()
+        else:
+            # If the refresh token expiration time is not in the dictionary.
+            self._refresh_token_expiration_time = datetime.now().timestamp() + 604800
+
+        if "access_token_expiration_time" in token_dict:
+            self._access_token_expiration_time = datetime.fromisoformat(
+                token_dict["access_token_expiration_time"]
+            ).timestamp()
+        else:
+            # If the access token expiration time is not in the dictionary.
+            self._access_token_expiration_time = (
+                datetime.now().timestamp() + self._expires_in
+            )
+
+        self.validate_token()
+
+    def to_token_dict(self) -> dict:
+        """Converts the credential data to a dictionary."""
+        token_dict = {
+            "access_token": self._access_token,
+            "refresh_token": self._refresh_token,
+            "scope": self._scope,
+            "expires_in": self._expires_in,
+            "refresh_token_expires_in": self._refresh_token_expires_in,
+            "token_type": self._token_type,
+            "refresh_token_expiration_time": datetime.fromtimestamp(
+                self.refresh_token_expiration_time
+            ).isoformat(),
+            "access_token_expiration_time": datetime.fromtimestamp(
+                self.access_token_expiration_time
+            ).isoformat(),
+        }
+        return token_dict
 
     def from_workflow(self) -> None:
         """
@@ -237,7 +207,7 @@ class CharlesSchwabCredentials():
     def from_credential_file(self, file_path: str) -> None:
         """Loads credentials from a JSON file."""
 
-        with open(file=file_path, mode='r', encoding='utf-8') as token_file:
+        with open(file=file_path, mode="r", encoding="utf-8") as token_file:
             token_dict = json.load(fp=token_file)
             self.from_token_dict(token_dict=token_dict)
 
@@ -245,7 +215,7 @@ class CharlesSchwabCredentials():
         """Saves the current tokens to a JSON file."""
         if isinstance(file_path, pathlib.Path):
             file_path = file_path.resolve()
-        with open(file=file_path, mode='w+', encoding='utf-8') as token_file:
+        with open(file=file_path, mode="w+", encoding="utf-8") as token_file:
             json.dump(obj=self.to_token_dict(), fp=token_file, indent=2)
 
     def from_credential_dict(self, token_dict: dict) -> None:
@@ -285,16 +255,15 @@ class CharlesSchwabCredentials():
 
             # Typically, the code is in the query string as "code=<value>"
             query_data = parse_qs(parsed_url.query)
-            self.authorization_code = query_data['code'][0]
+            self.authorization_code = query_data["code"][0]
 
         except KeyError as e:
             raise ValueError(
                 "Error: Could not find 'code' in the URL. Please try again."
             ) from e
 
-        except Exception as e: # pylint: disable=broad-exception-caught
+        except Exception as e:  # pylint: disable=broad-exception-caught
             print(f"Error parsing the URL: {e}")
-
 
     def exchange_code_for_token(self) -> dict:
         """
@@ -309,22 +278,19 @@ class CharlesSchwabCredentials():
         b64_creds = b64encode(client_creds.encode("utf-8")).decode("utf-8")
         headers = {
             "Authorization": f"Basic {b64_creds}",
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
         }
 
         # The body parameters:
         data = {
             "grant_type": "authorization_code",
             "code": self.authorization_code,
-            "redirect_uri": self.redirect_uri
+            "redirect_uri": self.redirect_uri,
         }
 
         # Make the token request.
         response = requests.post(
-            url=self._token_endpoint,
-            headers=headers,
-            data=data,
-            timeout=10
+            url=self._token_endpoint, headers=headers, data=data, timeout=10
         )
 
         if response.ok:
@@ -346,19 +312,13 @@ class CharlesSchwabCredentials():
         b64_creds = b64encode(client_creds.encode("utf-8")).decode("utf-8")
         headers = {
             "Authorization": f"Basic {b64_creds}",
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
         }
 
-        data = {
-            "grant_type": "refresh_token",
-            "refresh_token": self.refresh_token
-        }
+        data = {"grant_type": "refresh_token", "refresh_token": self.refresh_token}
 
         response = requests.post(
-            url=self._token_endpoint,
-            headers=headers,
-            data=data,
-            timeout=10
+            url=self._token_endpoint, headers=headers, data=data, timeout=10
         )
 
         if response.ok:
@@ -373,6 +333,7 @@ class CharlesSchwabCredentials():
         Checks if the tokens are expired and refreshes if needed.
         If refresh token is also expired, restarts the OAuth flow.
         """
+
         # If the refresh token is expired, we must do the full OAuth flow again.
         if self.is_refresh_token_expired:
             print("Refresh Token Expired or invalid. Initiating full OAuth workflow...")

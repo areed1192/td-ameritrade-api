@@ -35,7 +35,7 @@ class CharlesSchwabSession():
         log_format = '%(asctime)-15s|%(filename)s|%(message)s'
 
         self.client: CharlesSchwabClient = client
-        self.resource_url = 'https://api.schwabapi.com/'
+        self.resource_url = 'https://api.schwabapi.com/trader/'
         self.version = 'v1/'
 
         self.http_session = requests.Session()
@@ -68,7 +68,7 @@ class CharlesSchwabSession():
         # Build the headers.
         headers = {
             "Authorization": f"Bearer {self.client.credentials.access_token}",
-            "Content-Type": "application/json"
+            "Accept": "application/json"
         }
 
         return headers
@@ -133,7 +133,8 @@ class CharlesSchwabSession():
             JSON values.
         """
 
-        self.client.td_credentials.validate_token()
+        # Validate the token.
+        self.client.credentials.validate_token()
 
         # Build the URL.
         url = self.build_url(endpoint=endpoint)
