@@ -3,11 +3,11 @@
 from enum import Enum
 from typing import Union
 from datetime import datetime
+from datetime import timezone
 from schwab.session import CharlesSchwabSession
 
 
-class Accounts():
-
+class Accounts:
     """
     ## Overview
     ----
@@ -43,16 +43,13 @@ class Accounts():
         """
 
         content = self.session.make_request(
-            method='get',
-            endpoint='accounts/accountNumbers'
+            method="get", endpoint="accounts/accountNumbers"
         )
 
         return content
 
     def get_accounts(
-        self,
-        account_id: str = None,
-        include_positions: bool = True
+        self, account_id: str = None, include_positions: bool = True
     ) -> dict:
         """Get linked account(s) balances and positions for the
         logged in user.
@@ -89,22 +86,20 @@ class Accounts():
         fields = []
 
         if account_id is None:
-            endpoint = 'accounts'
+            endpoint = "accounts"
         else:
-            endpoint = f'accounts/{account_id}'
+            endpoint = f"accounts/{account_id}"
 
         if include_positions is True:
-            fields.append('positions')
+            fields.append("positions")
             params = {
-                'fields': ','.join(fields),
+                "fields": ",".join(fields),
             }
         else:
             params = None
 
         content = self.session.make_request(
-            method='get',
-            endpoint=endpoint,
-            params=params
+            method="get", endpoint=endpoint, params=params
         )
 
         return content
@@ -115,7 +110,7 @@ class Accounts():
         start_date: Union[str, datetime] = None,
         end_date: Union[str, datetime] = None,
         symbol: str = None,
-        transaction_type: Union[str, Enum] = None
+        transaction_type: Union[str, Enum] = None,
     ) -> dict:
         """Queries the transactions for an account.
 
@@ -157,26 +152,41 @@ class Accounts():
             transaction_type = transaction_type.value
 
         if isinstance(start_date, datetime):
-            start_date = start_date.date().isoformat()
+            # Check if the datetime object is timezone-aware
+            if start_date.tzinfo is None:
+                # Optionally assign a default timezone (e.g., UTC or local time)
+                start_date = start_date.replace(tzinfo=timezone.utc)
+
+            # Format to ISO 8601 with milliseconds and 'Z' if UTC
+            start_date = (
+                start_date.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[
+                    :-3
+                ]
+                + "Z"
+            )
 
         if isinstance(end_date, datetime):
-            end_date = end_date.date().isoformat()
+            # Check if the datetime object is timezone-aware
+            if end_date.tzinfo is None:
+                # Optionally assign a default timezone (e.g., UTC or local time)
+                end_date = end_date.replace(tzinfo=timezone.utc)
+            # Format to ISO 8601 with milliseconds and 'Z' if UTC
+            end_date = end_date.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+
 
         # Check if symbol has special characters and encode them.
         if symbol is not None:
-            symbol = symbol.encode('utf-8').decode('unicode_escape')
+            symbol = symbol.encode("utf-8").decode("unicode_escape")
 
         params = {
-            'type': transaction_type,
-            'startDate': start_date,
-            'endDate': end_date,
-            'symbol': symbol
+            "types": transaction_type,
+            "startDate": start_date,
+            "endDate": end_date,
+            "symbol": symbol,
         }
 
         content = self.session.make_request(
-            method='get',
-            endpoint=f'accounts/{account_id}/transactions',
-            params=params
+            method="get", endpoint=f"accounts/{account_id}/transactions", params=params
         )
 
         return content
@@ -210,8 +220,8 @@ class Accounts():
         """
 
         content = self.session.make_request(
-            method='get',
-            endpoint=f'accounts/{account_id}/transactions/{transaction_id}'
+            method="get",
+            endpoint=f"accounts/{account_id}/transactions/{transaction_id}",
         )
 
         return content
