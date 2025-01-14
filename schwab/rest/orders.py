@@ -28,6 +28,7 @@ class Orders:
         """
 
         self.session = session
+        self.service = "trader"
 
     def get_orders(
         self,
@@ -94,7 +95,7 @@ class Orders:
         endpoint = "orders"
 
         content = self.session.make_request(
-            method="get", endpoint=endpoint, params=params
+            method="get", service=self.service, endpoint=endpoint, params=params
         )
 
         return content
@@ -169,7 +170,7 @@ class Orders:
         endpoint = f"accounts/{account_id}/orders"
 
         content = self.session.make_request(
-            method="get", endpoint=endpoint, params=params
+            method="get", service=self.service, endpoint=endpoint, params=params
         )
 
         return content
@@ -197,7 +198,9 @@ class Orders:
         # Define the endpoint.
         endpoint = f"accounts/{account_id}/orders/{order_id}"
 
-        content = self.session.make_request(method="get", endpoint=endpoint)
+        content = self.session.make_request(
+            method="get", service=self.service, endpoint=endpoint
+        )
 
         return content
 
@@ -245,7 +248,7 @@ class Orders:
         endpoint = f"accounts/{account_id}/orders"
 
         content = self.session.make_request(
-            method="post", endpoint=endpoint, json_payload=order
+            method="post", service=self.service, endpoint=endpoint, json_payload=order
         )
 
         return content
@@ -308,7 +311,7 @@ class Orders:
         endpoint = f"accounts/{account_id}/orders/{order_id}"
 
         content = self.session.make_request(
-            method="put", endpoint=endpoint, json_payload=order
+            method="put", service=self.service, endpoint=endpoint, json_payload=order
         )
 
         return content
@@ -336,6 +339,8 @@ class Orders:
         # Define the endpoint.
         endpoint = f"accounts/{account_id}/orders/{order_id}"
 
-        content = self.session.make_request(method="delete", endpoint=endpoint)
+        content = self.session.make_request(
+            method="delete", service=self.service, endpoint=endpoint
+        )
 
         return content

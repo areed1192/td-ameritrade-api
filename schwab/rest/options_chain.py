@@ -22,6 +22,7 @@ class OptionsChain:
         """
 
         self.session = session
+        self.service = "marketdata"
 
     def get_option_chain(
         self,
@@ -85,7 +86,7 @@ class OptionsChain:
             params = option_chain_dict
 
         content = self.session.make_request(
-            method="get", endpoint="chains", params=params
+            method="get", service=self.service, endpoint="chains", params=params
         )
 
         return content
@@ -108,7 +109,10 @@ class OptionsChain:
         """
 
         content = self.session.make_request(
-            method="get", endpoint="expirationchain", params={"symbol": symbol}
+            method="get",
+            service=self.service,
+            endpoint="expirationchain",
+            params={"symbol": symbol},
         )
 
         return content

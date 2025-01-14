@@ -26,6 +26,7 @@ class Instruments():
         """
 
         self.session = session
+        self.service = "marketdata"
 
     def search_instruments(self, symbol: str, projection: Union[str, Enum]) -> dict:
         """Search or retrieve instrument data, including fundamental data.
@@ -52,6 +53,9 @@ class Instruments():
             )
         """
 
+        if len(symbol) < 4:
+            raise ValueError('Symbol must be at least 4 characters long.')
+
         if isinstance(projection, Enum):
             projection = projection.value
 
@@ -62,6 +66,7 @@ class Instruments():
 
         content = self.session.make_request(
             method='get',
+            service=self.service,
             endpoint='instruments',
             params=params
         )
@@ -87,6 +92,7 @@ class Instruments():
 
         content = self.session.make_request(
             method='get',
+            service=self.service,
             endpoint=f'instruments/{cusip}'
         )
 

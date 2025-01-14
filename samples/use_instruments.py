@@ -48,7 +48,7 @@ pprint(
 # Search for a symbol using regular expression.
 pprint(
     instruments_service.search_instruments(
-        symbol="MS*", projection=Projections.SYMBOL_REGEX
+        symbol="MSF*", projection=Projections.SYMBOL_REGEX
     )
 )
 

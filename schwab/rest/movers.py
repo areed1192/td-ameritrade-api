@@ -25,6 +25,7 @@ class Movers():
         """
 
         self.session = session
+        self.service = "marketdata"
 
     def get_movers(
         self,
@@ -77,6 +78,7 @@ class Movers():
 
         content = self.session.make_request(
             method='get',
+            service=self.service,
             endpoint=f'movers/{symbol_id}',
             params=params
         )

@@ -30,6 +30,7 @@ class PriceHistory:
         """
 
         self.session = session
+        self.service = "marketdata"
         self._period_type = ""
         self._period = ""
         self._frequency = ""
@@ -170,7 +171,9 @@ class PriceHistory:
         }
 
         content = self.session.make_request(
-            method="get", endpoint="pricehistory", params=params
+            method="get",
+            service=self.service,
+            endpoint="pricehistory", params=params
         )
 
         return content

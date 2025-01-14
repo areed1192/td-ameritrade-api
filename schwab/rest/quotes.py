@@ -6,7 +6,6 @@ from schwab.session import CharlesSchwabSession
 
 
 class Quotes:
-
     """
     ## Overview
     ----
@@ -24,6 +23,7 @@ class Quotes:
         """
 
         self.session = session
+        self.service = "marketdata"
 
     def get_quote(self, symbol_id=str, fields: List[str] | Enum = None) -> dict:
         """Get quote by a single symbol.
@@ -60,7 +60,10 @@ class Quotes:
             params["fields"] = ",".join(fields)
 
         content = self.session.make_request(
-            method="get", endpoint=f"{symbol_id}/quotes", params=params
+            method="get",
+            service=self.service,
+            endpoint=f"{symbol_id}/quotes",
+            params=params,
         )
 
         return content
@@ -113,7 +116,7 @@ class Quotes:
             params["fields"] = ",".join(fields)
 
         content = self.session.make_request(
-            method="get", endpoint="quotes", params=params
+            method="get", service=self.service, endpoint="quotes", params=params
         )
 
         return content

@@ -25,6 +25,7 @@ class Accounts:
         """
 
         self.session = session
+        self.service = "trader"
 
     def get_account_numbers(self) -> list:
         """Gets a list of account numbers and their encrypted
@@ -43,7 +44,7 @@ class Accounts:
         """
 
         content = self.session.make_request(
-            method="get", endpoint="accounts/accountNumbers"
+            method="get", service=self.service, endpoint="accounts/accountNumbers"
         )
 
         return content
@@ -99,7 +100,7 @@ class Accounts:
             params = None
 
         content = self.session.make_request(
-            method="get", endpoint=endpoint, params=params
+            method="get", service=self.service, endpoint=endpoint, params=params
         )
 
         return content
@@ -171,8 +172,10 @@ class Accounts:
                 # Optionally assign a default timezone (e.g., UTC or local time)
                 end_date = end_date.replace(tzinfo=timezone.utc)
             # Format to ISO 8601 with milliseconds and 'Z' if UTC
-            end_date = end_date.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
-
+            end_date = (
+                end_date.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3]
+                + "Z"
+            )
 
         # Check if symbol has special characters and encode them.
         if symbol is not None:
@@ -186,7 +189,10 @@ class Accounts:
         }
 
         content = self.session.make_request(
-            method="get", endpoint=f"accounts/{account_id}/transactions", params=params
+            method="get",
+            service=self.service,
+            endpoint=f"accounts/{account_id}/transactions",
+            params=params,
         )
 
         return content
@@ -221,6 +227,7 @@ class Accounts:
 
         content = self.session.make_request(
             method="get",
+            service=self.service,
             endpoint=f"accounts/{account_id}/transactions/{transaction_id}",
         )
 

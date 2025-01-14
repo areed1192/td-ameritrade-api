@@ -29,6 +29,7 @@ class UserInfo:
         """
 
         self.session = session
+        self.service = "trader"
 
     def get_preferences(self) -> dict:
         """Get user preference information for the logged in user.
@@ -41,6 +42,7 @@ class UserInfo:
 
         content = self.session.make_request(
             method="get",
+            service=self.service,
             endpoint="userPreference",
         )
 

@@ -28,6 +28,7 @@ class MarketHours():
         """
 
         self.session = session
+        self.service = "marketdata"
 
     def get_multiple_market_hours(
         self,
@@ -72,6 +73,7 @@ class MarketHours():
 
         content = self.session.make_request(
             method='get',
+            service=self.service,
             endpoint='markets',
             params=params
         )
@@ -119,6 +121,7 @@ class MarketHours():
 
         content = self.session.make_request(
             method='get',
+            service=self.service,
             endpoint=f'markets/{market}',
             params=params
         )

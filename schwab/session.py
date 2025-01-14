@@ -35,7 +35,7 @@ class CharlesSchwabSession():
         log_format = '%(asctime)-15s|%(filename)s|%(message)s'
 
         self.client: CharlesSchwabClient = client
-        self.resource_url = 'https://api.schwabapi.com/trader/'
+        self.resource_url = 'https://api.schwabapi.com/'
         self.version = 'v1/'
 
         self.http_session = requests.Session()
@@ -73,11 +73,14 @@ class CharlesSchwabSession():
 
         return headers
 
-    def build_url(self, endpoint: str) -> str:
+    def build_url(self, service: str, endpoint: str) -> str:
         """Build the URL used the make string.
 
         ### Parameters
         ----
+        service : str
+            The service used to make the full URL.
+    
         endpoint : str
             The endpoint used to make the full URL.
 
@@ -87,7 +90,7 @@ class CharlesSchwabSession():
             The full URL with the endpoint needed.
         """
 
-        url = self.resource_url + self.version + endpoint
+        url = self.resource_url + service + "/" + self.version + endpoint
 
         return url
 
@@ -95,6 +98,7 @@ class CharlesSchwabSession():
         self,
         method: str,
         endpoint: str,
+        service: str,
         params: dict = None,
         data: dict = None,
         json_payload: dict = None
@@ -137,7 +141,7 @@ class CharlesSchwabSession():
         self.client.credentials.validate_token()
 
         # Build the URL.
-        url = self.build_url(endpoint=endpoint)
+        url = self.build_url(service=service, endpoint=endpoint)
 
         # Define the headers.
         headers = self.build_headers()
