@@ -12,17 +12,20 @@ config = ConfigParser()
 # Read the file.
 config.read('config/config.ini')
 
+# Section
+CONFIG_SECTION = 'other'
+
 # Get the specified credentials.
-client_id = config.get('main', 'client_id')
-client_secret = config.get('main', 'client_secret')
-redirect_uri = config.get('main', 'redirect_uri')
+client_id = config.get(CONFIG_SECTION, 'client_id')
+client_secret = config.get(CONFIG_SECTION, 'client_secret')
+redirect_uri = config.get(CONFIG_SECTION, 'redirect_uri')
 
 # Intialize our `CharlesSchwabCredentials` object.
 credentials = CharlesSchwabCredentials(
     client_id=client_id,
     client_secret=client_secret,
     redirect_uri=redirect_uri,
-    credential_file='config/credentials.json'
+    credential_file=f'config/credentials_{CONFIG_SECTION}.json'
 )
 
 print(credentials.client_id)
